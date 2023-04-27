@@ -1,15 +1,12 @@
-import './App.css';
-import AddPost from './AddPost'
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React from "react";
+import LoginContext from "./pages/login/LoginContext";
 
-function App() {
-   
+const App = () => {
   return (
-    <div className="App">
-      <AddPost onAdd={undefined}/>
-      
+    <div>
+      <LoginContext />
     </div>
   );
-}
+};
 
 export default App;
