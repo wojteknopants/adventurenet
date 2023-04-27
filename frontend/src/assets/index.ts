@@ -1,4 +1,4 @@
-import loginBackground from "./loginBackground.png";
+import loginBackground from "./loginBackground.jpg";
 
 export {
   loginBackground
