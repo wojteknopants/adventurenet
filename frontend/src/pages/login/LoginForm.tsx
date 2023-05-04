@@ -26,11 +26,6 @@ const LoginForm = () => {
     console.log(password);
   };
 
-  function timeout(delay: number) {
-    setIsShowing(false);
-    return new Promise((res) => setTimeout(res, delay));
-  }
-
   useEffect(() => {
     setIsShowing(true);
   });
@@ -83,12 +78,14 @@ const LoginForm = () => {
           </span>
         </div>
         <div className="flex justify-center mt-4">
-          <button
-            type="submit"
-            className="flex justify-center w-[343px] text-white bg-orange-400 transition hover:bg-orange-400/90 font-medium rounded-lg text-[16px] px-5 py-2.5"
-          >
-            Login
-          </button>
+          <Link to="/feed">
+            <button
+              type="submit"
+              className="flex justify-center w-[343px] text-white bg-orange-400 transition hover:bg-orange-400/90 font-medium rounded-lg text-[16px] px-5 py-2.5"
+            >
+              Login
+            </button>
+          </Link>
         </div>
         <div className="font-[500] flex justify-center mt-4 text-[16px]">
           <span className="mr-1">Don't have an account? </span>
