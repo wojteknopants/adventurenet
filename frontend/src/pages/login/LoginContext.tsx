@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { loginBackground, loginEmail, loginLock } from "../../assets";
 import LoginForm from "./LoginForm";
-import RegistrationForm from "../registration/RegistrationForm";
-
 const LoginContext = () => {
   return (
     <div
