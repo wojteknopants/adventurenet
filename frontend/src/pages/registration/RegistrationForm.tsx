@@ -35,7 +35,7 @@ const LoginForm = () => {
         onSubmit={handleOnSubmit}
         className={`flex flex-col justify-center transition-all ease-in-out duration-500 ${
           isShowing ? "opacity-100" : "opacity-0"
-        } p-6 mt-24 backdrop-blur-lg bg-white/30 rounded-[5%]`}
+        } p-6 mt-24 backdrop-blur-lg bg-white/30 rounded-[5%] shadow-md`}
       >
         <label className="flex justify-center text-[32px] font-bold mt-2">
           Registration
@@ -88,14 +88,14 @@ const LoginForm = () => {
         <div className="flex justify-center mt-8">
           <button
             type="submit"
-            className="flex justify-center w-[343px] text-white bg-orange-400 transition hover:bg-orange-400/90 font-medium rounded-lg text-[16px] px-5 py-2.5"
+            className="flex justify-center w-[343px] transition shadow-md shadow-orange-400/50 hover:shadow hover:shadow-orange-400/50 text-white bg-orange-400 hover:bg-orange-400/90 font-medium rounded-lg text-[16px] px-5 py-2.5"
           >
             Register
           </button>
         </div>
         <div className="font-[500] flex justify-center mt-4 text-[16px]">
           <span className="mr-1">Already have an account? </span>
-          <Link to="/login" className="font-[700]">
+          <Link to="/auth/login" className="font-[700] hover:underline">
             Login
           </Link>
         </div>

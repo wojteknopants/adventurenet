@@ -67,6 +67,11 @@ const FeedContext = () => {
   };
   return (
     <div>
+      <div className="flex justify-between mt-8">
+        <h2 className="text-[24px]">Feed</h2>
+        <button>TurnOn</button>
+      </div>
+
       <div>{testText()}</div>
     </div>
   );
