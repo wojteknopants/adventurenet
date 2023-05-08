@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { ListGroup, Card, Button, Form } from "react-bootstrap";
 import API from "./API";
 
-
 const AddPost = ({ onAdd }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -29,8 +28,8 @@ const AddPost = ({ onAdd }) => {
     e.preventDefault();
     let item = { title, content };
     API.post("/", item).then(() => refreshPosts());
-    setTitle('');
-    setContent('');
+    setTitle("");
+    setContent("");
   };
 
   const onUpdate = (id) => {
@@ -117,7 +116,6 @@ const AddPost = ({ onAdd }) => {
                     <td>
                       <button onClick={() => selectPost(post.id)}>Edit</button>
                       <button onClick={() => onDelete(post.id)}>Delete</button>
-                      
                     </td>
                   </tr>
                 );
