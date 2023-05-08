@@ -5,11 +5,10 @@ import { Link } from "react-router-dom";
 const LoginForm = () => {
   const [email, setEmail] = useState<string | undefined>();
   const [password, setPassword] = useState<string | undefined>();
+  const [confirmedPassword, setConfirmedPassword] = useState<
+    string | undefined
+  >();
   const [isShowing, setIsShowing] = useState(false);
-
-  const testResponsAPI = {
-    response: "accept",
-  };
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -19,10 +18,21 @@ const LoginForm = () => {
     setPassword(event.target.value);
   };
 
+  const handleConfirmPasswordChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setConfirmedPassword(event.target.value);
+  };
+
   const handleOnSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log(email);
     console.log(password);
+    if (password === confirmedPassword) {
+      console.log("Password Match!");
+    } else {
+      console.log("Password Does't Match!");
+    }
   };
 
   useEffect(() => {
@@ -52,7 +62,7 @@ const LoginForm = () => {
             onChange={handleEmailChange}
             placeholder="Email"
             type="email"
-            className="pb-1 required:border-red-500 border-b-[1px] border-black w-[350px] bg-transparent focus:outline-none"
+            className="pb-1 border-b-[1px] border-black w-[350px] bg-transparent focus:outline-none"
           />
         </div>
         <div className="mt-8">
@@ -67,7 +77,7 @@ const LoginForm = () => {
             onChange={handlePasswordChange}
             type="password"
             placeholder="Password"
-            className="pb-1 required:border-red-500 border-b-[1px] border-black w-[350px] bg-transparent focus:outline-none"
+            className="pb-1 border-b-[1px] border-black w-[350px] bg-transparent focus:outline-none"
           />
         </div>
         <div className="mt-8">
@@ -78,11 +88,11 @@ const LoginForm = () => {
             className="absolute right-0 mr-8 mt-2"
           />
           <input
-            value={password}
-            onChange={handlePasswordChange}
+            value={confirmedPassword}
+            onChange={handleConfirmPasswordChange}
             type="password"
             placeholder="Confirm password"
-            className="pb-1 required:border-red-500 border-b-[1px] border-black w-[350px] bg-transparent focus:outline-none"
+            className="pb-1 border-b-[1px] border-black w-[350px] bg-transparent focus:outline-none"
           />
         </div>
         <div className="flex justify-center mt-8">

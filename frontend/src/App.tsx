@@ -1,7 +1,6 @@
 import React from "react";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 
-import LoginContext from "./pages/AuthContext";
 import Feed from "./pages/feed/Feed";
 import NotFound from "./pages/NotFound";
 import MainContext from "./pages/MainContext";
