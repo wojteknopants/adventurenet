@@ -1,34 +1,39 @@
-import React from "react";
-import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
-
-import Feed from "./pages/feed/Feed";
+import { Route, Routes } from "react-router-dom";
+import Feed from "./pages/main/Feed";
+import Messages from "./pages/main/Messages";
+import Settings from "./pages/main/Settings";
+import Profile from "./pages/main/Profile";
+import Explore from "./pages/main/Explore";
+import MainLayout from "./pages/main/MainLayout";
+import AuthLayout from "./pages/auth/AuthLayout";
+import LoginForm from "./pages/auth/LoginForm";
+import RegistrationForm from "./pages/auth/RegistrationForm";
+import ActivateUser from "./pages/auth/ActivateUser";
 import NotFound from "./pages/NotFound";
-import MainContext from "./pages/MainContext";
-import Messages from "./pages/messages/Messages";
-import Settings from "./pages/settings/Settings";
-import Profile from "./pages/profile/Profile";
-import Explore from "./pages/explore/Explore";
-import LoginForm from "./pages/login/LoginForm";
-import RegistrationForm from "./pages/registration/RegistrationForm";
-import AuthContext from "./pages/AuthContext";
+
+// import { Provider } from "react-redux";
+// import store from "./store";
 
 const App = () => {
   return (
     <>
+      {/* <Provider store={store}> */}
       <Routes>
-        <Route path="/" element={<MainContext />}>
+        <Route path="/" element={<MainLayout />}>
           <Route path="/feed" element={<Feed />} />
           <Route path="/messages" element={<Messages />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/explore" element={<Explore />} />
         </Route>
-        <Route path="/auth" element={<AuthContext />}>
+        <Route path="/auth" element={<AuthLayout />}>
           <Route path="/auth/login" element={<LoginForm />} />
           <Route path="/auth/registration" element={<RegistrationForm />} />
+          <Route path="/auth/activate/:uid/:token" element={<ActivateUser />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
+      {/* </Provider> */}
     </>
   );
 };
