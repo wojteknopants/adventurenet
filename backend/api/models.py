@@ -47,7 +47,7 @@ class UserProfile(models.Model):
     surname = models.CharField(max_length=20, null=True, blank=True)
     country = models.CharField(max_length=20, null=True, blank=True)
     bio = models.CharField(max_length=200, null=True, blank=True)
-    username = models.CharField(max_length=20, null=True, unique=True)
+    username = models.CharField(max_length=20, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
