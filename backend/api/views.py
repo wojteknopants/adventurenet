@@ -12,4 +12,4 @@ class UserProfileRetrieveUpdateAPIView(RetrieveUpdateAPIView):
     """It returns single object when GET, updates (writes on) object when POST or PATCH, and destroys when DELETE"""
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
-    lookup_field = 'pk'
+    lookup_field = 'user__pk'
