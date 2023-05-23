@@ -28,7 +28,7 @@ interface AuthParams {
 
 export const login = createAsyncThunk(
   "auth/login",
-  async ({ email, password }: LoginParams) => {
+  async ({ email, password }: LoginParams, { dispatch }) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -41,7 +41,7 @@ export const login = createAsyncThunk(
       body,
       config
     );
-    loadUser;
+    await dispatch(loadUser());
     return response.data;
   }
 );
@@ -71,8 +71,9 @@ export const register = createAsyncThunk(
   }
 );
 
-export const isAuth = createAsyncThunk("auth/isAuth", async () => {
-  if (localStorage.getItem("access")) {
+export const checkAuthStatus = createAsyncThunk(
+  "auth/checkAuthStatus",
+  async () => {
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -93,10 +94,8 @@ export const isAuth = createAsyncThunk("auth/isAuth", async () => {
     } else {
       return false;
     }
-  } else {
-    return false;
   }
-});
+);
 
 export const activation = createAsyncThunk(
   "auth/activation",
@@ -117,28 +116,25 @@ export const activation = createAsyncThunk(
   }
 );
 
-export const loadUser = createAsyncThunk(
-  "auth/loadUser",
-  async ({}, { rejectWithValue }) => {
-    if (localStorage.getItem("access")) {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `JWT ${localStorage.getItem("access")}`,
-          Accept: "application/json",
-        },
-      };
+export const loadUser = createAsyncThunk("auth/loadUser", async () => {
+  if (localStorage.getItem("access")) {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `JWT ${localStorage.getItem("access")}`,
+        Accept: "application/json",
+      },
+    };
 
-      const res = await axios.get(
-        `${import.meta.env.VITE_REACT_APP_API_URL}/auth/users/me/`,
-        config
-      );
-      return res.data;
-    } else {
-      return rejectWithValue("rejected!");
-    }
+    const res = await axios.get(
+      `${import.meta.env.VITE_REACT_APP_API_URL}/auth/users/me/`,
+      config
+    );
+    return res.data;
+  } else {
+    return false;
   }
-);
+});
 
 const authSlice = createSlice({
   name: "auth",
@@ -176,6 +172,8 @@ const authSlice = createSlice({
         state.status = "failed";
         state.isAuthenticated = false;
         state.error = action.error.message;
+        localStorage.removeItem("access");
+        localStorage.removeItem("refresh");
       })
       .addCase(register.fulfilled, (state, action) => {
         state.status = "succeeded";
@@ -183,11 +181,11 @@ const authSlice = createSlice({
       .addCase(register.rejected, (state, action) => {
         state.status = "failed";
       })
-      .addCase(isAuth.fulfilled, (state, action) => {
+      .addCase(checkAuthStatus.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.isAuthenticated = action.payload;
       })
-      .addCase(isAuth.rejected, (state, action) => {
+      .addCase(checkAuthStatus.rejected, (state, action) => {
         state.status = "failed";
         state.isAuthenticated = false;
       })

@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import {
   getIsAuthenticated,
   getStatus,
-  isAuth,
+  checkAuthStatus,
   login,
 } from "../../features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,7 +20,6 @@ const LoginForm = () => {
   const [isShowing, setIsShowing] = useState<boolean>(false);
 
   //const [errorMessages, setErrorMessages] = useState({});
-
   const isAuthenticated = useSelector(getIsAuthenticated);
   const status = useSelector(getStatus);
   const navigate = useNavigate();
@@ -54,25 +53,25 @@ const LoginForm = () => {
     } else {
       console.log("Don't remember my password!");
     }
+
+    iDontKnowHowCanICallThisFunction();
+  };
+
+  const iDontKnowHowCanICallThisFunction = async () => {
     if (email !== undefined && password !== undefined) {
-      dispatch(login({ email, password })).then(() => {
-        dispatch(isAuth())
-          .unwrap()
-          .then(() => {
-            if (status == "succeeded") {
-              if (isAuthenticated) {
-                navigate("/feed");
-              } else {
-                console.log("Wrong password or email");
-              }
-            }
-          });
-      });
+      await dispatch(login({ email, password }));
+
+      await dispatch(checkAuthStatus());
     }
   };
 
   useEffect(() => {
     setIsShowing(true);
+    if (isAuthenticated) {
+      navigate("/feed");
+    } else {
+      console.log(status);
+    }
   });
 
   return (
@@ -152,7 +151,7 @@ const LoginForm = () => {
 };
 
 // const mapStateToProps = (state: any) => ({
-//   isAuthenticated: state.auth.isAuth,
+//   isAuthenticated: state.auth.checkAuthStatus,
 // });
 
 export default LoginForm;
