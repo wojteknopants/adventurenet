@@ -8,32 +8,38 @@ import MainLayout from "./pages/main/MainLayout";
 import AuthLayout from "./pages/auth/AuthLayout";
 import LoginForm from "./pages/auth/LoginForm";
 import RegistrationForm from "./pages/auth/RegistrationForm";
-import ActivateUser from "./pages/auth/ActivateUser";
+import ActivateUser from "./pages/auth/ActivateForm";
 import NotFound from "./pages/NotFound";
 
-// import { Provider } from "react-redux";
-// import store from "./store";
+import { Provider } from "react-redux";
+import store from "./store";
+import Layout from "./pages/hocs/Layout";
 
 const App = () => {
   return (
     <>
-      {/* <Provider store={store}> */}
-      <Routes>
-        <Route path="/" element={<MainLayout />}>
-          <Route path="/feed" element={<Feed />} />
-          <Route path="/messages" element={<Messages />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/explore" element={<Explore />} />
-        </Route>
-        <Route path="/auth" element={<AuthLayout />}>
-          <Route path="/auth/login" element={<LoginForm />} />
-          <Route path="/auth/registration" element={<RegistrationForm />} />
-          <Route path="/auth/activate/:uid/:token" element={<ActivateUser />} />
-        </Route>
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-      {/* </Provider> */}
+      <Provider store={store}>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route path="/" element={<MainLayout />}>
+              <Route path="/feed" element={<Feed />} />
+              <Route path="/messages" element={<Messages />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/explore" element={<Explore />} />
+            </Route>
+            <Route path="/auth" element={<AuthLayout />}>
+              <Route path="/auth/login" element={<LoginForm />} />
+              <Route path="/auth/registration" element={<RegistrationForm />} />
+              <Route
+                path="/auth/activate/:uid/:token"
+                element={<ActivateUser />}
+              />
+            </Route>
+            <Route path="*" element={<NotFound />} />
+          </Route>
+        </Routes>
+      </Provider>
     </>
   );
 };

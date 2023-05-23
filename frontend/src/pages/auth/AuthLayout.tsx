@@ -1,6 +1,11 @@
+import { useEffect } from "react";
 import { loginBackground } from "../../assets";
 import { Outlet } from "react-router-dom";
+import { connect } from "react-redux";
+
 const AuthLayout = () => {
+  useEffect(() => {}, []);
+
   return (
     <div
       className="flex-col px-16 py-10 w-[100%] h-screen"

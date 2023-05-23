@@ -8,7 +8,7 @@ const MainLayout = () => {
 
   // redirecting ONLY FOR TESTING, delete it
   useEffect(() => {
-    navigate("/auth/login");
+    //navigate("/auth/login");
   });
 
   return (

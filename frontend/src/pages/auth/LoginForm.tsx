@@ -1,18 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { loginLock, loginEmail } from "../../assets";
 import { Link, useNavigate } from "react-router-dom";
-// import { connect } from "react-redux";
-// import { login } from "../../actions/auth";
+import {
+  getIsAuthenticated,
+  getStatus,
+  isAuth,
+  login,
+} from "../../features/auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { useSelect } from "@mui/base";
+import { AppDispatch } from "../../store";
 
 const LoginForm = () => {
-  const [email, setEmail] = useState<string | undefined>();
-  const [password, setPassword] = useState<string | undefined>();
-  const [isChecked, setIsChecked] = useState(false);
+  const [email, setEmail] = useState<string>();
+  const [password, setPassword] = useState<string>();
+  const [isChecked, setIsChecked] = useState<boolean>(false);
+
+  const [isShowing, setIsShowing] = useState<boolean>(false);
+
   //const [errorMessages, setErrorMessages] = useState({});
 
+  const isAuthenticated = useSelector(getIsAuthenticated);
+  const status = useSelector(getStatus);
   const navigate = useNavigate();
-
-  const [isShowing, setIsShowing] = useState(false);
+  const dispatch: AppDispatch = useDispatch();
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -43,16 +55,21 @@ const LoginForm = () => {
       console.log("Don't remember my password!");
     }
     if (email !== undefined && password !== undefined) {
-      // login(email, password);
-      console.log("after login func");
-      //navigate("/feed");
+      dispatch(login({ email, password })).then(() => {
+        dispatch(isAuth())
+          .unwrap()
+          .then(() => {
+            if (status == "succeeded") {
+              if (isAuthenticated) {
+                navigate("/feed");
+              } else {
+                console.log("Wrong password or email");
+              }
+            }
+          });
+      });
     }
   };
-
-  // const renderErrorMessage = (name: any) =>
-  //   name === errorMessages.email && (
-  //     <div className="error">{errorMessages.message}</div>
-  //   );
 
   useEffect(() => {
     setIsShowing(true);
@@ -135,8 +152,8 @@ const LoginForm = () => {
 };
 
 // const mapStateToProps = (state: any) => ({
-//   //   // is authenticated ?
+//   isAuthenticated: state.auth.isAuth,
 // });
 
-// export default connect(mapStateToProps, { login })(LoginForm);
 export default LoginForm;
+//export default LoginForm;

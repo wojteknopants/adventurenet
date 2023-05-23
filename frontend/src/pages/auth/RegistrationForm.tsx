@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { loginEmail, loginLock } from "../../assets";
+import { register } from "../../features/auth/authSlice";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../store";
 
 const RegistrationForm = () => {
-  const [email, setEmail] = useState<string | undefined>();
-  const [password, setPassword] = useState<string | undefined>();
-  const [confirmedPassword, setConfirmedPassword] = useState<
-    string | undefined
-  >();
-  const [isShowing, setIsShowing] = useState(false);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [re_password, setConfirmedPassword] = useState<string>("");
+  const [isShowing, setIsShowing] = useState<boolean>(false);
+
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -28,8 +31,9 @@ const RegistrationForm = () => {
     event.preventDefault();
     console.log(email);
     console.log(password);
-    if (password === confirmedPassword) {
+    if (password === re_password) {
       console.log("Password Match!");
+      dispatch(register({ email, password, re_password }));
     } else {
       console.log("Password Does't Match!");
     }
@@ -91,7 +95,7 @@ const RegistrationForm = () => {
             className="absolute right-0 mr-8 mt-2"
           />
           <input
-            value={confirmedPassword}
+            value={re_password}
             onChange={handleConfirmPasswordChange}
             type="password"
             placeholder="Confirm password"
