@@ -21,7 +21,7 @@ interface AuthParams {
   access: string | null;
   refresh: string | null;
   isAuthenticated: boolean;
-  user: any;
+  user: {};
   status: "idle" | "succeeded" | "failed";
   error: string | undefined | null;
 }
@@ -41,6 +41,8 @@ export const login = createAsyncThunk(
       body,
       config
     );
+    localStorage.setItem("access", response.data.access);
+    localStorage.setItem("refresh", response.data.refresh);
     await dispatch(loadUser());
     return response.data;
   }
@@ -142,7 +144,7 @@ const authSlice = createSlice({
     access: localStorage.getItem("access"),
     refresh: localStorage.getItem("refresh"),
     isAuthenticated: false,
-    user: null,
+    user: {},
     status: "idle",
     error: null,
   } as AuthParams,
@@ -152,7 +154,7 @@ const authSlice = createSlice({
       state.access = null;
       state.refresh = null;
       state.isAuthenticated = false;
-      state.user = null;
+      state.user = {};
       localStorage.removeItem("access");
       localStorage.removeItem("refresh");
     },
@@ -165,8 +167,6 @@ const authSlice = createSlice({
         state.refresh = action.payload.refresh;
         state.isAuthenticated = true;
         state.error = null;
-        localStorage.setItem("access", action.payload.access);
-        localStorage.setItem("refresh", action.payload.refresh);
       })
       .addCase(login.rejected, (state, action) => {
         state.status = "failed";
