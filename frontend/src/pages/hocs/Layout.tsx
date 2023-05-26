@@ -1,9 +1,18 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
+import {
+  checkIsAuthenticated,
+  getIsAuthenticated,
+} from "../../features/auth/authSlice";
+import { AppDispatch } from "../../store";
 
 const Layout = () => {
-  useEffect(() => {}, []);
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(checkIsAuthenticated());
+  }, []);
 
   return (
     <div>

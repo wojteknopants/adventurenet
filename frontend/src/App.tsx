@@ -14,6 +14,7 @@ import NotFound from "./pages/NotFound";
 import { Provider } from "react-redux";
 import store from "./store";
 import Layout from "./pages/hocs/Layout";
+import Logout from "./pages/main/Logout";
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
               <Route path="/settings" element={<Settings />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/explore" element={<Explore />} />
+              <Route path="/logout" element={<Logout />} />
             </Route>
             <Route path="/auth" element={<AuthLayout />}>
               <Route path="/auth/login" element={<LoginForm />} />

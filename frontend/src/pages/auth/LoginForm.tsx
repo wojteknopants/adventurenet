@@ -4,12 +4,10 @@ import { Link, useNavigate } from "react-router-dom";
 import {
   getIsAuthenticated,
   getStatus,
-  checkAuthStatus,
+  checkIsAuthenticated,
   login,
 } from "../../features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
-import { useSelect } from "@mui/base";
 import { AppDispatch } from "../../store";
 
 const LoginForm = () => {
@@ -42,26 +40,23 @@ const LoginForm = () => {
     event.preventDefault();
 
     // Exists credentials for testing
-    setEmail("qba.lesniak@gmail.com");
-    setPassword("janpawel2");
+
     //
 
     console.log(email);
     console.log(password);
     if (isChecked) {
+      setEmail("qba.lesniak@gmail.com");
+      setPassword("janpawel2");
       console.log("Remember my password!");
     } else {
       console.log("Don't remember my password!");
     }
 
-    iDontKnowHowCanICallThisFunction();
-  };
-
-  const iDontKnowHowCanICallThisFunction = async () => {
     if (email !== undefined && password !== undefined) {
-      await dispatch(login({ email, password }));
-
-      await dispatch(checkAuthStatus());
+      dispatch(login({ email, password })).then(() =>
+        dispatch(checkIsAuthenticated())
+      );
     }
   };
 
@@ -69,8 +64,6 @@ const LoginForm = () => {
     setIsShowing(true);
     if (isAuthenticated) {
       navigate("/feed");
-    } else {
-      console.log(status);
     }
   });
 
@@ -151,7 +144,7 @@ const LoginForm = () => {
 };
 
 // const mapStateToProps = (state: any) => ({
-//   isAuthenticated: state.auth.checkAuthStatus,
+//   isAuthenticated: state.auth.checkIsAuthenticated,
 // });
 
 export default LoginForm;

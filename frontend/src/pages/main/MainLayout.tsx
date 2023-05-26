@@ -2,13 +2,29 @@ import { Outlet, useNavigate } from "react-router-dom";
 import Contacts from "../../components/Contacts";
 import Navbar from "../../components/Navbar";
 import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "../../store";
+import {
+  checkIsAuthenticated,
+  getIsAuthenticated,
+} from "../../features/auth/authSlice";
 
 const MainLayout = () => {
+  const isAuthenticated = useSelector(getIsAuthenticated);
   const navigate = useNavigate();
+  // const dispatch: AppDispatch = useDispatch();
 
-  // redirecting ONLY FOR TESTING, delete it
+  // dispatch(checkIsAuthenticated()).then(() => {
+  //   console.log(isAuthenticated);
+  //   if (!isAuthenticated) {
+  //     navigate("/auth/login");
+  //   }
+  // });
+
   useEffect(() => {
-    //navigate("/auth/login");
+    if (!isAuthenticated) {
+      navigate("/auth/login");
+    }
   });
 
   return (

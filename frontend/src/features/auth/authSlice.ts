@@ -73,8 +73,8 @@ export const register = createAsyncThunk(
   }
 );
 
-export const checkAuthStatus = createAsyncThunk(
-  "auth/checkAuthStatus",
+export const checkIsAuthenticated = createAsyncThunk(
+  "auth/checkIsAuthenticated",
   async () => {
     const config = {
       headers: {
@@ -149,7 +149,7 @@ const authSlice = createSlice({
     error: null,
   } as AuthParams,
   reducers: {
-    logOut(state, action) {
+    logOut(state) {
       state.status = "succeeded";
       state.access = null;
       state.refresh = null;
@@ -181,11 +181,11 @@ const authSlice = createSlice({
       .addCase(register.rejected, (state, action) => {
         state.status = "failed";
       })
-      .addCase(checkAuthStatus.fulfilled, (state, action) => {
+      .addCase(checkIsAuthenticated.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.isAuthenticated = action.payload;
       })
-      .addCase(checkAuthStatus.rejected, (state, action) => {
+      .addCase(checkIsAuthenticated.rejected, (state, action) => {
         state.status = "failed";
         state.isAuthenticated = false;
       })
@@ -205,7 +205,7 @@ const authSlice = createSlice({
   },
 });
 
-export const {} = authSlice.actions;
+export const { logOut } = authSlice.actions;
 
 export const getIsAuthenticated = (state: any) => state.auth.isAuthenticated;
 export const getStatus = (state: any) => state.auth.status;
