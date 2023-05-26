@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { activation } from "../../features/auth/authSlice";
 import { AppDispatch } from "../../store";
 
@@ -9,20 +9,31 @@ const ActivateUser = () => {
   const [isShowing, setIsShowing] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
 
+  const navigate = useNavigate();
+
   const { token } = useParams<{ token: string }>();
   const { uid } = useParams<{ uid: string }>();
+
+  const [verified, setVerified] = useState(false);
 
   const handleOnSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log(uid);
     console.log(token);
-    if (uid !== undefined && token !== undefined)
+    if (uid !== undefined && token !== undefined) {
       dispatch(activation({ uid, token }));
+      setVerified(true);
+      alert("Activation completed!");
+    }
+    console.log(verified);
+    if (verified) {
+      navigate("/auth/login");
+    }
   };
 
   useEffect(() => {
     setIsShowing(true);
-  });
+  }, []);
 
   return (
     <div className="flex justify-center">

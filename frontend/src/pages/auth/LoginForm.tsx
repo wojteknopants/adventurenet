@@ -13,6 +13,7 @@ import { AppDispatch } from "../../store";
 const LoginForm = () => {
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
+  const [isLastCharVisible, setIsLastCharVisible] = useState(false);
   const [isChecked, setIsChecked] = useState<boolean>(false);
 
   const [isShowing, setIsShowing] = useState<boolean>(false);
@@ -60,6 +61,9 @@ const LoginForm = () => {
     }
   };
 
+  useEffect(() => {
+    setIsShowing(true);
+  }, []);
   useEffect(() => {
     setIsShowing(true);
     if (isAuthenticated) {

@@ -1,5 +1,6 @@
 import { Dispatch, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { error } from "console";
 
 interface LoginParams {
   email: string;
@@ -23,7 +24,7 @@ interface AuthParams {
   isAuthenticated: boolean;
   user: {};
   status: "idle" | "succeeded" | "failed";
-  error: string | undefined | null;
+  error: any; // string | undefined;
 }
 
 export const login = createAsyncThunk(
@@ -44,32 +45,42 @@ export const login = createAsyncThunk(
     localStorage.setItem("access", response.data.access);
     localStorage.setItem("refresh", response.data.refresh);
     await dispatch(loadUser());
+
     return response.data;
   }
 );
 
 export const register = createAsyncThunk(
   "auth/register",
-  async ({ email, password, re_password }: RegisterParams) => {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
+  async (
+    { email, password, re_password }: RegisterParams,
+    { rejectWithValue }
+  ) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
 
-    const body = JSON.stringify({
-      email,
-      password,
-      re_password,
-    });
+      const body = JSON.stringify({
+        email,
+        password,
+        re_password,
+      });
 
-    const res = await axios.post(
-      `${import.meta.env.VITE_REACT_APP_API_URL}/auth/users/`,
-      body,
-      config
-    );
+      const res = await axios.post(
+        `${import.meta.env.VITE_REACT_APP_API_URL}/auth/users/`,
+        body,
+        config
+      );
 
-    return res.data;
+      return res.data;
+    } catch (error: any) {
+      const firstError = <any>Object.values(error.response.data)[0];
+      console.log(alert(firstError[0]));
+      return rejectWithValue(firstError[0]);
+    }
   }
 );
 
@@ -133,8 +144,6 @@ export const loadUser = createAsyncThunk("auth/loadUser", async () => {
       config
     );
     return res.data;
-  } else {
-    return false;
   }
 });
 
@@ -146,7 +155,7 @@ const authSlice = createSlice({
     isAuthenticated: false,
     user: {},
     status: "idle",
-    error: null,
+    error: "",
   } as AuthParams,
   reducers: {
     logOut(state) {
@@ -166,12 +175,13 @@ const authSlice = createSlice({
         state.access = action.payload.access;
         state.refresh = action.payload.refresh;
         state.isAuthenticated = true;
-        state.error = null;
+        state.error = "";
       })
       .addCase(login.rejected, (state, action) => {
         state.status = "failed";
         state.isAuthenticated = false;
         state.error = action.error.message;
+        alert("Wrong email or password!");
         localStorage.removeItem("access");
         localStorage.removeItem("refresh");
       })
@@ -180,6 +190,7 @@ const authSlice = createSlice({
       })
       .addCase(register.rejected, (state, action) => {
         state.status = "failed";
+        state.error = action.payload;
       })
       .addCase(checkIsAuthenticated.fulfilled, (state, action) => {
         state.status = "succeeded";

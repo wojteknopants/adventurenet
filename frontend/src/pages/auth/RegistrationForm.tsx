@@ -35,13 +35,14 @@ const RegistrationForm = () => {
       console.log("Password Match!");
       dispatch(register({ email, password, re_password }));
     } else {
+      alert("Password Does't Match!");
       console.log("Password Does't Match!");
     }
   };
 
   useEffect(() => {
     setIsShowing(true);
-  });
+  }, []);
 
   return (
     <div className="flex justify-center">
