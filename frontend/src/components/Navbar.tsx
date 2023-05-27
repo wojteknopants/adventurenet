@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { navLinks } from "../constants";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { navLinks } from "../constants";
 
 interface Props {
   currentPageId: string;
@@ -16,7 +16,7 @@ const Navbar = ({ currentPageId }: Props) => {
         </h1>
       </header>
       <ul className=" ">
-        {navLinks.map((nav, index) => (
+        {navLinks.map((nav) => (
           <li className="p-[10px] mb-0.5" key={nav.id}>
             <Link
               to={`/${nav.id}`}

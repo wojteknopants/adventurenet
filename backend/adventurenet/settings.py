@@ -154,15 +154,16 @@ REST_FRAMEWORK = {
 }
 
 #djoser library settings 
+DOMAIN = ('localhost:5173')
 DJOSER = {
     'LOGIN_FIELD': 'email',
-    'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
-    'USERNAME_RESET_CONFIRM_URL': '#/email/reset/confirm/{uid}/{token}', #username = email so url is with "email"
+    'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
+    'USERNAME_RESET_CONFIRM_URL': 'email/reset/confirm/{uid}/{token}', #username = email so url is with "email"
     'SEND_ACTIVATION_EMAIL': True,
     'SEND_CONFIRMATION_EMAIL': True,
     'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
     'USERNAME_CHANGED_EMAIL_CONFIRMATION': True,
-    'ACTIVATION_URL': '#/activate/{uid}/{token}',
+    'ACTIVATION_URL': 'auth/activate/{uid}/{token}', #/auth/activate/{uid}/{token}
     'USER_CREATE_PASSWORD_RETYPE': True,
     'SET_USERNAME_RETYPE': True, #SET USERNAME/SET PASSWORD to zmiana emaila/hasla
     'USERNAME_RESET_CONFIRM_RETYPE': True,

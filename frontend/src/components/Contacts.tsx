@@ -1,5 +1,3 @@
-import React from "react";
-
 const Contacts = () => {
   return (
     <div className="fixed flex flex-col justify-center px-[64px]">
