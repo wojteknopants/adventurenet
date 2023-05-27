@@ -129,23 +129,28 @@ export const activation = createAsyncThunk(
   }
 );
 
-export const loadUser = createAsyncThunk("auth/loadUser", async () => {
-  if (localStorage.getItem("access")) {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `JWT ${localStorage.getItem("access")}`,
-        Accept: "application/json",
-      },
-    };
+export const loadUser = createAsyncThunk(
+  "auth/loadUser",
+  async (_, { rejectWithValue }) => {
+    if (localStorage.getItem("access")) {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `JWT ${localStorage.getItem("access")}`,
+          Accept: "application/json",
+        },
+      };
 
-    const res = await axios.get(
-      `${import.meta.env.VITE_REACT_APP_API_URL}/auth/users/me/`,
-      config
-    );
-    return res.data;
+      const res = await axios.get(
+        `${import.meta.env.VITE_REACT_APP_API_URL}/auth/users/me/`,
+        config
+      );
+      return res.data;
+    } else {
+      return rejectWithValue("cum");
+    }
   }
-});
+);
 
 const authSlice = createSlice({
   name: "auth",
