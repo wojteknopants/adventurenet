@@ -1,15 +1,7 @@
 from django.urls import path
-from .views import *
-
+from .views import UserProfileListCreateAPIView, UserProfileRetrieveUpdateAPIView
 
 urlpatterns = [
-    # path('register/', views.RegisterView.as_view(), name='register'),
-    # path('login/', views.LoginView.as_view(), name='login'),
-    # path('logout/', views.LogoutView.as_view(), name='logout'),
-#     path('authenticated', CheckAuthenticatedView.as_view()),
-#     path('register', SignupView.as_view()),
-#     path('login', LoginView.as_view()),
-#     path('logout', LogoutView.as_view()),
-#     path('delete', DeleteAccountView.as_view()),
-#     path('csrf_cookie', GetCSRFToken.as_view())
- ]
+    path('profiles/', UserProfileListCreateAPIView.as_view(), name='userprofile_list_create'),
+    path('profiles/<str:user__pk>/', UserProfileRetrieveUpdateAPIView.as_view(), name='userprofile_retrieve_update'), #can use profiles/me/ to capture user__id from JWT token
+]
