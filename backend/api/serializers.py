@@ -1,7 +1,7 @@
 from djoser.serializers import UserCreateSerializer
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from .models import UserProfile
+from .models import UserProfile, Post
 User = get_user_model()
 
 # class UserAccountSerializer(serializers.ModelSerializer):
@@ -16,6 +16,18 @@ class UserCreateSerializer(UserCreateSerializer):
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField()
+
+    def get_user(self, obj):
+        return obj.user.id
+    
     class Meta:
         model = UserProfile
-        fields = ['name', 'surname', 'country', 'bio', 'username']
+        fields = ['user', 'name', 'surname', 'country', 'bio', 'username', 'updated_at']
+        read_only_fields = ('id', 'user_id', 'created_at', 'updated_at')
+
+class PostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = ('id', 'user', 'title', 'content', 'created_at', 'updated_at')
+        read_only_fields = ('id', 'user', 'created_at', 'updated_at')
