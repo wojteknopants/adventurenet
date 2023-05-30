@@ -23,7 +23,7 @@ class UserAccountManager(BaseUserManager):
 
 class UserAccount(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False) #should be activated by djoser with email
     is_staff = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -53,6 +53,16 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return "Profile of " + self.user.email 
+    
+class Post(models.Model):
+    user = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
+    title = models.CharField(max_length=255)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Post #{self.pk} user #{self.user.pk} from {self.created_at}"
 
 
 
