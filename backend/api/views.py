@@ -1,8 +1,8 @@
 from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from djoser.permissions import CurrentUserOrAdminOrReadOnly
-from .models import UserProfile, Post
-from .serializers import UserProfileSerializer, PostSerializer
+from .models import UserProfile, Post, Comment
+from .serializers import UserProfileSerializer, PostSerializer, CommentSerializer
 
 #PROFILE INFO
 
@@ -58,6 +58,44 @@ class UserPostListView(ListAPIView):
             user_id = user.pk
         
         return Post.objects.filter(user_id=user_id)
+    
+
+#COMMENTS 
+
+class CommentListView(ListAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [IsAdminUser] #all comments from the app call is (for now) only available to admins
+
+class CommentRetrieveUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [CurrentUserOrAdminOrReadOnly]
+    lookup_field = 'pk'
+
+class PostCommentListCreateView(ListCreateAPIView):
+    serializer_class = CommentSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Comment.objects.filter(post__id = self.kwargs['post_id'])
+
+    def perform_create(self, serializer):
+        post = Post.objects.get(pk = self.kwargs['post_id'])
+        serializer.save(user=self.request.user, post=post)
+
+class UserCommentListView(ListAPIView):
+    serializer_class = CommentSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+
+        user_id = self.kwargs['user__pk'] #keyword variable captured from url
+        if self.kwargs['user__pk'] == 'me': #if instead profiles/{user.id}/ we would use profiles/me/ (to capture user.id from JWT token)
+            user = self.request.user
+            user_id = user.pk
+        
+        return Comment.objects.filter(user_id=user_id)
     
 
 
