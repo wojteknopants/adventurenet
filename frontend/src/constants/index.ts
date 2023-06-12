@@ -8,12 +8,20 @@ export const navLinks = [
     title: "Explore",
   },
   {
-    id: "profile",
-    title: "My profile",
+    id: "notifications",
+    title: "Notifications",
   },
   {
     id: "messages",
     title: "Messages",
+  },
+  {
+    id: "bookmarks",
+    title: "Bookmarks",
+  },
+  {
+    id: "profile",
+    title: "My profile",
   },
   {
     id: "settings",
