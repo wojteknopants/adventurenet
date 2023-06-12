@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { loginBackground } from "../../assets";
 import { Outlet } from "react-router-dom";
-import { connect } from "react-redux";
 
 const AuthLayout = () => {
   useEffect(() => {}, []);

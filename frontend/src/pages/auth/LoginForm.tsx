@@ -44,15 +44,16 @@ const LoginForm = () => {
 
     //
 
-    console.log(email);
-    console.log(password);
     if (isChecked) {
-      setEmail("qba.lesniak@gmail.com");
-      setPassword("janpawel2");
+      setEmail("wmatuszaktobe@gmail.com");
+      setPassword("admin");
       console.log("Remember my password!");
     } else {
       console.log("Don't remember my password!");
     }
+
+    console.log(email);
+    console.log(password);
 
     if (email !== undefined && password !== undefined) {
       dispatch(login({ email, password })).then(() =>
@@ -65,11 +66,10 @@ const LoginForm = () => {
     setIsShowing(true);
   }, []);
   useEffect(() => {
-    setIsShowing(true);
     if (isAuthenticated) {
       navigate("/feed");
     }
-  });
+  }, [isAuthenticated]);
 
   return (
     <div className={`flex justify-center`}>
