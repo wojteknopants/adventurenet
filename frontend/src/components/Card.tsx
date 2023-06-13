@@ -1,12 +1,11 @@
-const Card = () => {
-    return (
-      <div className="fixed flex flex-col justify-center px-[64px]">
-        <div className="mx-[10px] my-[32px] text-[24px]">Contacts</div>
-        <div className="">Ven</div>
-        <div className="">Slave</div>
-        <div className="">Billy</div>
-      </div>
-    );
-  };
+import { ReactNode } from "react";
 
-export default Card();
+const Card = ({ children }: { children: ReactNode }) => {
+  return (
+    <div className="bg-white shadow-md shadow-gray-300 rounded-md p-4 mb-5">
+      {children}    
+    </div>
+  );
+};
+
+export default Card;

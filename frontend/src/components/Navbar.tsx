@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { navLinks } from "../constants";
+import { logo } from "../assets";
 
 interface Props {
   currentPageId: string;
@@ -15,7 +16,7 @@ const Navbar = ({ currentPageId }: Props) => {
         to={`/${nav.id}`}
         className={` transition p-[10px] text-[20px] rounded-2xl drop-shadow-md focus:drop-shadow hover:bg-blue-100 ${
           selectedId === nav.id
-            ? "shadow-md shadow-blue-500/50 text-white bg-blue-600 hover:bg-blue-600/90 "
+            ? "shadow-md shadow-blue-400/50 text-white bg-blue-400 hover:bg-blue-400/90 "
             : "text-black bg-none"
         }`}
         onClick={() => {
@@ -30,9 +31,10 @@ const Navbar = ({ currentPageId }: Props) => {
   return (
     <nav className="fixed flex flex-col justify-between px-[16px] xl:px-[64px] lg:px-[32px]">
       <header className="flex flex-1">
-        <h1 className="mx-[10px] my-[32px] text-[24px] font-bold">
-          Adventurer.Net
-        </h1>
+        {/* <h1 className="mx-[10px] my-[32px] text-[24px] font-bold">
+          ADVENTURE.NET
+        </h1> */}
+        <img className="mx-[0px] my-[32px] font-bold flex flex-1" src={logo}/>
       </header>
       <ul className="">{printNavBar}</ul>
     </nav>

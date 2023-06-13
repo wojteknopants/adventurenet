@@ -1,8 +1,11 @@
+import Card from "../../components/Card";
+import NavigationCard from "../../components/NavigationCard";
+
 const FeedContext = () => {
   const testText = () => {
     return (
       <>
-        <div>Essa</div>
+        <div>Text</div>
         <div>Text</div>
         <div>Text</div>
         <div>Text</div>
@@ -17,6 +20,8 @@ const FeedContext = () => {
       </div>
 
       <div>{testText()}</div>
+      <Card>Text2</Card>
+      <NavigationCard></NavigationCard>
     </div>
   );
 };
