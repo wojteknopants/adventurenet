@@ -1,5 +1,7 @@
+import Avatar from "../../components/Avatar";
 import Card from "../../components/Card";
 import NavigationCard from "../../components/NavigationCard";
+import PostCard from "../../components/PostCard";
 import PostFormCard from "../../components/PostFormCard";
 
 const FeedContext = () => {
@@ -21,10 +23,8 @@ const FeedContext = () => {
       </div>
 
       {/* <div>{testText()}</div> */}
-      <PostFormCard/ >
-      <Card>
-        Text2
-      </Card>
+      <PostFormCard/>
+      <PostCard/>
     </div>
   );
 };
