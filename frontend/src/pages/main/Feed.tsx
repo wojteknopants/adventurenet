@@ -5,16 +5,16 @@ import PostCard from "../../components/PostCard";
 import PostFormCard from "../../components/PostFormCard";
 
 const FeedContext = () => {
-  const testText = () => {
-    return (
-      <>
-        <div>Text</div>
-        <div>Text</div>
-        <div>Text</div>
-        <div>Text</div>
-      </>
-    );
-  };
+  // const testText = () => {
+  //   return (
+  //     <>
+  //       <div>Text</div>
+  //       <div>Text</div>
+  //       <div>Text</div>
+  //       <div>Text</div>
+  //     </>
+  //   );
+  // };
   return (
     <div>
       <div className="flex justify-between my-6">

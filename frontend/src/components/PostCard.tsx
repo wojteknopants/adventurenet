@@ -3,10 +3,10 @@ import Card from "./Card";
 
 const PostCard = () => {
   return (
-    <Card>
+    <Card noPadding={false}>
         <div className="flex gap-3">
           <div>
-            <Avatar />
+            <Avatar size={''} />
           </div>
           <div className="grow">
             <p>
@@ -56,7 +56,7 @@ const PostCard = () => {
         </div>
         <div className="flex mt-4 gap-3">
           <div>
-            <Avatar/>
+            <Avatar size={''}/>
           </div>
           <div className="border grow rounded-full relative">
             <textarea className="block w-full p-3 px-4 overflow-hidden h-12 rounded-full" placeholder="Leave a comment"></textarea>

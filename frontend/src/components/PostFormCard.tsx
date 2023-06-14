@@ -3,10 +3,10 @@ import Card from "./Card";
 
 const PostFormCard = () => {
     return (
-        <Card>
+        <Card noPadding={false}>
             <div className="flex gap-2">
                 <div>
-                    <Avatar />    
+                    <Avatar size={''}/>    
                 </div>
                 <textarea className="grow p-3 h-14" placeholder={'Whats on your mind, Mark?'} />
             </div>

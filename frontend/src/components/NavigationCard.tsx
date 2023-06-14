@@ -4,7 +4,7 @@ const NavigationCard = () => {
   return (
     <div className="flex mt-4 max-w-4xl mx-auto gap-6">
       <div className="w-1/3">
-        <Card>
+        <Card noPadding={false}>
           <h2>ADVENTURE.NET</h2>
           <a href="" className="block">Feed</a>
           <a href="" className="block">Explore</a>
