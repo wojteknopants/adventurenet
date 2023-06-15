@@ -1,9 +1,15 @@
 from django.urls import path
-from .views import (UserProfileListCreateView, UserProfileRetrieveUpdateView, 
+
+from .views import (LogoutView, LogoutAllView,
+                    UserProfileListCreateView, UserProfileRetrieveUpdateView, 
                     PostRetrieveUpdateDeleteView, PostListCreateView, UserPostListView,
                     CommentRetrieveUpdateDeleteView, PostCommentListCreateView, UserCommentListView, CommentListView)
 
 urlpatterns = [
+    #logout - blacklist JWT refresh token
+    path('auth/jwt/logout/', LogoutView.as_view(), name='auth_logout'),
+    path('auth/jwt/logoutall/', LogoutAllView.as_view(), name='auth_logoutall'),
+
     #profiles
     path('profiles/', UserProfileListCreateView.as_view(), name='userprofile_list_create'),
     path('profiles/<str:user__pk>/', UserProfileRetrieveUpdateView.as_view(), name='userprofile_retrieve_update'), #can use profiles/me/ to capture user__id from JWT token

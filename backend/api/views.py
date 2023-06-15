@@ -4,6 +4,45 @@ from djoser.permissions import CurrentUserOrAdminOrReadOnly
 from .models import UserProfile, Post, Comment
 from .serializers import UserProfileSerializer, PostSerializer, CommentSerializer
 
+from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.token_blacklist.models import OutstandingToken, BlacklistedToken
+from rest_framework.response import Response
+from rest_framework import status
+
+
+#LOGOUT - BLACKLIST JWT REFRESH TOKEN
+
+#blacklist just provided JWT refresh token
+class LogoutView(APIView): 
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        try:
+            refresh_token = request.data["refresh"]
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+
+            return Response({"Success": "Refresh token has been succesfully blacklisted"}, status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            return Response({"Fail": "Something went wrong", "Details":f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
+
+#blacklist all JWT refresh tokens belonging to the user 
+# (in case he logged in few times and has multiple to use)
+class LogoutAllView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        tokens = OutstandingToken.objects.filter(user_id=request.user.id)
+        try:
+            for token in tokens:
+                t, _ = BlacklistedToken.objects.get_or_create(token=token)
+            return Response(status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            return Response({"Fail": "Something went wrong", "Details":f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
 #PROFILE INFO
 
 class UserProfileListCreateView(ListCreateAPIView):
