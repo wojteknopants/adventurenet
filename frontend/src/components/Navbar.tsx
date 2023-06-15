@@ -14,7 +14,7 @@ const Navbar = ({ currentPageId }: Props) => {
     <li className="mt-2" key={nav.id}>
       <Link
         to={`/${nav.id}`}
-        className={`flex items-center transition px-[5px] text-[20px] rounded-xl drop-shadow-md focus:drop-shadow hover:bg-blue-100 ${
+        className={`flex items-center transition px-[5px] text-[20px] rounded-xl drop-shadow-md focus:drop-shadow hover:bg-blue-100${
           selectedId === nav.id
             ? "shadow-md shadow-blue-400/50 text-white bg-blue-400 hover:bg-blue-400/90 "
             : "text-blue-400 bg-none"
