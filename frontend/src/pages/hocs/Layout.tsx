@@ -18,7 +18,7 @@ const Layout = () => {
 
   return (
     <div>
-      <DraftComponent />
+      {/* <DraftComponent /> */}
       <Outlet />
     </div>
   );

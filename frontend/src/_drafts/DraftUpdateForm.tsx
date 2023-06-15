@@ -11,9 +11,12 @@ const UpdateForm = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
-  const onIdChanged = (e) => setPostId(e.target.value);
-  const onTitleChanged = (e) => setTitle(e.target.value);
-  const onContentChanged = (e) => setContent(e.target.value);
+  const onIdChanged = (event: React.ChangeEvent<HTMLInputElement>) =>
+    setPostId(event.target.value);
+  const onTitleChanged = (event: React.ChangeEvent<HTMLInputElement>) =>
+    setTitle(event.target.value);
+  const onContentChanged = (event: React.ChangeEvent<HTMLInputElement>) =>
+    setContent(event.target.value);
 
   const canSave = [title, content].every(Boolean) && !isLoading;
 
@@ -42,7 +45,7 @@ const UpdateForm = () => {
           onChange={onContentChanged}
         ></input>
         <button className=" bg-slate-400 rounded-md p-1 max-w-xl m-2">
-          Add
+          Update
         </button>
       </form>
     </section>

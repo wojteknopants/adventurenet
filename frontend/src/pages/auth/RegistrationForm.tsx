@@ -50,7 +50,7 @@ const RegistrationForm = () => {
         onSubmit={handleOnSubmit}
         className={`flex flex-col justify-center transition-all ease-in-out duration-500 ${
           isShowing ? "opacity-100" : "opacity-0"
-        } p-6 mt-24 backdrop-blur-lg bg-white/60 rounded-[5%] shadow-md`}
+        } p-6 mt-24 backdrop-blur-lg bg-white/40 rounded-[5%] shadow-md`}
       >
         <label className="flex justify-center text-[32px] font-bold mt-2">
           Registration

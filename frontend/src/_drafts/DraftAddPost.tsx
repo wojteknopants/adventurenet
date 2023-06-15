@@ -10,8 +10,10 @@ const AddPostForm = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
-  const onTitleChanged = (e) => setTitle(e.target.value);
-  const onContentChanged = (e) => setContent(e.target.value);
+  const onTitleChanged = (event: React.ChangeEvent<HTMLInputElement>) =>
+    setTitle(event.target.value);
+  const onContentChanged = (event: React.ChangeEvent<HTMLInputElement>) =>
+    setContent(event.target.value);
 
   const canSave = [title, content].every(Boolean) && !isLoading;
 

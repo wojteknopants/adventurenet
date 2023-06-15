@@ -11,11 +11,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../store";
 
 const LoginForm = () => {
-  const [email, setEmail] = useState<string>();
-  const [password, setPassword] = useState<string>();
-  const [isLastCharVisible, setIsLastCharVisible] = useState(false);
-  const [isChecked, setIsChecked] = useState<boolean>(false);
-
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [isChecked, setIsChecked] = useState<boolean>(
+    localStorage.getItem("rememberPassword") == "true" ? true : false
+  );
   const [isShowing, setIsShowing] = useState<boolean>(false);
 
   //const [errorMessages, setErrorMessages] = useState({});
@@ -40,13 +40,12 @@ const LoginForm = () => {
     //Prevent page reload
     event.preventDefault();
 
-    // Exists credentials for testing
-
-    //
-
     if (isChecked) {
-      setEmail("wmatuszaktobe@gmail.com");
-      setPassword("admin");
+      // setEmail("wmatuszaktobe@gmail.com");
+      // setPassword("admin");
+      localStorage.setItem("email", email);
+      localStorage.setItem("password", password);
+
       console.log("Remember my password!");
     } else {
       console.log("Don't remember my password!");
@@ -55,16 +54,28 @@ const LoginForm = () => {
     console.log(email);
     console.log(password);
 
-    if (email !== undefined && password !== undefined) {
-      dispatch(login({ email, password })).then(() =>
-        dispatch(checkIsAuthenticated())
-      );
-    }
+    dispatch(login({ email, password })).then(() =>
+      dispatch(checkIsAuthenticated())
+    );
   };
 
   useEffect(() => {
     setIsShowing(true);
+    if (isChecked) {
+      const savedEmail = localStorage.getItem("email");
+      const savedPassword = localStorage.getItem("password");
+      if (savedEmail !== null && savedPassword !== null) {
+        setEmail(savedEmail);
+        setPassword(savedPassword);
+      }
+    }
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("rememberPassword", isChecked.toString());
+    console.log(localStorage.getItem("rememberPassword"));
+  }, [isChecked]);
+
   useEffect(() => {
     if (isAuthenticated) {
       navigate("/feed");
@@ -77,7 +88,7 @@ const LoginForm = () => {
         onSubmit={handleSubmit}
         className={`flex flex-col justify-center transition-all ease-in-out duration-500 shadow-md ${
           isShowing ? "opacity-100" : "opacity-0"
-        } p-6 mt-24 backdrop-blur-lg bg-white/60 rounded-[5%]`}
+        } p-6 mt-24 backdrop-blur-lg bg-white/40 rounded-[5%]`}
       >
         <label className={`flex justify-center text-[32px] font-bold mt-2`}>
           Login
