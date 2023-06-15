@@ -1,7 +1,7 @@
 from djoser.serializers import UserCreateSerializer
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from .models import UserProfile, Post
+from .models import UserProfile, Post, Comment
 User = get_user_model()
 
 # class UserAccountSerializer(serializers.ModelSerializer):
@@ -31,3 +31,9 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = ('id', 'user', 'title', 'content', 'created_at', 'updated_at')
         read_only_fields = ('id', 'user', 'created_at', 'updated_at')
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ('id', 'user', 'post', 'content', 'created_at', 'updated_at')
+        read_only_fields = ('id', 'user', 'post', 'created_at', 'updated_at')
