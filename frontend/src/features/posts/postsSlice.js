@@ -2,7 +2,9 @@ import { createSelector, createEntityAdapter } from "@reduxjs/toolkit";
 import { sub } from "date-fns";
 import { apiSlice } from "../api/apiSlice";
 
-const postsAdapter = createEntityAdapter({});
+const postsAdapter = createEntityAdapter({
+  sortComparer: (a, b) => b.created_at.localeCompare(a.created_at),
+});
 
 const initialState = postsAdapter.getInitialState();
 
@@ -64,9 +66,6 @@ export const postsApiSlice = apiSlice.injectEndpoints({
       query: ({ id }) => ({
         url: `/posts/${id}/`,
         method: "DELETE",
-        body: {
-          id,
-        },
       }),
       invalidatesTags: (result, error, arg) => [{ type: "Post", id: arg.id }],
     }),

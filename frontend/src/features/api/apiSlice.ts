@@ -5,8 +5,6 @@ export const apiSlice = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${import.meta.env.VITE_REACT_APP_API_URL}/`,
     headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
       Authorization: `JWT ${localStorage.getItem("access")}`,
     },
   }),

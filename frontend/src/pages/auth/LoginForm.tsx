@@ -88,7 +88,7 @@ const LoginForm = () => {
         onSubmit={handleSubmit}
         className={`flex flex-col justify-center transition-all ease-in-out duration-500 shadow-md ${
           isShowing ? "opacity-100" : "opacity-0"
-        } p-6 mt-24 backdrop-blur-lg bg-white/40 rounded-[5%]`}
+        } p-6 mt-24 backdrop-blur-lg bg-white/40 rounded-2xl`}
       >
         <label className={`flex justify-center text-[32px] font-bold mt-2`}>
           Login

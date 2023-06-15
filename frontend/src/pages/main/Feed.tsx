@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import PostCard from "../../components/Post";
-import PostFormCard from "../../components/AddPostForm";
+import Post from "../../components/Post";
+import AddPostForm from "../../components/AddPostForm";
 import {
   useGetPostsQuery,
   selectPostIds,
@@ -17,7 +17,7 @@ const FeedContext = () => {
     content = <p>"Loading..."</p>;
   } else if (isSuccess) {
     content = orderedPostIds.map((postId: any) => (
-      <PostCard key={postId} postId={postId} />
+      <Post key={postId} postId={postId} />
     ));
   } else if (isError) {
     content = <p>{error}</p>;
@@ -31,7 +31,7 @@ const FeedContext = () => {
       </div>
 
       {/* <div>{testText()}</div> */}
-      <PostFormCard />
+      <AddPostForm />
       {content}
     </div>
   );
