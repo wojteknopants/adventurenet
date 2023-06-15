@@ -1,8 +1,27 @@
 import Avatar from "../../components/Avatar";
 import Card from "../../components/Card";
-import PostCard from "../../components/Post";
+import Post from "../../components/Post";
+import {
+  useGetPostsQuery,
+  selectPostIds,
+} from "../../features/posts/postsSlice";
+import { useSelector } from "react-redux";
 
 const Profile = () => {
+  const { isLoading, isSuccess, isError, error } = useGetPostsQuery();
+
+  const orderedPostIds = useSelector(selectPostIds);
+
+  let content;
+  if (isLoading) {
+    content = <p>"Loading..."</p>;
+  } else if (isSuccess) {
+    content = orderedPostIds.map((postId: any) => (
+      <Post key={postId} postId={postId} />
+    ));
+  } else if (isError) {
+    content = <p>{error}</p>;
+  }
   return (
     <div>
       <div className="flex justify-between my-6">
@@ -67,7 +86,7 @@ const Profile = () => {
           </div>
         </div>
       </Card>
-      <PostCard />
+      {content}
     </div>
   );
 };

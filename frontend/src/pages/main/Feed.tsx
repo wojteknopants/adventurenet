@@ -7,7 +7,7 @@ import {
 } from "../../features/posts/postsSlice";
 import { useSelector } from "react-redux";
 
-const FeedContext = () => {
+const Feed = () => {
   const { isLoading, isSuccess, isError, error } = useGetPostsQuery();
 
   const orderedPostIds = useSelector(selectPostIds);
@@ -37,4 +37,4 @@ const FeedContext = () => {
   );
 };
 
-export default FeedContext;
+export default Feed;

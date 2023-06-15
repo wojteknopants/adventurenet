@@ -11,14 +11,14 @@ const Navbar = ({ currentPageId }: Props) => {
   const [selectedId, setSelectedId] = useState(currentPageId);
 
   const printNavBar = navLinks.map((nav) => (
-    <li className="p-[10px] mb-0.5" key={nav.id}>
+    <li className="mt-2" key={nav.id}>
       <Link
         to={`/${nav.id}`}
-        className={` transition p-[10px] text-[20px] rounded-2xl drop-shadow-md focus:drop-shadow hover:bg-blue-100 ${
+        className={`flex items-center transition px-[5px] text-[20px] rounded-xl drop-shadow-md focus:drop-shadow hover:bg-blue-100 ${
           selectedId === nav.id
             ? "shadow-md shadow-blue-400/50 text-white bg-blue-400 hover:bg-blue-400/90 "
             : "text-black bg-none"
-        }`}
+        } max-w-fit pr-5`}
         onClick={() => {
           setSelectedId(nav.id);
         }}
@@ -26,7 +26,7 @@ const Navbar = ({ currentPageId }: Props) => {
         <img
           src={nav.icon}
           alt="icon"
-          className={`transition p-[10px] rounded-2xl ${
+          className={`mt-1 transition p-[10px] rounded-2xl ${
             selectedId === nav.id
               ? " fill-current text-white "
               : "text-black bg-none"

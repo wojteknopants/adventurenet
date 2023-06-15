@@ -8,7 +8,7 @@ const Card = ({
   noPadding: ReactNode;
 }) => {
   let classes =
-    "bg-white shadow-md shadow-gray-300 rounded-md mb-5 overflow-hidden";
+    "bg-white shadow-md shadow-gray-300 rounded-xl mb-5 overflow-hidden";
   if (!noPadding) {
     classes += " p-4";
   }
