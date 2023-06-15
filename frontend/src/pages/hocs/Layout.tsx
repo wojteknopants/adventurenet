@@ -7,6 +7,7 @@ import {
   loadUser,
 } from "../../features/auth/authSlice";
 import { AppDispatch } from "../../store";
+import DraftComponent from "../../_drafts/DraftComponent";
 
 const Layout = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -17,6 +18,7 @@ const Layout = () => {
 
   return (
     <div>
+      <DraftComponent />
       <Outlet />
     </div>
   );
