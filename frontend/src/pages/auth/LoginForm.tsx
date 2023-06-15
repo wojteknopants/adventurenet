@@ -77,7 +77,7 @@ const LoginForm = () => {
         onSubmit={handleSubmit}
         className={`flex flex-col justify-center transition-all ease-in-out duration-500 shadow-md ${
           isShowing ? "opacity-100" : "opacity-0"
-        } p-6 mt-24 backdrop-blur-lg bg-white/30 rounded-[5%]`}
+        } p-6 mt-24 backdrop-blur-lg bg-white/60 rounded-[5%]`}
       >
         <label className={`flex justify-center text-[32px] font-bold mt-2`}>
           Login
@@ -122,7 +122,7 @@ const LoginForm = () => {
             onChange={handleCheckboxChange}
             type="checkbox"
             value=""
-            className=" accent-orange-400"
+            className=" accent-blue-400"
           />
           <span className="ml-1 mb-[1px] font-medium text-[12px]">
             Remember me
@@ -131,7 +131,7 @@ const LoginForm = () => {
         <div className="flex justify-center mt-4">
           <button
             type="submit"
-            className="flex justify-center w-[343px] transition shadow-md shadow-orange-400/50 hover:shadow hover:shadow-orange-400/50 text-white bg-orange-400 hover:bg-orange-400/90 font-medium rounded-lg text-[16px] px-5 py-2.5"
+            className="flex justify-center w-[343px] transition shadow-md shadow-blue-400/50 hover:shadow hover:shadow-blue-400/50 text-white bg-blue-400 hover:bg-blue-400/90 font-medium rounded-lg text-[16px] px-5 py-2.5"
           >
             Login
           </button>
