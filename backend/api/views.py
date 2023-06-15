@@ -1,6 +1,7 @@
 from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from djoser.permissions import CurrentUserOrAdminOrReadOnly
+from .permissions import OwnerOrAdmin, OwnerOrAdminOrReadOnly
 from .models import UserProfile, Post, Comment
 from .serializers import UserProfileSerializer, PostSerializer, CommentSerializer
 
@@ -64,7 +65,7 @@ class UserProfileRetrieveUpdateView(RetrieveUpdateAPIView):
         else: 
             return super().get_object()
         
-    permission_classes = [CurrentUserOrAdminOrReadOnly] #only current user or admin can edit profile info, everybody can read profile info
+    permission_classes = [OwnerOrAdminOrReadOnly] #only current user or admin can edit profile info, everybody can read profile info
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
     lookup_field = 'user__pk'
@@ -74,7 +75,7 @@ class UserProfileRetrieveUpdateView(RetrieveUpdateAPIView):
 class PostRetrieveUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [CurrentUserOrAdminOrReadOnly]
+    permission_classes = [OwnerOrAdminOrReadOnly]
     lookup_field = 'pk'
 
 class PostListCreateView(ListCreateAPIView):
@@ -109,7 +110,7 @@ class CommentListView(ListAPIView):
 class CommentRetrieveUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = [CurrentUserOrAdminOrReadOnly]
+    permission_classes = [OwnerOrAdminOrReadOnly]
     lookup_field = 'pk'
 
 class PostCommentListCreateView(ListCreateAPIView):
