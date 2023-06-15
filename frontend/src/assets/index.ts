@@ -11,6 +11,7 @@ import iconBookmarks from "./iconBookmarks.svg"
 import iconProfile from "./iconProfile.svg"
 import iconSettings from "./iconSettings.svg"
 import iconLogout from "./iconLogout.svg"
+import iconSearch from "./iconSearch.svg"
 
 export {
   loginBackground,
@@ -25,5 +26,6 @@ export {
   iconBookmarks,
   iconProfile,
   iconSettings,
-  iconLogout
+  iconLogout,
+  iconSearch
 }
