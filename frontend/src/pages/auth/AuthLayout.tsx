@@ -1,7 +1,6 @@
 import { useEffect } from "react";
-import { loginBackground } from "../../assets";
+import { loginBackground, logo } from "../../assets";
 import { Outlet } from "react-router-dom";
-import { connect } from "react-redux";
 
 const AuthLayout = () => {
   useEffect(() => {}, []);
@@ -15,9 +14,7 @@ const AuthLayout = () => {
         backgroundPosition: "center",
       }}
     >
-      <header className="flex flex-1">
-        <h1 className="text-[24px] font-bold">Adventurer.Net</h1>
-      </header>
+      <img className="flex flex-1" src={logo}/>
       <Outlet />
     </div>
   );

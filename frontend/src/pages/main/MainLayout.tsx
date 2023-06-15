@@ -25,7 +25,7 @@ const MainLayout = () => {
     if (!isAuthenticated) {
       navigate("/auth/login");
     }
-  });
+  }, [isAuthenticated]);
 
   return (
     <div>
