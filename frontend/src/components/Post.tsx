@@ -145,10 +145,10 @@ const Post = ({ postId }: any) => {
           <Avatar size={""} />
         </div>
         <div className="border grow rounded-full relative">
-          <textarea
+          <input
             className="block w-full p-3 px-4 overflow-hidden h-12 rounded-full"
             placeholder="Leave a comment"
-          ></textarea>
+          ></input>
           <button className="absolute top-3 right-3 text-gray-400">
             <svg
               xmlns="http://www.w3.org/2000/svg"
