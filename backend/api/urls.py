@@ -3,7 +3,8 @@ from django.urls import path
 from .views import (LogoutView, LogoutAllView,
                     UserProfileListCreateView, UserProfileRetrieveUpdateView, 
                     PostRetrieveUpdateDeleteView, PostListCreateView, UserPostListView,
-                    CommentRetrieveUpdateDeleteView, PostCommentListCreateView, UserCommentListView, CommentListView)
+                    CommentRetrieveUpdateDeleteView, PostCommentListCreateView, UserCommentListView, CommentListView,
+                    PostLikeView, CommentLikeView, PostLikesListView, CommentLikesListView)
 
 urlpatterns = [
     #logout - blacklist JWT refresh token
@@ -24,6 +25,12 @@ urlpatterns = [
     path('comments/<int:pk>/', CommentRetrieveUpdateDeleteView.as_view(), name='comment_retrieve_update_delete'),
     path('posts/<int:post_id>/comments/', PostCommentListCreateView.as_view(), name='comments_list_create'), 
     path('profiles/<str:user__pk>/comments/', UserCommentListView.as_view(), name='user_comments_list'), #retrieve all comments made by particular user (may be useful)
+
+    #likes
+    path('posts/<int:pk>/like/', PostLikeView.as_view(), name='post_like'),
+    path('comments/<int:pk>/like/', CommentLikeView.as_view(), name='comment_like'),
+    path('posts/<int:pk>/like_list/', PostLikesListView.as_view(), name='post_like_list'),
+    path('comments/<int:pk>/like_list/', CommentLikesListView.as_view(), name='comment_like_list'),
 
 
 ]

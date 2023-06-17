@@ -1,7 +1,7 @@
 from djoser.serializers import UserCreateSerializer
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from .models import UserProfile, Post, Comment
+from .models import UserProfile, Post, Comment, PostLike, CommentLike
 User = get_user_model()
 
 # class UserAccountSerializer(serializers.ModelSerializer):
@@ -27,13 +27,39 @@ class UserProfileSerializer(serializers.ModelSerializer):
         read_only_fields = ('id', 'user_id', 'created_at', 'updated_at')
 
 class PostSerializer(serializers.ModelSerializer):
+    is_liked = serializers.SerializerMethodField()
+
     class Meta:
         model = Post
-        fields = ('id', 'user', 'title', 'content', 'created_at', 'updated_at')
-        read_only_fields = ('id', 'user', 'created_at', 'updated_at')
+        fields = ('id', 'user', 'title', 'content','likes_count', 'is_liked', 'created_at', 'updated_at')
+        read_only_fields = ('id', 'user', 'likes_count', 'is_liked', 'created_at', 'updated_at')
+
+    def get_is_liked(self, obj):
+        user = self.context['request'].user
+        if user.is_authenticated:
+            return PostLike.objects.filter(post=obj, user=user).exists()
+        return False
 
 class CommentSerializer(serializers.ModelSerializer):
+    is_liked = serializers.SerializerMethodField()
+
     class Meta:
         model = Comment
-        fields = ('id', 'user', 'post', 'content', 'created_at', 'updated_at')
-        read_only_fields = ('id', 'user', 'post', 'created_at', 'updated_at')
+        fields = ('id', 'user', 'post', 'content', 'likes_count','is_liked', 'created_at', 'updated_at')
+        read_only_fields = ('id', 'user', 'post', 'likes_count', 'is_liked', 'created_at', 'updated_at')
+
+        def get_is_liked(self, obj):
+            user = self.context['request'].user
+            if user.is_authenticated:
+                return CommentLike.objects.filter(comment=obj, user=user).exists()
+            return False
+
+class PostLikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PostLike
+        fields = ('id', 'post', 'user')
+
+class CommentLikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CommentLike
+        fields = ('id', 'comment', 'user')
