@@ -2,8 +2,8 @@ from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpda
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from djoser.permissions import CurrentUserOrAdminOrReadOnly
 from .permissions import OwnerOrAdmin, OwnerOrAdminOrReadOnly
-from .models import UserProfile, Post, Comment, PostLike, CommentLike
-from .serializers import UserProfileSerializer, PostSerializer, CommentSerializer, PostLikeSerializer, CommentLikeSerializer
+from .models import UserProfile, Post, Comment, PostLike, CommentLike, Image
+from .serializers import UserProfileSerializer, PostSerializer, CommentSerializer, PostLikeSerializer, CommentLikeSerializer, ImageSerializer
 
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -81,6 +81,9 @@ class PostRetrieveUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     permission_classes = [OwnerOrAdminOrReadOnly]
     lookup_field = 'pk'
 
+    def perform_update(self, serializer):
+        serializer.save(user=self.request.user)
+
 class PostListCreateView(ListCreateAPIView):
     """List all posts on GET or create post on POST"""
     queryset = Post.objects.all()
@@ -89,6 +92,7 @@ class PostListCreateView(ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
 
 class UserPostListView(ListAPIView):
     """GET all posts from specific user"""
@@ -216,3 +220,18 @@ class PostLikesListView(ListAPIView):
         post_id = self.kwargs['pk'] #keyword variable captured from url
         return PostLike.objects.filter(post=post_id)
 
+#IMAGES (apart from built ins in Posts and Profiles)
+
+class UserImagesListView(ListAPIView):
+    """GET all images of specific user (well, all images from his posts)"""
+    serializer_class = ImageSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+
+        user_id = self.kwargs['user__pk'] #keyword variable captured from url
+        if self.kwargs['user__pk'] == 'me': #if instead profiles/{user.id}/ we would use profiles/me/ (to capture user.id from JWT token)
+            user = self.request.user
+            user_id = user.pk
+        
+        return Image.objects.filter(user_id=user_id)

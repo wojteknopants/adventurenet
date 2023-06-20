@@ -4,7 +4,8 @@ from .views import (LogoutView, LogoutAllView,
                     UserProfileListCreateView, UserProfileRetrieveUpdateView, 
                     PostRetrieveUpdateDeleteView, PostListCreateView, UserPostListView,
                     CommentRetrieveUpdateDeleteView, PostCommentListCreateView, UserCommentListView, CommentListView,
-                    PostLikeView, CommentLikeView, PostLikesListView, CommentLikesListView)
+                    PostLikeView, CommentLikeView, PostLikesListView, CommentLikesListView,
+                    UserImagesListView)
 
 urlpatterns = [
     #logout - blacklist JWT refresh token
@@ -31,6 +32,11 @@ urlpatterns = [
     path('comments/<int:pk>/like/', CommentLikeView.as_view(), name='comment_like'),
     path('posts/<int:pk>/like_list/', PostLikesListView.as_view(), name='post_like_list'),
     path('comments/<int:pk>/like_list/', CommentLikesListView.as_view(), name='comment_like_list'),
+
+    #images
+    path('profiles/<str:user__pk>/images/', UserImagesListView.as_view(), name='user_images_list'), #retrieve all images from posts made by particular user
+
+
 
 
 ]

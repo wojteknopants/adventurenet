@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.core.validators import FileExtensionValidator
+
 # Create your models here.
 
 class UserAccountManager(BaseUserManager):
@@ -113,5 +115,13 @@ class CommentLike(models.Model):
         self.comment.likes -= 1
         self.comment.save()
         super(CommentLike, self).delete(*args, **kwargs)
+
+
+class Image(models.Model):
+    post = models.ForeignKey(Post, related_name='images', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='posts/images/') #probably not needed, is checked by default ->  #, validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png'])])
+    user = models.ForeignKey(UserAccount, related_name='images', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
