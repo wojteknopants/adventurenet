@@ -50,7 +50,7 @@ const RegistrationForm = () => {
         onSubmit={handleOnSubmit}
         className={`flex flex-col justify-center transition-all ease-in-out duration-500 ${
           isShowing ? "opacity-100" : "opacity-0"
-        } p-6 mt-24 backdrop-blur-lg bg-white/30 rounded-[5%] shadow-md`}
+        } p-6 mt-24 backdrop-blur-lg bg-white/40 rounded-2xl shadow-md`}
       >
         <label className="flex justify-center text-[32px] font-bold mt-2">
           Registration
@@ -107,7 +107,7 @@ const RegistrationForm = () => {
         <div className="flex justify-center mt-8">
           <button
             type="submit"
-            className="flex justify-center w-[343px] transition shadow-md shadow-orange-400/50 hover:shadow hover:shadow-orange-400/50 text-white bg-orange-400 hover:bg-orange-400/90 font-medium rounded-lg text-[16px] px-5 py-2.5"
+            className="flex justify-center w-[343px] transition shadow-md shadow-blue-400/50 hover:shadow hover:shadow-blue-400/50 text-white bg-blue-400 hover:bg-blue-400/90 font-medium rounded-lg text-[16px] px-5 py-2.5"
           >
             Register
           </button>

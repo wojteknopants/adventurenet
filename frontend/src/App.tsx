@@ -15,6 +15,12 @@ import { Provider } from "react-redux";
 import store from "./store";
 import Layout from "./pages/hocs/Layout";
 import Logout from "./pages/main/Logout";
+import Notifications from "./pages/main/Notifications";
+import Bookmarks from "./pages/main/Bookmarks";
+
+import { postsApiSlice } from "./features/posts/postsSlice";
+
+store.dispatch(postsApiSlice.endpoints.getPosts.initiate());
 
 const App = () => {
   return (
@@ -28,6 +34,8 @@ const App = () => {
               <Route path="/settings" element={<Settings />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/explore" element={<Explore />} />
+              <Route path="/notifications" element={<Notifications />} />
+              <Route path="/bookmarks" element={<Bookmarks />} />
               <Route path="/logout" element={<Logout />} />
             </Route>
             <Route path="/auth" element={<AuthLayout />}>
