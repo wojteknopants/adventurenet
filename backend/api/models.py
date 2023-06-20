@@ -49,7 +49,9 @@ class UserProfile(models.Model):
     surname = models.CharField(max_length=20, null=True, blank=True)
     country = models.CharField(max_length=20, null=True, blank=True, default="Poland")
     bio = models.CharField(max_length=200, null=True, blank=True, default= "This is your example bio. Edit this however you want it.")
-    username = models.CharField(max_length=20, null=True, blank=True)
+    username = models.CharField(max_length=20, null=True, blank=True, unique=True)
+    profile_picture = models.ImageField(upload_to='profile_pictures/', null=True, blank=True)
+    background_image = models.ImageField(upload_to='background_images/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
