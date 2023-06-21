@@ -9,7 +9,7 @@ const Cover = () => {
           alt=""
         />
         <div className="absolute right-0 bottom-36 m-2">
-          <button className="flex items-center gap-1 bg-white py-1 px-2 rounded-md shadow-md shadow-gray-500">
+          <button className="flex items-center gap-1 bg-mainLightGray py-1 px-2 rounded-md shadow-md shadow-gray-500">
             <img
             src={iconPhoto}
             alt="icon"
