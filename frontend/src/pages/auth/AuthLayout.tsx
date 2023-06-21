@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { loginBackground, logo } from "../../assets";
+import { loginBackground, logoBlack } from "../../assets";
 import { Outlet } from "react-router-dom";
 
 const AuthLayout = () => {
@@ -14,7 +14,7 @@ const AuthLayout = () => {
         backgroundPosition: "center",
       }}
     >
-      <img className="flex flex-1" src={logo}/>
+      <img className="flex flex-1" src={logoBlack} />
       <Outlet />
     </div>
   );

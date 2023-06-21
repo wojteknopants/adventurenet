@@ -14,10 +14,10 @@ const Navbar = ({ currentPageId }: Props) => {
     <li className="mt-2" key={nav.id}>
       <Link
         to={`/${nav.id}`}
-        className={`flex items-center transition px-[5px] text-[20px] rounded-xl drop-shadow-md focus:drop-shadow hover:bg-blue-100${
+        className={`flex items-center transition px-[5px] text-[20px] rounded-xl drop-shadow-md focus:drop-shadow hover:bg-blue-100 ${
           selectedId === nav.id
             ? "shadow-md shadow-blue-400/50 text-white bg-blue-400 hover:bg-blue-400/90 "
-            : "text-black bg-none"
+            : "text-blue-400 bg-none"
         } max-w-fit pr-5`}
         onClick={() => {
           setSelectedId(nav.id);
@@ -27,10 +27,15 @@ const Navbar = ({ currentPageId }: Props) => {
           src={nav.icon}
           alt="icon"
           className={`mt-1 transition p-[10px] rounded-2xl ${
-            selectedId === nav.id
-              ? " fill-current text-white "
-              : "text-black bg-none"
-          }`}
+            selectedId === nav.id ? " fill-current text-white " : "bg-none"
+          } `}
+          style={{
+            filter: `${
+              selectedId === nav.id
+                ? "invert(0%) grayscale(100%) contrast(10000%)"
+                : "hue-rotate(190deg)"
+            }`,
+          }}
         />
         {nav.title}
       </Link>
