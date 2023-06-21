@@ -25,7 +25,7 @@ const DraftComponent = () => {
   return (
     <div>
       <DraftAddPostForm />
-      <div className="flex">{content}</div>
+      <div className="flex flex-wrap">{content}</div>
       <DraftUpdateForm />
     </div>
   );

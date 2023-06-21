@@ -5,6 +5,7 @@ import {
   selectPostById,
   useDeletePostMutation,
 } from "../features/posts/postsSlice";
+import DraftAddImage from "./DraftAddImage";
 const DraftPost = ({ postId }: any) => {
   const post = useSelector((state) => selectPostById(state, postId));
   const [deletePost] = useDeletePostMutation();
@@ -32,6 +33,8 @@ const DraftPost = ({ postId }: any) => {
       <h2 className=" bg-slate-400 rounded-lg shadow-md">{post.created_at}</h2>
       <h2>Date of modifying:</h2>
       <h2 className=" bg-slate-400 rounded-lg shadow-md">{post.updated_at}</h2>
+      <h2>Image:</h2>
+      <img src={`${post.images[0]?.image}`} alt="not found" />
       <button
         className=" bg-red-400 rounded-lg shadow-md"
         onClick={onDeletePostClicked}

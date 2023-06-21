@@ -14,7 +14,7 @@ export const postsApiSlice = apiSlice.injectEndpoints({
       query: () => "/posts/",
       transformResponse: (responseData) => {
         const loadedPosts = responseData.map((post) => {
-          console.log(post);
+          // console.log(post);
           return post;
         });
         return postsAdapter.setAll(initialState, loadedPosts);
@@ -44,10 +44,7 @@ export const postsApiSlice = apiSlice.injectEndpoints({
       query: (initialPost) => ({
         url: "/posts/",
         method: "POST",
-        body: {
-          title: initialPost.title,
-          content: initialPost.content,
-        },
+        body: initialPost,
       }),
       invalidatesTags: [{ type: "Post", id: "LIST" }],
     }),
