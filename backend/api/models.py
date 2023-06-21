@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.core.validators import FileExtensionValidator
+
 # Create your models here.
 
 class UserAccountManager(BaseUserManager):
@@ -47,7 +49,9 @@ class UserProfile(models.Model):
     surname = models.CharField(max_length=20, null=True, blank=True)
     country = models.CharField(max_length=20, null=True, blank=True, default="Poland")
     bio = models.CharField(max_length=200, null=True, blank=True, default= "This is your example bio. Edit this however you want it.")
-    username = models.CharField(max_length=20, null=True, blank=True)
+    username = models.CharField(max_length=20, null=True, blank=True, unique=True)
+    profile_picture = models.ImageField(upload_to='profile_pictures/', null=True, blank=True)
+    background_image = models.ImageField(upload_to='background_images/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -55,14 +59,71 @@ class UserProfile(models.Model):
         return "Profile of " + self.user.email 
     
 class Post(models.Model):
-    user = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
+    user = models.ForeignKey(UserAccount, on_delete=models.CASCADE, related_name='posts')
     title = models.CharField(max_length=255)
     content = models.TextField()
+    likes_count = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def count_likes(self):
+        return PostLike.objects.filter(post=self).count()
+    
     def __str__(self):
         return f"Post #{self.pk} user #{self.user.pk} from {self.created_at}"
+    
 
+class Comment(models.Model):
+    user = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+    content = models.CharField(max_length=255, null=False, blank=False)
+    likes_count = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def count_likes(self):
+        return CommentLike.objects.filter(comment=self).count()
+
+    def __str__(self):
+        return f"Comment #{self.pk} user #{self.user.pk} from {self.created_at}"
+    
+
+class PostLike(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='likes')
+    user = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        super(PostLike, self).save(*args, **kwargs)
+        self.post.likes = self.post.count_likes()
+        self.post.save()
+
+    def delete(self, *args, **kwargs):
+        self.post.likes -= 1
+        self.post.save()
+        super(PostLike, self).delete(*args, **kwargs)
+
+class CommentLike(models.Model):
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name='likes')
+    user = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        super(CommentLike, self).save(*args, **kwargs)
+        self.comment.likes = self.comment.count_likes()
+        self.comment.save()
+
+    def delete(self, *args, **kwargs):
+        self.comment.likes -= 1
+        self.comment.save()
+        super(CommentLike, self).delete(*args, **kwargs)
+
+
+class Image(models.Model):
+    post = models.ForeignKey(Post, related_name='images', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='posts/images/') #probably not needed, is checked by default ->  #, validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png'])])
+    user = models.ForeignKey(UserAccount, related_name='images', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
