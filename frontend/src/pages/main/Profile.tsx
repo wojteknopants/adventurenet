@@ -1,5 +1,6 @@
-import Avatar from "../../components/Avatar";
+import AvatarProfile from "../../components/AvatarProfile";
 import Card from "../../components/Card";
+import Cover from "../../components/Cover";
 import Post from "../../components/Post";
 import {
   useGetPostsQuery,
@@ -29,14 +30,9 @@ const Profile = () => {
       </div>
       <Card noPadding={true}>
         <div className="relative">
-          <div className="h-36 overflow-hidden flex justify-center items-center">
-            <img
-              src="https://images.unsplash.com/photo-1474127773417-aec7504236d2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1469&q=80"
-              alt=""
-            />
-          </div>
+          <Cover />
           <div className="absolute top-24 left-4">
-            <Avatar size={"lg"} />
+            <AvatarProfile size={"lg"} />
           </div>
           <div className="p-4 pb-0">
             <div className="ml-40">

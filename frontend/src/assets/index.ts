@@ -13,6 +13,7 @@ import iconSettings from "./iconSettings.svg";
 import iconLogout from "./iconLogout.svg";
 import logoBlack from "./logoBlack.svg";
 import iconSearch from "./iconSearch.svg";
+import iconPhoto from "./iconPhoto.svg";
 
 export {
   logoBlack,
@@ -30,4 +31,5 @@ export {
   iconSettings,
   iconLogout,
   iconSearch,
+  iconPhoto,
 };
