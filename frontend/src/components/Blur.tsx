@@ -1,8 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 
-const Blur = () => {
+interface Props {
+  zIndex: number;
+  blurInPx: number;
+}
+
+const Blur = ({ zIndex, blurInPx }: Props) => {
+  const backdropBlurStyle = {
+    backdropFilter: `blur(${blurInPx}px)`,
+  };
   return (
-    <div className="left-0 top-0 bottom-0 right-0 absolute w-full h-full backdrop-blur"></div>
+    <div
+      className={`z-${zIndex} fixed left-0 top-0 bottom-0 right-0 w-full h-full`}
+      style={backdropBlurStyle}
+    ></div>
   );
 };
 
