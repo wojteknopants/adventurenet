@@ -25,6 +25,19 @@ export const profileApiSlice = apiSlice.injectEndpoints({
       providesTags: (result, error, arg) =>
         result ? [{ type: "Profile" }] : {},
     }),
+    updatePost: builder.mutation({
+      query: (profile) => ({
+        url: `/profile/me/`,
+        method: "PATCH",
+        body: {
+          title: profile.title,
+          content: profile.content,
+        },
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: "Profile", id: "LIST" },
+      ],
+    }),
     // getPosts: builder.query({
     //   query: () => "/posts/",
     //   transformResponse: (responseData) => {
@@ -63,17 +76,6 @@ export const profileApiSlice = apiSlice.injectEndpoints({
     //   }),
     //   invalidatesTags: [{ type: "Post", id: "LIST" }],
     // }),
-    // updatePost: builder.mutation({
-    //   query: (initialPost) => ({
-    //     url: `/posts/${initialPost.id}/`,
-    //     method: "PATCH",
-    //     body: {
-    //       title: initialPost.title,
-    //       content: initialPost.content,
-    //     },
-    //   }),
-    //   invalidatesTags: (result, error, arg) => [{ type: "Post", id: arg.id }],
-    // }),
     // deletePost: builder.mutation({
     //   query: ({ id }) => ({
     //     url: `/posts/${id}/`,
@@ -86,6 +88,7 @@ export const profileApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetProfilesQuery,
+  useGetProfileQuery,
   // useGetPostsByUserIdQuery,
   //   useAddNewPostMutation,
   //   useDeletePostMutation,

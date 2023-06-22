@@ -15,8 +15,10 @@ import logoBlack from "./logoBlack.svg";
 import iconSearch from "./iconSearch.svg";
 import iconPhoto from "./iconPhoto.svg";
 import iconAddPost from "./iconAddPost.svg";
+import postsPlaceholder from "./postsPlaceHolder.svg";
 
 export {
+  postsPlaceholder,
   iconAddPost,
   logoBlack,
   loginBackground,

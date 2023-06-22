@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import AddPostForm from "../../components/AddPostForm";
 import AvatarProfile from "../../components/AvatarProfile";
 import Card from "../../components/Card";
@@ -10,26 +11,55 @@ import {
 import {
   useGetProfilesQuery,
   selectProfileIds,
+  useGetProfileQuery,
 } from "../../features/profile/profileSlice";
 import { useSelector } from "react-redux";
+import ProfilePosts from "./ProfilePosts";
+
+interface Profile {
+  user: number;
+  name: string;
+  surname: string;
+  country: string;
+  bio: string;
+  username: string;
+  profile_picture: string;
+  background_image: string;
+  created_at: string;
+  updated_at: string;
+}
 
 const Profile = () => {
-  const { isLoading, isSuccess, isError, error } = useGetPostsQuery();
-  const orderedPostIds = useSelector(selectPostIds);
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [cover, setCover] = useState<string | undefined>();
 
-  const { isLoading: profilesIsLoading } = useGetProfilesQuery();
-  const profilesIsd = useSelector(selectProfileIds);
+  // const { isLoading: profilesIsLoading } = useGetProfilesQuery();
+  // const profilesIsd = useSelector(selectProfileIds);
 
-  let content;
-  if (isLoading) {
-    content = <p>"Loading..."</p>;
-  } else if (isSuccess) {
-    content = orderedPostIds.map((postId: any) => (
-      <Post key={postId} postId={postId} />
-    ));
-  } else if (isError) {
-    content = <p>{error}</p>;
-  }
+  const { data, isLoading, isSuccess, isError, error } = useGetProfileQuery();
+
+  const handleChangeCover = (event: any) => {
+    console.log(event.target.files[0]);
+    setCover(event.target.files[0]);
+  };
+
+  useEffect(() => {
+    if (isLoading) {
+      // Handle loading state if needed
+    } else if (isSuccess) {
+      const updatedProfile = { ...data };
+      if (updatedProfile.background_image == null) {
+        updatedProfile.background_image = "No cover";
+      }
+      setProfile(updatedProfile);
+      setCover(updatedProfile.background_image);
+    } else if (isError) {
+      console.error(error);
+    }
+  }, [isLoading, data]);
+
+  console.log(profile);
+
   return (
     <div>
       <div className="flex justify-between my-6">
@@ -37,7 +67,7 @@ const Profile = () => {
       </div>
       <Card noPadding={true}>
         <div className="relative">
-          <Cover />
+          <Cover handleChangeCover={handleChangeCover} cover={cover} />
           <div className="absolute top-24 left-4">
             <AvatarProfile size={"lg"} />
           </div>
@@ -90,7 +120,7 @@ const Profile = () => {
         </div>
       </Card>
       <AddPostForm />
-      {content}
+      <ProfilePosts />
     </div>
   );
 };

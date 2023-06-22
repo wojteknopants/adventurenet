@@ -8,6 +8,7 @@ import {
   selectPostById,
   useDeletePostMutation,
 } from "../features/posts/postsSlice";
+import { postsPlaceholder } from "../assets";
 
 //{ { postId }: { postId: number }
 const Post = ({ postId }: any) => {
@@ -63,7 +64,15 @@ const Post = ({ postId }: any) => {
       </div>
       <div>
         <div className="rounded-xl overflow-hidden mt-2 max-h-[340px]">
-          <img src={`${post.images[0]?.image}`} alt="Not found" />
+          {post.images[0]?.image ? (
+            <img src={`${post.images[0]?.image}`} alt="Error" />
+          ) : (
+            <img
+              className=" m-auto w-[300px] h-full"
+              style={{ filter: "invert(90%) grayscale(100%)" }}
+              src={postsPlaceholder}
+            />
+          )}
         </div>
         <p className="my-3 leading-5 text-[14px] text-mainGray">
           {post.content}
