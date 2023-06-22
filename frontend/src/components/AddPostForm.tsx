@@ -36,8 +36,11 @@ const AddPostForm = () => {
         formData.append("content", content);
         formData.append("new_images", image);
 
+        console.log(formData);
+
         await addNewPost(formData).unwrap();
 
+        setIsOpen(false);
         setContent("");
       } catch (err) {
         console.error("Failed to save the post", err);

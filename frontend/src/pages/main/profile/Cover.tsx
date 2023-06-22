@@ -1,11 +1,14 @@
-import { iconPhoto } from "../assets";
+import { iconPhoto } from "../../../assets";
 
 interface Props {
-  cover: string | undefined | null;
-  handleChangeCover: (event: any) => void;
+  cover: any;
+  handleChangeCover: (file: File) => void;
 }
 
 const Cover = ({ cover, handleChangeCover }: Props) => {
+  const handleFileSelect = (event: any) => {
+    event.target.files[0] && handleChangeCover(event.target.files[0]);
+  };
   return (
     <div>
       <div className="h-36 overflow-hidden flex justify-center items-center">
@@ -16,7 +19,7 @@ const Cover = ({ cover, handleChangeCover }: Props) => {
               src={iconPhoto}
               type="file"
               name="myImage"
-              onChange={handleChangeCover}
+              onChange={handleFileSelect}
             />
             Change cover image
           </button>

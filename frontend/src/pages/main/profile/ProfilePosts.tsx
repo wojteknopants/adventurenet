@@ -1,9 +1,9 @@
 import React from "react";
-import Post from "../../components/Post";
+import Post from "../../../components/Post";
 import {
   useGetPostsQuery,
   selectPostIds,
-} from "../../features/posts/postsSlice";
+} from "../../../features/posts/postsSlice";
 import { useSelector } from "react-redux";
 
 const ProfilePosts = () => {

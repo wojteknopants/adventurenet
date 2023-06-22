@@ -1,19 +1,20 @@
 import { useEffect, useState } from "react";
-import AddPostForm from "../../components/AddPostForm";
-import AvatarProfile from "../../components/AvatarProfile";
-import Card from "../../components/Card";
-import Cover from "../../components/Cover";
-import Post from "../../components/Post";
+import AddPostForm from "../../../components/AddPostForm";
+import AvatarProfile from "./AvatarProfile";
+import Card from "../../../components/Card";
+import Cover from "./Cover";
+import Post from "../../../components/Post";
 import {
   useGetPostsQuery,
   selectPostIds,
-} from "../../features/posts/postsSlice";
+} from "../../../features/posts/postsSlice";
 import {
   useGetProfilesQuery,
   selectProfileIds,
   useGetProfileQuery,
-} from "../../features/profile/profileSlice";
-import { useSelector } from "react-redux";
+  useUpdateProfileMutation,
+} from "../../../features/profile/profileSlice";
+import { useDispatch, useSelector } from "react-redux";
 import ProfilePosts from "./ProfilePosts";
 
 interface Profile {
@@ -30,29 +31,62 @@ interface Profile {
 }
 
 const Profile = () => {
+  const dispatch = useDispatch();
+
   const [profile, setProfile] = useState<Profile | null>(null);
-  const [cover, setCover] = useState<string | undefined>();
+  const [newCover, setNewCover] = useState(null);
+  const [newAvatar, setNewAvatar] = useState<string | undefined>();
 
   // const { isLoading: profilesIsLoading } = useGetProfilesQuery();
   // const profilesIsd = useSelector(selectProfileIds);
 
   const { data, isLoading, isSuccess, isError, error } = useGetProfileQuery();
 
-  const handleChangeCover = (event: any) => {
-    console.log(event.target.files[0]);
-    setCover(event.target.files[0]);
+  const [updateProfile] = useUpdateProfileMutation();
+
+  // const canSave = [newCover].every(Boolean) && !isUpdateLoading;
+
+  const handleChangeCover = (file: any) => {
+    setNewCover(file);
+  };
+
+  const handleChangeAvatar = (file: any) => {
+    setNewAvatar(file);
+  };
+
+  const onProfileChange = async () => {
+    // if (canSave) {
+    try {
+      const formData = new FormData();
+      if (newCover) {
+        formData.append("background_image", newCover);
+      }
+      if (newAvatar) {
+        formData.append("profile_picture", newAvatar);
+      }
+
+      await dispatch(updateProfile(formData)).unwrap();
+      console.log("Profile updated successfully!");
+    } catch (err) {
+      console.error("Failed to update the profile", err);
+    }
+    // }
   };
 
   useEffect(() => {
+    if (newCover) {
+      onProfileChange();
+    }
+  }, [newCover, newAvatar]);
+
+  useEffect(() => {
     if (isLoading) {
-      // Handle loading state if needed
     } else if (isSuccess) {
       const updatedProfile = { ...data };
-      if (updatedProfile.background_image == null) {
-        updatedProfile.background_image = "No cover";
-      }
+
       setProfile(updatedProfile);
-      setCover(updatedProfile.background_image);
+      // setCover(updatedProfile.background_image);
+      // setUserPhoto(updatedProfile.profile_picture);
     } else if (isError) {
       console.error(error);
     }
@@ -67,9 +101,16 @@ const Profile = () => {
       </div>
       <Card noPadding={true}>
         <div className="relative">
-          <Cover handleChangeCover={handleChangeCover} cover={cover} />
+          <Cover
+            handleChangeCover={handleChangeCover}
+            cover={profile?.background_image}
+          />
           <div className="absolute top-24 left-4">
-            <AvatarProfile size={"lg"} />
+            <AvatarProfile
+              photo={profile?.profile_picture}
+              handleChangePhoto={handleChangeAvatar}
+              size={"lg"}
+            />
           </div>
           <div className="p-4 pb-0">
             <div className="ml-40">

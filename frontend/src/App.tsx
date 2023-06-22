@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import Feed from "./pages/main/Feed";
 import Messages from "./pages/main/Messages";
 import Settings from "./pages/main/Settings";
-import Profile from "./pages/main/Profile";
+import Profile from "./pages/main/profile/Profile";
 import Explore from "./pages/main/Explore";
 import MainLayout from "./pages/main/MainLayout";
 import AuthLayout from "./pages/auth/AuthLayout";
