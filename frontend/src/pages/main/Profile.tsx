@@ -1,3 +1,4 @@
+import AddPostForm from "../../components/AddPostForm";
 import AvatarProfile from "../../components/AvatarProfile";
 import Card from "../../components/Card";
 import Cover from "../../components/Cover";
@@ -6,12 +7,18 @@ import {
   useGetPostsQuery,
   selectPostIds,
 } from "../../features/posts/postsSlice";
+import {
+  useGetProfilesQuery,
+  selectProfileIds,
+} from "../../features/profile/profileSlice";
 import { useSelector } from "react-redux";
 
 const Profile = () => {
   const { isLoading, isSuccess, isError, error } = useGetPostsQuery();
-
   const orderedPostIds = useSelector(selectPostIds);
+
+  const { isLoading: profilesIsLoading } = useGetProfilesQuery();
+  const profilesIsd = useSelector(selectProfileIds);
 
   let content;
   if (isLoading) {
@@ -82,6 +89,7 @@ const Profile = () => {
           </div>
         </div>
       </Card>
+      <AddPostForm />
       {content}
     </div>
   );

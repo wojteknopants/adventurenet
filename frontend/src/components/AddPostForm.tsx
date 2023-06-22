@@ -3,6 +3,7 @@ import Card from "./Card";
 import { useAddNewPostMutation } from "../features/posts/postsSlice";
 import { useState } from "react";
 import AddPostFormWithBlur from "./AddPostFormWithBlur";
+import { iconAddPost } from "../assets";
 import Blur from "./Blur";
 
 const AddPostForm = () => {
@@ -47,18 +48,26 @@ const AddPostForm = () => {
     <>
       <Card noPadding={false}>
         <div className="flex gap-2">
-          <div>
+          <div className="m-auto mx-0">
             <Avatar size={""} />
           </div>
-          <textarea
-            className="grow p-3 h-14"
+          <input
+            className="grow m-auto h-14 ml-3 focus:outline-none"
             placeholder={"Whats on your mind, Mark?"}
             onChange={onContentChanged}
           />
+          <div className=" my-auto mr-0">
+            <img
+              src={iconAddPost}
+              //onClick={onSavePostClicked}
+              onClick={handleToggleFormWithBlur}
+              className="cursor-pointer"
+            />
+          </div>
         </div>
 
-        <div className="flex gap-5 items-center mt-2">
-          <div>
+        {/* <div className="flex gap-5 items-center mt-2"> */}
+        {/* <div>
             <button className="flex gap-1">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -138,17 +147,8 @@ const AddPostForm = () => {
               </svg>
               Mood
             </button>
-          </div>
-          <div className="grow text-right">
-            <button
-              //onClick={onSavePostClicked}
-              onClick={handleToggleFormWithBlur}
-              className="bg-blue-400 text-white px-6 py-1 rounded-md"
-            >
-              Share
-            </button>
-          </div>
-        </div>
+          </div> */}
+        {/* </div> */}
         {isOpen ? (
           <AddPostFormWithBlur
             image={image}

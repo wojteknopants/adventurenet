@@ -14,8 +14,10 @@ import iconLogout from "./iconLogout.svg";
 import logoBlack from "./logoBlack.svg";
 import iconSearch from "./iconSearch.svg";
 import iconPhoto from "./iconPhoto.svg";
+import iconAddPost from "./iconAddPost.svg";
 
 export {
+  iconAddPost,
   logoBlack,
   loginBackground,
   loginLock,
