@@ -4,6 +4,7 @@ import { useGetPostsQuery, selectPostIds } from "../features/posts/postsSlice";
 import DraftPost from "./DraftPost";
 import DraftAddPostForm from "./DraftAddPost";
 import DraftUpdateForm from "./DraftUpdateForm";
+import DraftProfile from "./DraftProfile";
 
 const DraftComponent = () => {
   const { isLoading, isSuccess, isError, error } = useGetPostsQuery();
@@ -25,8 +26,9 @@ const DraftComponent = () => {
   return (
     <div>
       <DraftAddPostForm />
-      <div className="flex">{content}</div>
+      <div className="flex flex-wrap">{content}</div>
       <DraftUpdateForm />
+      <DraftProfile />
     </div>
   );
 };

@@ -16,7 +16,7 @@ const Feed = () => {
   if (isLoading) {
     content = <p>"Loading..."</p>;
   } else if (isSuccess) {
-    content = orderedPostIds.map((postId: any) => (
+    content = orderedPostIds.map((postId: Number) => (
       <Post key={postId} postId={postId} />
     ));
   } else if (isError) {

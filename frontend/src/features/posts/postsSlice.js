@@ -14,7 +14,24 @@ export const postsApiSlice = apiSlice.injectEndpoints({
       query: () => "/posts/",
       transformResponse: (responseData) => {
         const loadedPosts = responseData.map((post) => {
-          console.log(post);
+          // console.log(post);
+          return post;
+        });
+        return postsAdapter.setAll(initialState, loadedPosts);
+      },
+      providesTags: (result, error, arg) =>
+        result
+          ? [
+              { type: "Post", id: "LIST" },
+              ...result.ids.map((id) => ({ type: "Post", id })),
+            ]
+          : {},
+    }),
+    getProfilePostsById: builder.query({
+      query: () => "/profiles/me/posts/",
+      transformResponse: (responseData) => {
+        const loadedPosts = responseData.map((post) => {
+          // console.log(post);
           return post;
         });
         return postsAdapter.setAll(initialState, loadedPosts);
@@ -44,10 +61,7 @@ export const postsApiSlice = apiSlice.injectEndpoints({
       query: (initialPost) => ({
         url: "/posts/",
         method: "POST",
-        body: {
-          title: initialPost.title,
-          content: initialPost.content,
-        },
+        body: initialPost,
       }),
       invalidatesTags: [{ type: "Post", id: "LIST" }],
     }),
@@ -101,7 +115,7 @@ export const postsApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetPostsQuery,
-  // useGetPostsByUserIdQuery,
+  useGetProfilePostsByIdQuery,
   useAddNewPostMutation,
   useDeletePostMutation,
   useUpdatePostMutation,
@@ -110,6 +124,14 @@ export const {
 
 export const selectPostsResult =
   postsApiSlice.endpoints.getPosts.select(undefined);
+
+export const selectProfilePostsResult =
+  postsApiSlice.endpoints.getProfilePostsById.select(undefined);
+
+const selectProfilePostsData = createSelector(
+  selectProfilePostsResult,
+  (postsResult) => postsResult.data
+);
 
 const selectPostsData = createSelector(
   selectPostsResult,
@@ -124,4 +146,13 @@ export const {
   // Pass in a selector that returns the posts slice of state
 } = postsAdapter.getSelectors(
   (state) => selectPostsData(state) ?? initialState
+);
+
+export const {
+  selectAll: selectAllProfilePosts,
+  selectById: selectProfilePostById,
+  selectIds: selectProfilePostIds,
+  // Pass in a selector that returns the posts slice of state
+} = postsAdapter.getSelectors(
+  (state) => selectProfilePostsData(state) ?? initialState
 );
