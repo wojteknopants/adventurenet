@@ -13,8 +13,15 @@ import iconSettings from "./iconSettings.svg";
 import iconLogout from "./iconLogout.svg";
 import logoBlack from "./logoBlack.svg";
 import iconSearch from "./iconSearch.svg";
+import iconPhoto from "./iconPhoto.svg";
+import iconAddPost from "./iconAddPost.svg";
+import postsPlaceholder from "./postsPlaceHolder.svg";
+import profilePlaceholder from "./profilePlaceholder.svg";
 
 export {
+  profilePlaceholder,
+  postsPlaceholder,
+  iconAddPost,
   logoBlack,
   loginBackground,
   loginLock,
@@ -30,4 +37,5 @@ export {
   iconSettings,
   iconLogout,
   iconSearch,
+  iconPhoto,
 };

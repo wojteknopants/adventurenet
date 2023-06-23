@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import Feed from "./pages/main/Feed";
 import Messages from "./pages/main/Messages";
 import Settings from "./pages/main/Settings";
-import Profile from "./pages/main/Profile";
+import Profile from "./pages/main/profile/Profile";
 import Explore from "./pages/main/Explore";
 import MainLayout from "./pages/main/MainLayout";
 import AuthLayout from "./pages/auth/AuthLayout";
@@ -32,7 +32,7 @@ const App = () => {
               <Route path="/feed" element={<Feed />} />
               <Route path="/messages" element={<Messages />} />
               <Route path="/settings" element={<Settings />} />
-              <Route path="/profile" element={<Profile />} />
+              <Route path="/profile/:user" element={<Profile />} />
               <Route path="/explore" element={<Explore />} />
               <Route path="/notifications" element={<Notifications />} />
               <Route path="/bookmarks" element={<Bookmarks />} />
