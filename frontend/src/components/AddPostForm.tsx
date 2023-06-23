@@ -56,7 +56,7 @@ const AddPostForm = () => {
           </div>
           <input
             className="grow m-auto h-14 ml-3 focus:outline-none"
-            placeholder={"Whats on your mind, Mark?"}
+            placeholder={"Whats on your mind?"}
             onChange={onContentChanged}
           />
           <div className=" my-auto mr-0">

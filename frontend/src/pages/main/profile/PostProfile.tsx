@@ -1,5 +1,5 @@
-import Avatar from "./Avatar";
-import Card from "./Card";
+import Avatar from "../../../components/Avatar";
+import Card from "../../../components/Card";
 import React from "react";
 import { formatDistanceToNow } from "date-fns";
 import { parseISO } from "date-fns";
@@ -7,8 +7,8 @@ import { useSelector } from "react-redux";
 import {
   selectPostById,
   useDeletePostMutation,
-} from "../features/posts/postsSlice";
-import { postsPlaceholder } from "../assets";
+} from "../../../features/posts/postsSlice";
+import { postsPlaceholder } from "../../../assets";
 
 //{ { postId }: { postId: number }
 const Post = ({ postId }: any) => {

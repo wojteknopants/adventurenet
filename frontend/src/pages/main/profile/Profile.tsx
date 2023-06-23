@@ -114,8 +114,12 @@ const Profile = () => {
           </div>
           <div className="p-4 pb-0">
             <div className="ml-40">
-              <h1 className="text-3xl font-bold">Mark Jones</h1>
-              <div className="text=gray-500 leading-4">Berlin, Germany</div>
+              <h1 className="text-3xl font-bold">
+                {/* {profile?.name == null ? "Mark " : profile?.name}
+                {profile?.surname == null ? "Jones" : profile?.surname} */}
+                {profile?.user}
+              </h1>
+              <div className="text=gray-500 leading-4">City, Country</div>
             </div>
             <div className="mt-10 flex gap-1">
               <div>

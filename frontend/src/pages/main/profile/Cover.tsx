@@ -1,3 +1,4 @@
+import React from "react";
 import { iconPhoto } from "../../../assets";
 
 interface Props {
@@ -6,6 +7,10 @@ interface Props {
 }
 
 const Cover = ({ cover, handleChangeCover }: Props) => {
+  const hiddenFileInput = React.useRef(null);
+  const handleClick = (event: any) => {
+    hiddenFileInput.current.click();
+  };
   const handleFileSelect = (event: any) => {
     event.target.files[0] && handleChangeCover(event.target.files[0]);
   };
@@ -14,13 +19,20 @@ const Cover = ({ cover, handleChangeCover }: Props) => {
       <div className="h-36 overflow-hidden flex justify-center items-center">
         <img src={cover} alt="Not found" />
         <div className="absolute right-0 bottom-36 m-2">
-          <button className="flex items-center gap-1 bg-mainLightGray py-1 px-2 rounded-md shadow-md shadow-gray-500">
+          <button
+            onClick={handleClick}
+            className="flex items-center gap-1 bg-mainLightGray py-1 px-2 rounded-md shadow-md shadow-gray-500"
+          >
             <input
+              id="image_uploads"
               src={iconPhoto}
+              ref={hiddenFileInput}
               type="file"
               name="myImage"
+              style={{ display: "none" }}
               onChange={handleFileSelect}
             />
+            <img src={iconPhoto} />
             Change cover image
           </button>
         </div>
