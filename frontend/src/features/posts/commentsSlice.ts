@@ -8,6 +8,17 @@ import { error } from "console";
 //   error: string | undefined;
 // }
 
+interface AddCommentParams {
+  postId: number;
+  content: string;
+}
+
+const initialState = {
+  comments: [],
+  status: "idle",
+  error: null,
+};
+
 export const fetchComments = createAsyncThunk(
   "/posts/post_id/comments/",
   async ({ postId }: any) => {
@@ -37,10 +48,10 @@ export const fetchComments = createAsyncThunk(
 
 export const addComment = createAsyncThunk(
   "/posts/post_comment",
-  async ({ postId }: any) => {
+  async ({ postId, content }: AddCommentParams) => {
     try {
       const url = `/posts/${postId}/comments/`;
-
+      console.log(postId, content);
       const config = {
         headers: {
           "Content-Type": "application/json",
@@ -49,7 +60,7 @@ export const addComment = createAsyncThunk(
         },
       };
 
-      const body = JSON.stringify({ content: "sasat pisun" });
+      const body = JSON.stringify({ content: content });
 
       await axios.post(
         `${import.meta.env.VITE_REACT_APP_API_URL}${url}`,
@@ -64,11 +75,7 @@ export const addComment = createAsyncThunk(
 
 const commentsSlice = createSlice({
   name: "comments",
-  initialState: {
-    comments: [],
-    status: "idle",
-    error: "",
-  } as any,
+  initialState,
   reducers: {},
   extraReducers(builder) {
     builder
@@ -87,6 +94,6 @@ const commentsSlice = createSlice({
       });
   },
 });
-export const getComments = (state: any) => state.comments.comments;
+export const selectComments = (state: any) => state.comments.comments;
 
 export default commentsSlice.reducer;

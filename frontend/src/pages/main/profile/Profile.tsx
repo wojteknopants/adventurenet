@@ -3,7 +3,7 @@ import AddPostForm from "../../../components/AddPostForm";
 import AvatarProfile from "./AvatarProfile";
 import Card from "../../../components/Card";
 import Cover from "./Cover";
-import Post from "../../../components/Post";
+import Post from "../../../components/TopAddForm";
 import {
   useGetPostsQuery,
   selectPostIds,
