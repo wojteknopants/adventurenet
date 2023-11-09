@@ -36,7 +36,7 @@ const Post = ({ postId }: any) => {
   };
 
   const onClickShowComments = async () => {
-    dispatch(addComment({ postId }));
+    // dispatch(addComment({ postId }));
 
     console.log();
   };
