@@ -62,12 +62,21 @@ class Post(models.Model):
     user = models.ForeignKey(UserAccount, on_delete=models.CASCADE, related_name='posts')
     title = models.CharField(max_length=255)
     content = models.TextField()
+    comments_count = models.IntegerField(default=0)
     likes_count = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def count_likes(self):
-        return PostLike.objects.filter(post=self).count()
+    #for debug
+    def recount_comments(self):
+        self.comments_count= Comment.objects.filter(post=self).count()
+        self.save()
+    
+    
+    #for debug
+    def recount_likes(self):
+        self.likes_count= PostLike.objects.filter(post=self).count()
+        self.save()
     
     def __str__(self):
         return f"Post #{self.pk} user #{self.user.pk} from {self.created_at}"
@@ -81,8 +90,10 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def count_likes(self):
-        return CommentLike.objects.filter(comment=self).count()
+    #for debug
+    def recount_likes(self):
+        self.likes_count = CommentLike.objects.filter(comment=self).count()
+        self.save()
 
     def __str__(self):
         return f"Comment #{self.pk} user #{self.user.pk} from {self.created_at}"
@@ -93,35 +104,18 @@ class PostLike(models.Model):
     user = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def save(self, *args, **kwargs):
-        super(PostLike, self).save(*args, **kwargs)
-        self.post.likes = self.post.count_likes()
-        self.post.save()
-
-    def delete(self, *args, **kwargs):
-        self.post.likes -= 1
-        self.post.save()
-        super(PostLike, self).delete(*args, **kwargs)
+ 
 
 class CommentLike(models.Model):
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name='likes')
     user = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def save(self, *args, **kwargs):
-        super(CommentLike, self).save(*args, **kwargs)
-        self.comment.likes = self.comment.count_likes()
-        self.comment.save()
-
-    def delete(self, *args, **kwargs):
-        self.comment.likes -= 1
-        self.comment.save()
-        super(CommentLike, self).delete(*args, **kwargs)
-
+   
 
 class Image(models.Model):
     post = models.ForeignKey(Post, related_name='images', on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='posts/images/') #probably not needed, is checked by default ->  #, validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png'])])
+    image = models.ImageField(upload_to='posts/images/') #following part is probably not needed, is checked by default ->  #, validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png'])])
     user = models.ForeignKey(UserAccount, related_name='images', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
