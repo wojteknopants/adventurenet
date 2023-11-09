@@ -15,6 +15,7 @@ import {
   fetchComments,
   getComments,
 } from "../features/posts/commentsSlice";
+import axios from "axios";
 
 //{ { postId }: { postId: number }
 const Post = ({ postId }: any) => {
@@ -36,9 +37,28 @@ const Post = ({ postId }: any) => {
   };
 
   const onClickShowComments = async () => {
-    dispatch(addComment({ postId }));
+    // dispatch(addComment({ postId }));
+    try {
+      const url = `/posts/${postId}/comments/`;
 
-    console.log();
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `JWT ${localStorage.getItem("access")}`,
+          Accept: "application/json",
+        },
+      };
+
+      const body = JSON.stringify({ content: "sasat pisun" });
+
+      await axios.post(
+        `${import.meta.env.VITE_REACT_APP_API_URL}${url}`,
+        body,
+        config
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
