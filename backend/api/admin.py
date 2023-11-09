@@ -16,13 +16,13 @@ class UserProfileAdmin(admin.ModelAdmin):
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'title', 'content', 'likes', 'created_at','updated_at')
+    list_display = ('id', 'user', 'title', 'content', 'comments_count', 'likes_count', 'created_at','updated_at')
     # Customize other options as needed
 
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'post', 'content', 'likes', 'created_at', 'updated_at')
+    list_display = ('id','post', 'user', 'content', 'likes_count', 'created_at', 'updated_at')
     # Customize other options as needed
 
 @admin.register(PostLike)
