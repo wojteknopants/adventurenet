@@ -25,7 +25,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
-        fields = ('user', 'post', 'image', 'created_at', 'updated_at' )
+        fields = ('id', 'user', 'post', 'image', 'created_at', 'updated_at' )
 
 class PostSerializer(serializers.ModelSerializer):
     is_liked = serializers.SerializerMethodField()
@@ -35,8 +35,8 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('id', 'user', 'title', 'content','images', 'new_images','likes_count', 'is_liked', 'created_at', 'updated_at')
-        read_only_fields = ('id', 'user', 'images', 'likes_count', 'is_liked', 'created_at', 'updated_at')
+        fields = ('id', 'user', 'title', 'content','images', 'new_images','comments_count', 'likes_count', 'is_liked', 'created_at', 'updated_at')
+        read_only_fields = ('id', 'user', 'images', 'comments_count', 'likes_count', 'is_liked', 'created_at', 'updated_at')
         write_only_fields = ('new_images',)
 
     def create(self, validated_data):
@@ -67,11 +67,11 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = ('id', 'user', 'post', 'content', 'likes_count','is_liked', 'created_at', 'updated_at')
         read_only_fields = ('id', 'user', 'post', 'likes_count', 'is_liked', 'created_at', 'updated_at')
 
-        def get_is_liked(self, obj):
-            user = self.context['request'].user
-            if user.is_authenticated:
-                return CommentLike.objects.filter(comment=obj, user=user).exists()
-            return False
+    def get_is_liked(self, obj):
+        user = self.context['request'].user
+        if user.is_authenticated:
+            return CommentLike.objects.filter(comment=obj, user=user).exists()
+        return False
 
 class PostLikeSerializer(serializers.ModelSerializer):
     class Meta:
