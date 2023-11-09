@@ -8,6 +8,6 @@ export const apiSlice = createApi({
       Authorization: `JWT ${localStorage.getItem("access")}`,
     },
   }),
-  tagTypes: ["Post"],
+  tagTypes: ["Post", "Profile", "Comment"],
   endpoints: (builder) => ({}),
 });

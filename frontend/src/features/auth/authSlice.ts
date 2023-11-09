@@ -74,7 +74,7 @@ export const register = createAsyncThunk(
         body,
         config
       );
-
+      console.log(alert("Email with activation link has been sent!"));
       return res.data;
     } catch (error: any) {
       const firstError = <any>Object.values(error.response.data)[0];

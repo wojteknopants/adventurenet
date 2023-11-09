@@ -4,8 +4,15 @@ export default {
   theme: {
     extend: {
       colors: {
-        mainBlue: 'bg-blue-400',
-      }
+        mainBlue: "#6893E5",
+        mainBlue: "blue-400",
+        mainHoverBlue: "#FFFFFF",
+        mainGray: "#BDBDBD",
+        mainLightGray: "#F6F6F6",
+        "blue-400": "#6893E5",
+        "slate-100": "#F6F6F6",
+        mainBlack: "#202020",
+      },
     },
   },
   plugins: [],

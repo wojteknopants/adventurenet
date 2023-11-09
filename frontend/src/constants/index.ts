@@ -36,7 +36,7 @@ export const navLinks = [
     icon: iconBookmarks,
   },
   {
-    id: "profile",
+    id: "profile/me",
     title: "My profile",
     icon: iconProfile,
   },
