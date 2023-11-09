@@ -61,6 +61,7 @@ const Post = ({ postId }: any) => {
     dispatch(addComment({ postId, content: addCommentInput })).then(() =>
       dispatch(fetchComments({ postId }))
     );
+    setAddCommentInput("");
   };
 
   return (
@@ -82,6 +83,7 @@ const Post = ({ postId }: any) => {
       />
       {isCommentsOpen && <CommentsList postId={postId} comments={comments} />}
       <AddCommentForm
+        input={addCommentInput}
         handleOnAddClick={handleOnAddClick}
         handleOnChangeAdd={handleOnChangeAdd}
       />

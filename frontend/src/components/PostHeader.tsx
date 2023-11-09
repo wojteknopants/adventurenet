@@ -5,7 +5,7 @@ interface PostHeaderProps {
   user: any;
   created_at: any;
   onDeletePostClicked: () => void;
-  formatRelativeTime: (timestamp: string) => any;
+  formatRelativeTime: (timestamp: string) => string;
 }
 
 const PostHeader = ({

@@ -1,11 +1,13 @@
 import React from "react";
 
 interface AddCommentFormProps {
+  input: string;
   handleOnChangeAdd: (arg: any) => void;
   handleOnAddClick: (arg: any) => void;
 }
 
 const AddCommentForm = ({
+  input,
   handleOnChangeAdd,
   handleOnAddClick,
 }: AddCommentFormProps) => {
@@ -15,6 +17,7 @@ const AddCommentForm = ({
         className="flex flex-1 mr-3"
         placeholder="Type something..."
         onChange={handleOnChangeAdd}
+        value={input}
       />
       <button
         type="submit"
