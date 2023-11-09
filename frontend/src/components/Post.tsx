@@ -51,11 +51,12 @@ const Post = ({ postId }: any) => {
 
       const body = JSON.stringify({ content: "sasat pisun" });
 
-      await axios.post(
+      const res = await axios.post(
         `${import.meta.env.VITE_REACT_APP_API_URL}${url}`,
         body,
         config
       );
+      console.log(res);
     } catch (error) {
       console.log(error);
     }
