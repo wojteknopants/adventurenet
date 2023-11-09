@@ -13,6 +13,10 @@ export default {
         "slate-100": "#F6F6F6",
         mainBlack: "#202020",
       },
+      fontFamily: {
+        poppins: ["Poppins", "serif"],
+        inter: ["Inter", "serif"],
+      },
     },
   },
   plugins: [],

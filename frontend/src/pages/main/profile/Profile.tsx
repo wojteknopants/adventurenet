@@ -35,12 +35,12 @@ const Profile = () => {
 
   const [profile, setProfile] = useState<Profile | null>(null);
   const [newCover, setNewCover] = useState(null);
-  const [newAvatar, setNewAvatar] = useState<string | undefined>();
+  const [newAvatar, setNewAvatar] = useState(null);
 
   // const { isLoading: profilesIsLoading } = useGetProfilesQuery();
   // const profilesIsd = useSelector(selectProfileIds);
 
-  const { data, isLoading, isSuccess, isError, error } = useGetProfileQuery();
+  const { data, isLoading, isSuccess, isError, error } = useGetProfileQuery(0);
 
   const [updateProfile] = useUpdateProfileMutation();
 
@@ -65,7 +65,9 @@ const Profile = () => {
         formData.append("profile_picture", newAvatar);
       }
 
-      await dispatch(updateProfile(formData)).unwrap();
+      await updateProfile(formData).unwrap();
+      setNewAvatar(null);
+      setNewCover(null);
       console.log("Profile updated successfully!");
     } catch (err) {
       console.error("Failed to update the profile", err);
@@ -77,10 +79,14 @@ const Profile = () => {
     if (newCover) {
       onProfileChange();
     }
+    if (newAvatar) {
+      onProfileChange();
+    }
   }, [newCover, newAvatar]);
 
   useEffect(() => {
     if (isLoading) {
+      console.log("Loading...");
     } else if (isSuccess) {
       const updatedProfile = { ...data };
 
@@ -90,14 +96,14 @@ const Profile = () => {
     } else if (isError) {
       console.error(error);
     }
-  }, [isLoading, data]);
 
-  console.log(profile);
+    console.log(profile);
+  }, [isLoading, data]);
 
   return (
     <div>
-      <div className="flex justify-between my-6">
-        <h2 className="text-[24px]">My profile</h2>
+      <div className="flex justify-between my-8">
+        <h2 className="text-[24px] font-bold">My profile</h2>
       </div>
       <Card noPadding={true}>
         <div className="relative">
@@ -117,9 +123,10 @@ const Profile = () => {
               <h1 className="text-3xl font-bold">
                 {/* {profile?.name == null ? "Mark " : profile?.name}
                 {profile?.surname == null ? "Jones" : profile?.surname} */}
-                {profile?.user}
+                {/* {profile?.user} */}
+                Egor Grigorik
               </h1>
-              <div className="text=gray-500 leading-4">City, Country</div>
+              <div className="text=gray-500 leading-4">Poznan, Poland</div>
             </div>
             <div className="mt-10 flex gap-1">
               <div>

@@ -13,14 +13,14 @@ import NotFound from "./pages/NotFound";
 
 import { Provider } from "react-redux";
 import store from "./store";
-import Layout from "./pages/hocs/Layout";
+import Layout from "./pages/_hocs/Layout";
 import Logout from "./pages/main/Logout";
 import Notifications from "./pages/main/Notifications";
 import Bookmarks from "./pages/main/Bookmarks";
 
 import { postsApiSlice } from "./features/posts/postsSlice";
 
-store.dispatch(postsApiSlice.endpoints.getPosts.initiate());
+store.dispatch(postsApiSlice.endpoints.getPosts.initiate(undefined));
 
 const App = () => {
   return (

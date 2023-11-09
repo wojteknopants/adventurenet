@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Post from "../../components/Post";
 import AddPostForm from "../../components/AddPostForm";
 import {
@@ -6,9 +6,10 @@ import {
   selectPostIds,
 } from "../../features/posts/postsSlice";
 import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 
 const Feed = () => {
-  const { isLoading, isSuccess, isError, error } = useGetPostsQuery();
+  const { isLoading, isSuccess, isError, error } = useGetPostsQuery(123123);
 
   const orderedPostIds = useSelector(selectPostIds);
 
@@ -16,11 +17,16 @@ const Feed = () => {
   if (isLoading) {
     content = <p>"Loading..."</p>;
   } else if (isSuccess) {
-    content = orderedPostIds.map((postId: Number) => (
-      <Post key={postId} postId={postId} />
-    ));
+    if (Array.isArray(orderedPostIds)) {
+      content = orderedPostIds.map((postId) => (
+        <Post key={postId} postId={postId} />
+      ));
+      console.log(content);
+    } else {
+      content = <p>"Loading..."</p>;
+    }
   } else if (isError) {
-    content = <p>{error}</p>;
+    content = <p>{"Refresh the page! It should help :)"}</p>;
   }
 
   return (

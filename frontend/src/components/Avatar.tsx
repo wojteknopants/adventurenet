@@ -11,7 +11,7 @@ const Avatar = ({ size }: { size: ReactNode }) => {
     <div className={`${width} rounded-full bg-mainLightGray overflow-hidden`}>
       <img
         src={profilePlaceholder}
-        style={{ filter: "invert(88%) grayscale(100%)" }}
+        // style={{ filter: "invert(88%) grayscale(100%)" }}
       ></img>
     </div>
   );

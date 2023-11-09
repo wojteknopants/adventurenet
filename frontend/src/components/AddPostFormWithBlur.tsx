@@ -18,7 +18,7 @@ const AddPostFormWithBlur = ({
   image,
 }: Props) => {
   const hiddenFileInput = React.useRef(null);
-  const handleClick = (event: any) => {
+  const handleClick = () => {
     hiddenFileInput.current.click();
   };
   return (
@@ -26,7 +26,7 @@ const AddPostFormWithBlur = ({
       <div className="fixed z-10">
         <Blur zIndex={1} blurInPx={4} />
 
-        <div className="fixed bottom-[50px] w-[650px] h-fit rounded-xl px-6 py-3 drop-shadow-lg bg-white">
+        <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] max-h-fit rounded-xl px-6 py-3 drop-shadow-lg bg-white">
           <div className="flex flex-col">
             <div className="flex flex-row justify-between">
               <div className="items-center flex gap-3">

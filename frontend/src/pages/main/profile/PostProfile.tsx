@@ -11,7 +11,7 @@ import {
 import { postsPlaceholder } from "../../../assets";
 
 //{ { postId }: { postId: number }
-const Post = ({ postId }: any) => {
+const PostProfile = ({ postId }: any) => {
   const post = useSelector((state) => selectPostById(state, postId));
   const [deletePost] = useDeletePostMutation();
 
@@ -35,7 +35,7 @@ const Post = ({ postId }: any) => {
         </div>
         <div className="grow">
           <p>
-            <a className="font-semibold">{post.user}</a>
+            <a className="font-semibold">Egor Grigorik</a>
             {/* shared a{" "}
             <a className="text-blue-400">post</a> */}
           </p>
@@ -180,4 +180,4 @@ const Post = ({ postId }: any) => {
   );
 };
 
-export default Post;
+export default PostProfile;

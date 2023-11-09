@@ -22,9 +22,9 @@ interface AuthParams {
   access: string | null;
   refresh: string | null;
   isAuthenticated: boolean;
-  user: {};
+  user: object;
   status: "idle" | "succeeded" | "failed";
-  error: any; // string | undefined;
+  error: string | undefined;
 }
 
 export const login = createAsyncThunk(
@@ -190,13 +190,15 @@ const authSlice = createSlice({
         localStorage.removeItem("access");
         localStorage.removeItem("refresh");
       })
+
       .addCase(register.fulfilled, (state, action) => {
         state.status = "succeeded";
       })
-      .addCase(register.rejected, (state, action) => {
+      .addCase(register.rejected, (state, action: any) => {
         state.status = "failed";
         state.error = action.payload;
       })
+
       .addCase(checkIsAuthenticated.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.isAuthenticated = action.payload;
@@ -205,12 +207,14 @@ const authSlice = createSlice({
         state.status = "failed";
         state.isAuthenticated = false;
       })
+
       .addCase(activation.fulfilled, (state, action) => {
         state.status = "succeeded";
       })
       .addCase(activation.rejected, (state, action) => {
         state.status = "failed";
       })
+
       .addCase(loadUser.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.user = action.payload;

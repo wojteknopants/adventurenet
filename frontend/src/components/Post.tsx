@@ -3,17 +3,24 @@ import Card from "./Card";
 import React from "react";
 import { formatDistanceToNow } from "date-fns";
 import { parseISO } from "date-fns";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   selectPostById,
   useDeletePostMutation,
 } from "../features/posts/postsSlice";
 import { postsPlaceholder } from "../assets";
+import { AppDispatch } from "../store";
+import {
+  addComment,
+  fetchComments,
+  getComments,
+} from "../features/posts/commentsSlice";
 
 //{ { postId }: { postId: number }
 const Post = ({ postId }: any) => {
   const post = useSelector((state) => selectPostById(state, postId));
   const [deletePost] = useDeletePostMutation();
+  const dispatch: AppDispatch = useDispatch();
 
   const formatRelativeTime = (timestamp: string): string => {
     const parsedDate = parseISO(timestamp);
@@ -27,6 +34,13 @@ const Post = ({ postId }: any) => {
       console.error("Failed to delete the post", err);
     }
   };
+
+  const onClickShowComments = async () => {
+    dispatch(addComment({ postId }));
+
+    console.log();
+  };
+
   return (
     <Card noPadding={false}>
       <div className="flex gap-3">
@@ -96,7 +110,10 @@ const Post = ({ postId }: any) => {
           </svg>
           <div>{post.likes_count}</div>
         </button>
-        <button className="flex gap-2 items-center">
+        <button
+          onClick={onClickShowComments}
+          className="flex gap-2 items-center"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -176,6 +193,7 @@ const Post = ({ postId }: any) => {
           </button>
         </div>
       </div> */}
+      <div>HERE WILL BE COMMENTS</div>
     </Card>
   );
 };
