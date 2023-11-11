@@ -6,6 +6,8 @@ import { parseISO } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectPostById,
+  useAddLikeMutation,
+  useDeleteLikeMutation,
   useDeletePostMutation,
 } from "../features/posts/postsSlice";
 import { postsPlaceholder } from "../assets";
@@ -30,6 +32,9 @@ const Post = ({ postId }: any) => {
   const dispatch: AppDispatch = useDispatch();
   const comments = useSelector(selectComments);
   const [isCommentsOpen, setIsCommentsOpen] = useState<boolean>(false);
+  const [addLike] = useAddLikeMutation();
+  const [deleteLike] = useDeleteLikeMutation();
+  const [isLiked, setIsLiked] = useState<boolean>(false);
   const [addCommentInput, setAddCommentInput] = useState<string>("");
 
   const formatRelativeTime = (timestamp: string): string => {
@@ -64,6 +69,27 @@ const Post = ({ postId }: any) => {
     setAddCommentInput("");
   };
 
+  const handleLikeClick = async (event: any) => {
+    if (!post.is_liked) {
+      try {
+        await addLike({ id: post.id }).unwrap();
+      } catch (err) {
+        console.error("Failed to like the post", err);
+      }
+    } else {
+      try {
+        await deleteLike({ id: post.id }).unwrap();
+      } catch (err) {
+        console.error("Failed to unlike the post", err);
+      }
+    }
+
+    setIsLiked((prev) => {
+      console.log(!prev);
+      return !prev;
+    });
+  };
+
   return (
     <Card noPadding={false}>
       <PostHeader
@@ -78,8 +104,11 @@ const Post = ({ postId }: any) => {
         content={post.content}
       />
       <PostFooter
+        comments_count={post.comments_count}
         likes_count={post.likes_count}
         onClickShowComments={onClickShowComments}
+        handleLikeClick={handleLikeClick}
+        is_liked={post.is_liked}
       />
       {isCommentsOpen && <CommentsList postId={postId} comments={comments} />}
       <AddCommentForm

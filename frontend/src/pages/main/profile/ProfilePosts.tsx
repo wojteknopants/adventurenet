@@ -19,7 +19,7 @@ const ProfilePosts = () => {
       <PostProfile key={postId} postId={postId} />
     ));
   } else if (isError) {
-    content = <p>{error}</p>;
+    content = <p>Something went wrong, reload the page!</p>;
   }
 
   return <>{content}</>;

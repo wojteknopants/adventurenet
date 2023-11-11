@@ -118,6 +118,26 @@ export const postsApiSlice = apiSlice.injectEndpoints({
         { type: "ProfilePost", id: arg.id },
       ],
     }),
+    addLike: builder.mutation({
+      query: ({ id }) => ({
+        url: `/posts/${id}/like/`,
+        method: "POST",
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: "Post", id: arg.id },
+        { type: "ProfilePost", id: arg.id },
+      ],
+    }),
+    deleteLike: builder.mutation({
+      query: ({ id }) => ({
+        url: `/posts/${id}/like/`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: "Post", id: arg.id },
+        { type: "ProfilePost", id: arg.id },
+      ],
+    }),
     //   addReaction: builder.mutation({
     //     query: ({ postId, reactions }) => ({
     //       url: `posts/${postId}`,
@@ -153,6 +173,8 @@ export const {
   useGetProfilePostsByIdQuery,
   useAddNewPostMutation,
   useDeletePostMutation,
+  useAddLikeMutation,
+  useDeleteLikeMutation,
   useUpdatePostMutation,
   useGetCommentsByPostIdQuery,
 } = postsApiSlice;
