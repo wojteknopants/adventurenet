@@ -7,9 +7,10 @@ import {
 } from "../../features/posts/postsSlice";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
+import { selectComments } from "../../features/posts/commentsSlice";
 
 const Feed = () => {
-  const { isLoading, isSuccess, isError, error } = useGetPostsQuery(123123);
+  const { isLoading, isSuccess, isError, error, refetch } = useGetPostsQuery();
 
   const orderedPostIds = useSelector(selectPostIds);
 
@@ -19,7 +20,7 @@ const Feed = () => {
   } else if (isSuccess) {
     if (Array.isArray(orderedPostIds)) {
       content = orderedPostIds.map((postId) => (
-        <Post key={postId} postId={postId} />
+        <Post key={postId} postId={postId} refetch={refetch} />
       ));
       console.log(content);
     } else {

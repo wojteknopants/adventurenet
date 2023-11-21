@@ -11,6 +11,7 @@ export default {
         "blue-400": "#6893E5",
         "slate-100": "#F6F6F6",
         mainBlack: "#202020",
+        mainDarkGray: "#6B7280",
       },
       fontFamily: {
         poppins: ["Poppins", "serif"],

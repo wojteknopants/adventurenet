@@ -1,4 +1,5 @@
 import React from "react";
+import { BsFillSendFill } from "react-icons/bs";
 
 interface AddCommentFormProps {
   input: string;
@@ -12,7 +13,7 @@ const AddCommentForm = ({
   handleOnAddClick,
 }: AddCommentFormProps) => {
   return (
-    <form className="flex justify-between">
+    <form className="flex justify-between py-2">
       <input
         className="flex flex-1 mr-3"
         placeholder="Type something..."
@@ -21,10 +22,10 @@ const AddCommentForm = ({
       />
       <button
         type="submit"
-        className="flex p-2 rounded-xl bg-mainBlue text-mainLightGray "
+        className="flex h-6 w-6 text-mainGray justify-center active:outline-none"
         onClick={handleOnAddClick}
       >
-        Add
+        <BsFillSendFill className="h-[20px] w-[20px]" />
       </button>
     </form>
   );

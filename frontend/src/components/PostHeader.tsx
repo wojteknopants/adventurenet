@@ -1,5 +1,6 @@
 import React from "react";
 import Avatar from "./Avatar";
+import { Link } from "react-router-dom";
 
 interface PostHeaderProps {
   user: any;
@@ -21,11 +22,11 @@ const PostHeader = ({
       </div>
       <div className="grow">
         <p>
-          <a className="font-semibold">{user}</a>
-          {/* shared a{" "}
-            <a className="text-blue-400">post</a> */}
+          <Link to={`/profile/${user}`}>
+            <a className="font-semibold">{user}</a>
+          </Link>
         </p>
-        <p className="text-gray-500 text-sm">
+        <p className="text-mainDarkGray text-sm">
           {formatRelativeTime(created_at)}
         </p>
       </div>

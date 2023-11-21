@@ -6,8 +6,9 @@ import { parseISO } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectPostById,
-  useAddLikeMutation,
-  useDeleteLikeMutation,
+  useAddPostLikeMutation,
+  useDeletePostLikeMutation,
+  selectProfilePostById,
   useDeletePostMutation,
 } from "../../../features/posts/postsSlice";
 import { postsPlaceholder } from "../../../assets";
@@ -23,15 +24,14 @@ import {
 } from "../../../features/posts/commentsSlice";
 import CommentsList from "../../../components/CommentsList";
 
-const PostProfile = ({ postId }: any) => {
-  const post = useSelector((state) => selectPostById(state, postId));
+const PostProfile = ({ postData, postId, refetch }: any) => {
+  const post = postData;
   const [deletePost] = useDeletePostMutation();
-
   const dispatch: AppDispatch = useDispatch();
   const comments = useSelector(selectComments);
   const [isCommentsOpen, setIsCommentsOpen] = useState<boolean>(false);
-  const [addLike] = useAddLikeMutation();
-  const [deleteLike] = useDeleteLikeMutation();
+  const [addLike] = useAddPostLikeMutation();
+  const [deleteLike] = useDeletePostLikeMutation();
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [addCommentInput, setAddCommentInput] = useState<string>("");
 
@@ -62,7 +62,9 @@ const PostProfile = ({ postId }: any) => {
     e.preventDefault();
 
     dispatch(addComment({ postId, content: addCommentInput })).then(() =>
-      dispatch(fetchComments({ postId }))
+      dispatch(fetchComments({ postId })).then(() => {
+        refetch();
+      })
     );
     setAddCommentInput("");
   };
@@ -108,7 +110,13 @@ const PostProfile = ({ postId }: any) => {
         handleLikeClick={handleLikeClick}
         is_liked={post.is_liked}
       />
-      {isCommentsOpen && <CommentsList postId={postId} comments={comments} />}
+      {isCommentsOpen && (
+        <CommentsList
+          formatRelativeTime={formatRelativeTime}
+          postId={postId}
+          comments={comments}
+        />
+      )}
       <AddCommentForm
         input={addCommentInput}
         handleOnAddClick={handleOnAddClick}

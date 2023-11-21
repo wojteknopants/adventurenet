@@ -12,7 +12,10 @@ const PostLikeCounter = ({
   handleLikeClick,
 }: PostLikeCounterProps) => {
   return (
-    <button onClick={handleLikeClick} className="flex gap-2 items-center">
+    <button
+      onClick={handleLikeClick}
+      className="flex gap-2 items-center text-mainGray"
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill={is_liked ? "red" : "none"}

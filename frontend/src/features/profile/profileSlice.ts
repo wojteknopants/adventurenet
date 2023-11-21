@@ -8,20 +8,20 @@ const initialState = profilesAdapter.getInitialState();
 
 export const profileApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getProfiles: builder.query({
-      query: () => "/profiles/",
-      transformResponse: (responseData: any) => {
-        const loadedProfiles = responseData.map((profile: any) => {
-          console.log(profile);
-          return profile;
-        });
-        return profilesAdapter.setAll(initialState, loadedProfiles);
-      },
-      providesTags: (result, error, arg) =>
-        result ? [{ type: "Profile", id: "LIST" }] : [{ type: "Profile" }],
-    }),
+    // getProfiles: builder.query({
+    //   query: () => "/profiles/",
+    //   transformResponse: (responseData: any) => {
+    //     const loadedProfiles = responseData.map((profile: any) => {
+    //       console.log(profile);
+    //       return profile;
+    //     });
+    //     return profilesAdapter.setAll(initialState, loadedProfiles);
+    //   },
+    //   providesTags: (result, error, arg) =>
+    //     result ? [{ type: "Profile", id: "LIST" }] : [{ type: "Profile" }],
+    // }),
     getProfile: builder.query({
-      query: () => "/profiles/me/",
+      query: (user_id) => `/profiles/${user_id}/`,
       providesTags: (result, error, arg) =>
         result ? [{ type: "Profile" }] : [{ type: "Profile" }],
     }),
@@ -83,7 +83,7 @@ export const profileApiSlice = apiSlice.injectEndpoints({
 });
 
 export const {
-  useGetProfilesQuery,
+  // useGetProfilesQuery,
   useGetProfileQuery,
   useUpdateProfileMutation,
   //   useAddNewPostMutation,
@@ -92,20 +92,20 @@ export const {
   // useAddReactionMutation,
 } = profileApiSlice;
 
-export const selectProfilesResult =
-  profileApiSlice.endpoints.getProfiles.select(undefined);
+// export const selectProfilesResult =
+//   profileApiSlice.endpoints.getProfiles.select(undefined);
 
-const selectProfilesData = createSelector(
-  selectProfilesResult,
-  (profilesResult) => profilesResult.data
-);
+// const selectProfilesData = createSelector(
+//   selectProfilesResult,
+//   (profilesResult) => profilesResult.data
+// );
 
-//getSelectors creates these selectors and we rename them with aliases using destructuring
-export const {
-  selectAll: selectAllProfiles,
-  selectById: selectProfileById,
-  selectIds: selectProfileIds,
-  // Pass in a selector that returns the posts slice of state
-} = profilesAdapter.getSelectors(
-  (state: any) => selectProfilesData(state) ?? initialState
-);
+// //getSelectors creates these selectors and we rename them with aliases using destructuring
+// export const {
+//   selectAll: selectAllProfiles,
+//   selectById: selectProfileById,
+//   selectIds: selectProfileIds,
+//   // Pass in a selector that returns the posts slice of state
+// } = profilesAdapter.getSelectors(
+//   (state: any) => selectProfilesData(state) ?? initialState
+// );
