@@ -18,6 +18,9 @@ export default {
         inter: ["Inter", "serif"],
       },
     },
+    screens: {
+      xs: "490px",
+    },
   },
-  plugins: [],
+  plugins: [require("tailwind-scrollbar-hide")],
 };

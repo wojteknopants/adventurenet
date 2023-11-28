@@ -1,14 +1,11 @@
-import Avatar from "../../../components/Avatar";
 import Card from "../../../components/Card";
-import React, { useState } from "react";
+import { useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { parseISO } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  selectPostById,
   useAddPostLikeMutation,
   useDeletePostLikeMutation,
-  selectProfilePostById,
   useDeletePostMutation,
 } from "../../../features/posts/postsSlice";
 import { postsPlaceholder } from "../../../assets";

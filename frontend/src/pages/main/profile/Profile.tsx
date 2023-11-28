@@ -4,10 +4,6 @@ import AvatarProfile from "./AvatarProfile";
 import Card from "../../../components/Card";
 import Cover from "./Cover";
 import {
-  useGetPostsQuery,
-  selectPostIds,
-} from "../../../features/posts/postsSlice";
-import {
   useGetProfileQuery,
   useUpdateProfileMutation,
 } from "../../../features/profile/profileSlice";

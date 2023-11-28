@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { loginLock, loginEmail } from "../../assets";
 import { Link, useNavigate } from "react-router-dom";
 import {

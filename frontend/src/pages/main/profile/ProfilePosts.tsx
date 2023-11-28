@@ -1,13 +1,8 @@
 import React from "react";
 import PostProfile from "./PostProfile";
 import {
-  useGetProfilePostsByIdQuery,
-  selectProfilePostIds,
-  profilePostsSelector,
-  selectProfilePostsResult,
+  useGetProfilePostsByIdQuery
 } from "../../../features/posts/postsSlice";
-import { useDispatch, useSelector } from "react-redux";
-import store from "../../../store";
 
 const ProfilePosts = ({ uid }: any) => {
   // const { isLoading, isSuccess, isError, error, refetch } =

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+
 import Post from "../../components/Post";
 import AddPostForm from "../../components/AddPostForm";
 import {
@@ -10,7 +10,7 @@ import { useLocation } from "react-router-dom";
 import { selectComments } from "../../features/posts/commentsSlice";
 
 const Feed = () => {
-  const { isLoading, isSuccess, isError, error, refetch } = useGetPostsQuery();
+  const { isLoading, isSuccess, isError, error, refetch } = useGetPostsQuery(undefined);
 
   const orderedPostIds = useSelector(selectPostIds);
 

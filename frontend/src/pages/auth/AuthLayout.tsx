@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { loginBackground, logoBlack } from "../../assets";
 import { Outlet } from "react-router-dom";
 import Blur from "../../components/Blur";

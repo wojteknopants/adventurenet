@@ -18,7 +18,7 @@ const Navbar = ({ currentPageId }: Props) => {
           selectedId === nav.id
             ? "shadow-md shadow-blue-400/50 text-white bg-blue-400 hover:bg-blue-400/90 "
             : "text-blue-400 bg-none"
-        } max-w-fit pr-5`}
+        } max-w-fit `}
         onClick={() => {
           setSelectedId(nav.id);
         }}
@@ -26,7 +26,7 @@ const Navbar = ({ currentPageId }: Props) => {
         <img
           src={nav.icon}
           alt="icon"
-          className={`mt-1 transition p-[10px] rounded-2xl ${
+          className={`mt-1 transition p-2.5 rounded-2xl ${
             selectedId === nav.id ? " fill-current text-white " : "bg-none"
           } `}
           style={{
@@ -37,7 +37,7 @@ const Navbar = ({ currentPageId }: Props) => {
             }`,
           }}
         />
-        {nav.title}
+        <div className="md:block md:pr-5 pr-0 hidden">{nav.title}</div>
       </Link>
     </li>
   ));
@@ -48,7 +48,7 @@ const Navbar = ({ currentPageId }: Props) => {
         {/* <h1 className="mx-[10px] my-[32px] text-[24px] font-bold">
           ADVENTURE.NET
         </h1> */}
-        <img className="mx-[0px] my-[32px] font-bold flex flex-1" src={logo} />
+        <img className="mx-[0px] my-[32px] font-bold flex flex-1 " src={logo} />
       </header>
       <ul className="">{printNavBar}</ul>
     </nav>
