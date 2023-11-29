@@ -33,7 +33,7 @@ const MainLayout = () => {
         <Navbar currentPageId={"feed"} />
       </div>
       <div className=" min-w-[320px] lg:w-1/2 min-h-screen h-full shadow-inner bg-slate-100">
-        <div className="md:mx-8 mx-3">
+        <div className="lg:mx-8 mx-3">
           <Outlet />
         </div>
       </div>

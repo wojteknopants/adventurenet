@@ -6,7 +6,7 @@ interface SliderProps {
 }
 
 const Slider = ({ content }: SliderProps) => {
-  const sliderRef = useRef(null);
+  const sliderRef = useRef<HTMLDivElement>(null);
 
   const slideLeft = () => {
     const slider = sliderRef.current;
