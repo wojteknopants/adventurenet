@@ -28,16 +28,16 @@ const MainLayout = () => {
   }, [isAuthenticated]);
 
   return (
-    <div className="flex justify-between">
-      <div className="xs:block hidden w-1/4">
+    <div className="flex">
+      <div className="xs:inline hidden md:w-1/4  ">
         <Navbar currentPageId={"feed"} />
       </div>
-      <div className=" min-w-[320px] xs:w-1/2 min-h-screen h-full shadow-inner bg-slate-100">
-        <div className="mx-8">
+      <div className=" min-w-[320px] lg:w-1/2 min-h-screen h-full shadow-inner bg-slate-100">
+        <div className="md:mx-8 mx-3">
           <Outlet />
         </div>
       </div>
-      <div className="w-1/4 xs:block hidden">
+      <div className=" lg:block hidden">
         <Contacts />
       </div>
     </div>

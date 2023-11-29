@@ -10,6 +10,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import ProfilePosts from "./ProfilePosts";
 import { useParams } from "react-router-dom";
+import PageTitle from "../../../components/PageTitle";
 
 interface Profile {
   user: number;
@@ -100,9 +101,7 @@ const Profile = () => {
 
   return (
     <div>
-      <div className="flex justify-between my-8">
-        <h2 className="text-[24px] font-bold">My profile</h2>
-      </div>
+      <PageTitle title="My profile" />
       <Card noPadding={true}>
         <div className="relative">
           <Cover

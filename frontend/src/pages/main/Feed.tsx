@@ -1,4 +1,3 @@
-
 import Post from "../../components/Post";
 import AddPostForm from "../../components/AddPostForm";
 import {
@@ -8,9 +7,11 @@ import {
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { selectComments } from "../../features/posts/commentsSlice";
+import PageTitle from "../../components/PageTitle";
 
 const Feed = () => {
-  const { isLoading, isSuccess, isError, error, refetch } = useGetPostsQuery(undefined);
+  const { isLoading, isSuccess, isError, error, refetch } =
+    useGetPostsQuery(undefined);
 
   const orderedPostIds = useSelector(selectPostIds);
 
@@ -32,12 +33,8 @@ const Feed = () => {
 
   return (
     <div>
-      <div className="flex justify-between my-6">
-        <h2 className="text-[24px]">Feed</h2>
-        {/* <button>TurnOn</button> */}
-      </div>
+      <PageTitle title="Feed" />
 
-      {/* <div>{testText()}</div> */}
       <AddPostForm />
       {content}
     </div>
