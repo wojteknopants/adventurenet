@@ -8,7 +8,7 @@ const AuthLayout = () => {
       <div
         className="relative flex-col px-16 py-10 w-full h-screen"
         style={{
-          background: `url(${loginBackground})`,
+          //background: `url(${loginBackground})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
