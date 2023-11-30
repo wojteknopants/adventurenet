@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Feed from "./pages/main/Feed";
 import Messages from "./pages/main/Messages";
 import Settings from "./pages/main/Settings";
@@ -11,23 +11,23 @@ import RegistrationForm from "./pages/auth/RegistrationForm";
 import ActivateUser from "./pages/auth/ActivateForm";
 import NotFound from "./pages/NotFound";
 
-import { Provider } from "react-redux";
-import store from "./store";
+import { Provider, useSelector } from "react-redux";
 import Layout from "./pages/_hocs/Layout";
 import Logout from "./pages/main/Logout";
 import Notifications from "./pages/main/Notifications";
 import Bookmarks from "./pages/main/Bookmarks";
+import { getIsAuthenticated } from "./features/auth/authSlice";
 
-import { postsApiSlice } from "./features/posts/postsSlice";
-
-store.dispatch(postsApiSlice.endpoints.getPosts.initiate(undefined));
+// store.dispatch(postsApiSlice.endpoints.getPosts.initiate(undefined));
 
 const App = () => {
+  const isAuthenticated = useSelector(getIsAuthenticated);
+
   return (
     <>
-      <Provider store={store}>
-        <Routes>
-          <Route path="/" element={<Layout />}>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          {isAuthenticated ? (
             <Route path="/" element={<MainLayout />}>
               <Route path="/feed" element={<Feed />} />
               <Route path="/messages" element={<Messages />} />
@@ -38,6 +38,7 @@ const App = () => {
               <Route path="/bookmarks" element={<Bookmarks />} />
               <Route path="/logout" element={<Logout />} />
             </Route>
+          ) : (
             <Route path="/auth" element={<AuthLayout />}>
               <Route path="/auth/login" element={<LoginForm />} />
               <Route path="/auth/registration" element={<RegistrationForm />} />
@@ -46,10 +47,19 @@ const App = () => {
                 element={<ActivateUser />}
               />
             </Route>
-            <Route path="*" element={<NotFound />} />
-          </Route>
-        </Routes>
-      </Provider>
+          )}
+          <Route
+            path="*"
+            element={
+              !isAuthenticated ? (
+                <Navigate to="/auth/login" />
+              ) : (
+                <Navigate to="/feed" />
+              )
+            }
+          />
+        </Route>
+      </Routes>
     </>
   );
 };

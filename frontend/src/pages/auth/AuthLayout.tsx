@@ -13,7 +13,7 @@ const AuthLayout = () => {
           backgroundPosition: "center",
         }}
       >
-        <Blur zIndex={1} blurInPx={800} />
+        <Blur zIndex={1} blurInPx={200} />
         <img className="absolute top-10 left-10" src={logoBlack} alt="Logo" />
         <Outlet />
       </div>

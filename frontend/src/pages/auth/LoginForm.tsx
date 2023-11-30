@@ -6,6 +6,7 @@ import {
   getStatus,
   checkIsAuthenticated,
   login,
+  loadUser,
 } from "../../features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../store";
@@ -36,7 +37,7 @@ const LoginForm = () => {
     setIsChecked((prev) => !prev);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     //Prevent page reload
     event.preventDefault();
 
@@ -54,9 +55,9 @@ const LoginForm = () => {
     console.log(email);
     console.log(password);
 
-    dispatch(login({ email, password })).then(() =>
-      dispatch(checkIsAuthenticated())
-    );
+    await dispatch(login({ email, password }));
+    console.log(localStorage.getItem("access"));
+    await dispatch(checkIsAuthenticated());
   };
 
   useEffect(() => {
@@ -73,14 +74,7 @@ const LoginForm = () => {
 
   useEffect(() => {
     localStorage.setItem("rememberPassword", isChecked.toString());
-    console.log(localStorage.getItem("rememberPassword"));
   }, [isChecked]);
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/feed");
-    }
-  }, [isAuthenticated]);
 
   return (
     <div className={`flex justify-center`}>

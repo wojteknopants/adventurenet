@@ -12,14 +12,6 @@ import {
 const MainLayout = () => {
   const isAuthenticated = useSelector(getIsAuthenticated);
   const navigate = useNavigate();
-  // const dispatch: AppDispatch = useDispatch();
-
-  // dispatch(checkIsAuthenticated()).then(() => {
-  //   console.log(isAuthenticated);
-  //   if (!isAuthenticated) {
-  //     navigate("/auth/login");
-  //   }
-  // });
 
   useEffect(() => {
     if (!isAuthenticated) {
