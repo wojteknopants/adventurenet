@@ -1,6 +1,5 @@
-import { Dispatch, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { error } from "console";
 
 interface LoginParams {
   email: string;
@@ -44,6 +43,7 @@ export const login = createAsyncThunk(
     );
     localStorage.setItem("access", response.data.access);
     localStorage.setItem("refresh", response.data.refresh);
+    console.log(localStorage.getItem("access"));
     await dispatch(loadUser());
 
     return response.data;
@@ -103,8 +103,11 @@ export const checkIsAuthenticated = createAsyncThunk(
     );
 
     if (res.data.code !== "token_not_valid") {
+      console.log(localStorage.getItem("access"));
+      console.log(res);
       return true;
     } else {
+      console.log(res);
       return false;
     }
   }

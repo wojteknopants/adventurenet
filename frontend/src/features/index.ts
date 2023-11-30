@@ -6,7 +6,7 @@ import { apiSlice } from "./api/apiSlice";
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  posts: commentsReducer,
+  comments: commentsReducer,
   [apiSlice.reducerPath]: apiSlice.reducer,
   //profile: profileReducer,
 });

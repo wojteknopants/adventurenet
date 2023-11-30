@@ -3,19 +3,14 @@ import AddPostForm from "../../../components/AddPostForm";
 import AvatarProfile from "./AvatarProfile";
 import Card from "../../../components/Card";
 import Cover from "./Cover";
-import Post from "../../../components/Post";
 import {
-  useGetPostsQuery,
-  selectPostIds,
-} from "../../../features/posts/postsSlice";
-import {
-  useGetProfilesQuery,
-  selectProfileIds,
   useGetProfileQuery,
   useUpdateProfileMutation,
 } from "../../../features/profile/profileSlice";
 import { useDispatch, useSelector } from "react-redux";
 import ProfilePosts from "./ProfilePosts";
+import { useParams } from "react-router-dom";
+import PageTitle from "../../../components/PageTitle";
 
 interface Profile {
   user: number;
@@ -31,16 +26,20 @@ interface Profile {
 }
 
 const Profile = () => {
-  const dispatch = useDispatch();
-
   const [profile, setProfile] = useState<Profile | null>(null);
   const [newCover, setNewCover] = useState(null);
   const [newAvatar, setNewAvatar] = useState(null);
-
+  const dispatch = useDispatch();
   // const { isLoading: profilesIsLoading } = useGetProfilesQuery();
   // const profilesIsd = useSelector(selectProfileIds);
 
-  const { data, isLoading, isSuccess, isError, error } = useGetProfileQuery(0);
+  const { uid } = useParams<{ uid: string }>();
+
+  const { data, isLoading, isSuccess, isError, error, refetch } =
+    useGetProfileQuery(uid);
+
+  console.log("UID : " + uid);
+  console.log(data);
 
   const [updateProfile] = useUpdateProfileMutation();
 
@@ -102,9 +101,7 @@ const Profile = () => {
 
   return (
     <div>
-      <div className="flex justify-between my-8">
-        <h2 className="text-[24px] font-bold">My profile</h2>
-      </div>
+      <PageTitle title="My profile" />
       <Card noPadding={true}>
         <div className="relative">
           <Cover
@@ -123,8 +120,7 @@ const Profile = () => {
               <h1 className="text-3xl font-bold">
                 {/* {profile?.name == null ? "Mark " : profile?.name}
                 {profile?.surname == null ? "Jones" : profile?.surname} */}
-                {/* {profile?.user} */}
-                Egor Grigorik
+                {profile?.user}
               </h1>
               <div className="text=gray-500 leading-4">Poznan, Poland</div>
             </div>
@@ -172,7 +168,7 @@ const Profile = () => {
         </div>
       </Card>
       <AddPostForm />
-      <ProfilePosts />
+      <ProfilePosts uid={uid} />
     </div>
   );
 };

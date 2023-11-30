@@ -1,9 +1,7 @@
+import PageTitle from "../../components/PageTitle";
+
 const Bookmarks = () => {
-  return (
-    <div className="flex justify-between my-6">
-      <h2 className="text-[24px]">Bookmarks</h2>
-    </div>
-  );
+  return <PageTitle title="Bookmarks" />;
 };
-  
+
 export default Bookmarks;

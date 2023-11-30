@@ -1,9 +1,7 @@
+import PageTitle from "../../components/PageTitle";
+
 const Messages = () => {
-  return (
-    <div className="flex justify-between my-6">
-      <h2 className="text-[24px]">Messages</h2>
-    </div>
-  );
+  return <PageTitle title="Messages" />;
 };
 
 export default Messages;

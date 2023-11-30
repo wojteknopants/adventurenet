@@ -17,7 +17,7 @@ const Layout = () => {
   });
 
   return (
-    <div className="font-inter">
+    <div className="font-inter scroll scroll-smooth">
       {/* <DraftComponent /> */}
       <Outlet />
     </div>
