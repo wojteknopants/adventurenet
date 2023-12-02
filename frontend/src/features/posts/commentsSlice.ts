@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { EntityId, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 // interface PostsParams {
@@ -8,7 +8,7 @@ import axios from "axios";
 // }
 
 interface AddCommentParams {
-  postId: number;
+  postId: EntityId;
   content: string;
 }
 

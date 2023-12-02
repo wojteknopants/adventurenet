@@ -8,6 +8,7 @@ interface Props {
 const Blur = ({ zIndex, blurInPx }: Props) => {
   const backdropBlurStyle = {
     backdropFilter: `blur(${blurInPx}px)`,
+    boxShadow: "inset 0px 0px 100px 30px rgba(66, 68, 90, 0.2)",
   };
   return (
     <div

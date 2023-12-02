@@ -169,33 +169,14 @@ export const {
   (state: any) => selectPostsData(state) ?? initialState
 );
 
-export const selectProfilePostsResult =
-  postsApiSlice.endpoints.getProfilePostsById.select(undefined);
-
-// export const selectProfilePostsById = (user_id: any) =>
-//   createSelector(
-//     (state: any) => state.api,
-//     () => {
-//       // Check if the api slice and the getProfilePostsById query exist
-//       if (
-//         postsApiSlice &&
-//         postsApiSlice.endpoints &&
-//         postsApiSlice.endpoints.getProfilePostsById
-//       ) {
-//         // Select the data from the cache using the user_id
-//         console.log(postsApiSlice);
-//         const postsResult =
-//           postsApiSlice.endpoints.getProfilePostsById.select(user_id)(
-//             postsApiSlice
-//           );
-//         return postsResult?.data ?? [];
-//       }
-//       return [];
-//     }
-//   );
+export const selectProfilePostsResult = () => {
+  console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!");
+  console.log(localStorage.getItem("uid"));
+  return postsApiSlice.endpoints.getProfilePostsById.select(undefined);
+};
 
 const selectProfilePostsData = createSelector(
-  selectProfilePostsResult,
+  selectProfilePostsResult(),
   (postsResult) => postsResult.data
 );
 
