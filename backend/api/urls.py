@@ -5,7 +5,7 @@ from .views import (LogoutView, LogoutAllView,
                     PostRetrieveUpdateDeleteView, PostListCreateView, UserPostListView,
                     CommentRetrieveUpdateDeleteView, PostCommentListCreateView, UserCommentListView, CommentListView,
                     PostLikeView, CommentLikeView, PostLikesListView, CommentLikesListView,
-                    UserImagesListView)
+                    UserImagesListView, FlightOffersAPIView, CitySearchAPIView, POISearchAPIView, ToursActivitiesSearchAPIView)
 
 urlpatterns = [
     #logout - blacklist JWT refresh token
@@ -35,6 +35,14 @@ urlpatterns = [
 
     #images
     path('profiles/<str:user__pk>/images/', UserImagesListView.as_view(), name='user_images_list'), #retrieve all images from posts made by particular user
+
+    #flights
+    path('flight-offers/', FlightOffersAPIView.as_view(), name='flight_offers'),
+
+    #amadeus
+    path('city-search/', CitySearchAPIView.as_view(), name='city_search'),
+    path('poi-search/', POISearchAPIView.as_view(), name='poi_search'),
+    path('tours-activities-search/', ToursActivitiesSearchAPIView.as_view(), name='tours_activities_search'),
 
 
 
