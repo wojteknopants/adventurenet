@@ -21,7 +21,7 @@ const MainLayout = () => {
 
   return (
     <div className="flex">
-      <div className="xs:inline hidden md:w-1/4  ">
+      <div className="xs:inline hidden md:w-1/4">
         <Navbar currentPageId={"feed"} />
       </div>
       <div className=" min-w-[320px] lg:w-1/2 min-h-screen h-full shadow-inner bg-slate-100">

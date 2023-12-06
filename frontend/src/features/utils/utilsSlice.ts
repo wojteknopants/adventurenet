@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const utilsSlice = createSlice({
-  name: "auth",
+  name: "utils",
   initialState: {
     url: "me",
   },

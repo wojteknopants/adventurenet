@@ -26,8 +26,8 @@ const App = () => {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Layout />}>
-          {isAuthenticated ? (
+        {isAuthenticated ? (
+          <Route path="/" element={<Layout />}>
             <Route path="/" element={<MainLayout />}>
               <Route path="/feed" element={<Feed />} />
               <Route path="/messages" element={<Messages />} />
@@ -38,27 +38,27 @@ const App = () => {
               <Route path="/bookmarks" element={<Bookmarks />} />
               <Route path="/logout" element={<Logout />} />
             </Route>
-          ) : (
-            <Route path="/auth" element={<AuthLayout />}>
-              <Route path="/auth/login" element={<LoginForm />} />
-              <Route path="/auth/registration" element={<RegistrationForm />} />
-              <Route
-                path="/auth/activate/:uid/:token"
-                element={<ActivateUser />}
-              />
-            </Route>
-          )}
-          <Route
-            path="*"
-            element={
-              !isAuthenticated ? (
-                <Navigate to="/auth/login" />
-              ) : (
-                <Navigate to="/feed" />
-              )
-            }
-          />
-        </Route>
+          </Route>
+        ) : (
+          <Route path="/auth" element={<AuthLayout />}>
+            <Route path="/auth/login" element={<LoginForm />} />
+            <Route path="/auth/registration" element={<RegistrationForm />} />
+            <Route
+              path="/auth/activate/:uid/:token"
+              element={<ActivateUser />}
+            />
+          </Route>
+        )}
+        <Route
+          path="*"
+          element={
+            !isAuthenticated ? (
+              <Navigate to="/auth/login" />
+            ) : (
+              <Navigate to="/feed" />
+            )
+          }
+        />
       </Routes>
     </>
   );

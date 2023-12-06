@@ -1,15 +1,17 @@
 import { EntityId, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-
-// interface PostsParams {
-//   comments: any;
-//   status: "idle" | "succeeded" | "failed";
-//   error: string | undefined;
-// }
+import { RootState } from "../../store";
 
 interface AddCommentParams {
   postId: EntityId;
   content: string;
+}
+interface CommentLikeParams {
+  commentId: EntityId;
+}
+
+interface FetchCommentsParams {
+  postId: EntityId;
 }
 
 const initialState = {
@@ -20,7 +22,7 @@ const initialState = {
 
 export const fetchComments = createAsyncThunk(
   "/posts/post_id/comments/",
-  async ({ postId }: any) => {
+  async ({ postId }: FetchCommentsParams) => {
     try {
       const url = `/posts/${postId}/comments/`;
 
@@ -74,7 +76,7 @@ export const addComment = createAsyncThunk(
 
 export const addCommentLike = createAsyncThunk(
   "/posts/post_comment/addCommentLike",
-  async ({ commentId }: any) => {
+  async ({ commentId }: CommentLikeParams) => {
     try {
       const url = `/comments/${commentId}/like/`;
       console.log(commentId);
@@ -103,7 +105,7 @@ export const addCommentLike = createAsyncThunk(
 
 export const deleteCommentLike = createAsyncThunk(
   "/posts/post_comment/deleteCommentLike",
-  async ({ commentId }: any) => {
+  async ({ commentId }: CommentLikeParams) => {
     try {
       const url = `/comments/${commentId}/like/`;
       console.log(commentId);
@@ -183,6 +185,6 @@ const commentsSlice = createSlice({
       });
   },
 });
-export const selectComments = (state: any) => state.comments.comments;
+export const selectComments = (state: RootState) => state.comments.comments;
 
 export default commentsSlice.reducer;

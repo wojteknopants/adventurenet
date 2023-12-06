@@ -40,8 +40,8 @@ const Profile = () => {
   if (uid !== undefined) {
     localStorage.setItem("uid", uid);
   }
-  console.log("UID : " + localStorage.getItem("uid"));
-  console.log(data);
+  // console.log("UID : " + localStorage.getItem("uid"));
+  // console.log(data);
 
   const [updateProfile] = useUpdateProfileMutation();
 

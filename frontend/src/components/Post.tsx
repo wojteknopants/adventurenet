@@ -105,7 +105,7 @@ const Post = ({ postId, refetch }: PostProps) => {
     }
 
     setIsLiked((prev) => {
-      console.log(!prev);
+      // console.log(!prev);
       return !prev;
     });
   };
