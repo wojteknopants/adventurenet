@@ -1,10 +1,25 @@
 import { createSelector, createEntityAdapter } from "@reduxjs/toolkit";
 import { apiSlice } from "../api/apiSlice";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query";
+import { RootState } from "../../store";
 
 const postsAdapter = createEntityAdapter({
   sortComparer: (a: any, b: any) => b.created_at.localeCompare(a.created_at),
 });
+
+interface PostParams {
+  id: number;
+  user: number;
+  title: string;
+  content: string;
+  images?: [{ image: any }];
+  new_images?: any;
+  comments_count: number;
+  likes_count: number;
+  is_liked: boolean;
+  created_at: string;
+  updated_at?: string;
+}
 
 const initialState = postsAdapter.getInitialState();
 
@@ -12,8 +27,8 @@ export const postsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getPosts: builder.query({
       query: () => "/posts/",
-      transformResponse: (responseData: any) => {
-        const loadedPosts = responseData.map((post: any) => {
+      transformResponse: (responseData: PostParams[]) => {
+        const loadedPosts = responseData.map((post) => {
           // console.log(post);
           return post;
         });
@@ -32,12 +47,12 @@ export const postsApiSlice = apiSlice.injectEndpoints({
           : [{ type: "Post" }],
     }),
     getProfilePostsById: builder.query({
-      query: (user_id: any) => `/profiles/${user_id}/posts/`,
-      transformResponse: (responseData: any) => {
-        const loadedPosts = responseData.map((post: any) => {
+      query: (user_id: number) => `/profiles/${user_id}/posts/`,
+      transformResponse: (responseData: PostParams[]) => {
+        const loadedPosts = responseData.map((post) => {
           return post;
         });
-        console.log(loadedPosts);
+        // console.log(loadedPosts);
         return postsAdapter.setAll(initialState, loadedPosts);
       },
       providesTags: (
@@ -53,7 +68,7 @@ export const postsApiSlice = apiSlice.injectEndpoints({
           : [{ type: "Post" }],
     }),
     getCommentsByPostId: builder.query({
-      query: (post_id: any) => `/posts/${post_id}/comments/`,
+      query: (post_id: number) => `/posts/${post_id}/comments/`,
 
       providesTags: (
         result: any,
@@ -68,7 +83,7 @@ export const postsApiSlice = apiSlice.injectEndpoints({
           : [{ type: "Comments" }],
     }),
     getProfile: builder.query({
-      query: (uid: any) => `/profiles/${uid}/`,
+      query: (uid: number | "me") => `/profiles/${uid}/`,
       providesTags: (result, error, arg) =>
         result ? [{ type: "Profile" }] : [{ type: "Profile" }],
     }),
@@ -166,33 +181,11 @@ export const {
   selectIds: selectPostIds,
   // Pass in a selector that returns the posts slice of state
 } = postsAdapter.getSelectors(
-  (state: any) => selectPostsData(state) ?? initialState
+  (state: RootState) => selectPostsData(state) ?? initialState
 );
 
 export const selectProfilePostsResult =
   postsApiSlice.endpoints.getProfilePostsById.select(undefined);
-
-// export const selectProfilePostsById = (user_id: any) =>
-//   createSelector(
-//     (state: any) => state.api,
-//     () => {
-//       // Check if the api slice and the getProfilePostsById query exist
-//       if (
-//         postsApiSlice &&
-//         postsApiSlice.endpoints &&
-//         postsApiSlice.endpoints.getProfilePostsById
-//       ) {
-//         // Select the data from the cache using the user_id
-//         console.log(postsApiSlice);
-//         const postsResult =
-//           postsApiSlice.endpoints.getProfilePostsById.select(user_id)(
-//             postsApiSlice
-//           );
-//         return postsResult?.data ?? [];
-//       }
-//       return [];
-//     }
-//   );
 
 const selectProfilePostsData = createSelector(
   selectProfilePostsResult,
@@ -205,12 +198,12 @@ export const {
   selectIds: selectProfilePostIds,
   // Pass in a selector that returns the posts slice of state
 } = postsAdapter.getSelectors(
-  (state: any) => selectProfilePostsData(state) ?? initialState
+  (state: RootState) => selectProfilePostsData(state) ?? initialState
 );
 
 export const profilePostsSelector = postsAdapter.getSelectors((state: any) => {
-  console.log(state.api.provided.ProfilePost);
-  console.log(state.api.queries.getProfilePostsById);
-  console.log(state.api);
+  // console.log(state.api.provided.ProfilePost);
+  // console.log(state.api.queries.getProfilePostsById);
+  // console.log(state.api);
   return state.api ?? initialState;
 });

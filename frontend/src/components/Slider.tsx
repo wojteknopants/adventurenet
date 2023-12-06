@@ -25,8 +25,8 @@ const Slider = ({ content }: SliderProps) => {
     <div className="relative items-center mt-8">
       <MdChevronLeft
         onClick={slideLeft}
-        size={50}
-        className="text-mainDarkGray absolute left-[-25px] top-[40%] md:inline hidden"
+        size={40}
+        className="text-mainDarkGray absolute left-[-30px] top-[40%] md:inline hidden hover:text-mainBlue cursor-pointer hover:bg-mainLightGray/90 hover:rounded-xl transition rounded-xl"
       />
       <div
         ref={sliderRef}
@@ -37,8 +37,8 @@ const Slider = ({ content }: SliderProps) => {
       </div>
       <MdChevronRight
         onClick={slideRight}
-        size={50}
-        className="text-mainDarkGray absolute right-[-25px] top-[40%] md:inline hidden"
+        size={40}
+        className="text-mainDarkGray absolute right-[-30px] top-[40%] md:inline hidden hover:text-mainBlue cursor-pointer hover:bg-mainLightGray/90 hover:rounded-xl transition rounded-xl"
       />
     </div>
   );

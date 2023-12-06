@@ -1,26 +1,30 @@
-import React from "react";
+import React, { useRef } from "react";
 import Blur from "./Blur";
 import Avatar from "./Avatar";
 
-interface Props {
-  handleToggleFormWithBlur: () => void;
+interface AddPostPopupProps {
+  handlePopup: () => void;
   handleAddImage: (event: any) => void;
   handleAddText: (event: any) => void;
   handleOnSaveClick: () => void;
-  image: any;
+  image: File | "";
+  text: string;
 }
 
-const AddPostFormWithBlur = ({
-  handleToggleFormWithBlur,
+const AddPostPopup = ({
+  handlePopup,
   handleAddImage,
   handleAddText,
   handleOnSaveClick,
   image,
-}: Props) => {
-  const hiddenFileInput = React.useRef(null);
+  text,
+}: AddPostPopupProps) => {
+  const hiddenFileInput = useRef<HTMLInputElement>(null);
+
   const handleClick = () => {
-    hiddenFileInput.current.click();
+    if (hiddenFileInput.current) hiddenFileInput.current.click();
   };
+
   return (
     <>
       <div className="fixed z-10">
@@ -40,10 +44,7 @@ const AddPostFormWithBlur = ({
                 </div>
               </div>
 
-              <button
-                className="text-red-400"
-                onClick={handleToggleFormWithBlur!}
-              >
+              <button className="text-red-400" onClick={handlePopup}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -86,6 +87,7 @@ const AddPostFormWithBlur = ({
               )}
             </div>
             <input
+              value={text}
               onChange={handleAddText}
               className=" bg-white"
               placeholder="Type something..."
@@ -103,4 +105,4 @@ const AddPostFormWithBlur = ({
   );
 };
 
-export default AddPostFormWithBlur;
+export default AddPostPopup;

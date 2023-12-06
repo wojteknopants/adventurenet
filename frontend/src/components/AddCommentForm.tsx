@@ -3,7 +3,7 @@ import { BsFillSendFill } from "react-icons/bs";
 
 interface AddCommentFormProps {
   input: string;
-  handleOnChangeAdd: (arg: any) => void;
+  handleOnChangeAdd: (arg: React.ChangeEvent<HTMLInputElement>) => void;
   handleOnAddClick: (arg: any) => void;
 }
 

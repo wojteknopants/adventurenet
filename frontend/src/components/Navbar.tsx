@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import { navLinks } from "../constants";
 import { logo, smallLogo } from "../assets";
 
-interface Props {
+interface NavbarProps {
   currentPageId: string;
 }
 
-const Navbar = ({ currentPageId }: Props) => {
+const Navbar = ({ currentPageId }: NavbarProps) => {
   const [selectedId, setSelectedId] = useState(currentPageId);
 
   const printNavBar = navLinks.map((nav) => (
@@ -45,9 +45,6 @@ const Navbar = ({ currentPageId }: Props) => {
   return (
     <nav className=" flex flex-col justify-between px-[8px] xl:px-[64px] lg:px-[32px]">
       <header className="flex flex-1">
-        {/* <h1 className="mx-[10px] my-[32px] text-[24px] font-bold">
-          ADVENTURE.NET
-        </h1> */}
         <img className="my-[32px] font-bold lg:flex flex-1 hidden" src={logo} />
         <img
           className="my-[32px] font-bold flex flex-1 lg:hidden"
