@@ -1,6 +1,6 @@
-import { Dispatch, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { error } from "console";
+import { RootState } from "../../store";
 
 interface LoginParams {
   email: string;
@@ -22,9 +22,9 @@ interface AuthParams {
   access: string | null;
   refresh: string | null;
   isAuthenticated: boolean;
-  user: {};
+  user: object;
   status: "idle" | "succeeded" | "failed";
-  error: any; // string | undefined;
+  error: string | undefined;
 }
 
 export const login = createAsyncThunk(
@@ -44,6 +44,7 @@ export const login = createAsyncThunk(
     );
     localStorage.setItem("access", response.data.access);
     localStorage.setItem("refresh", response.data.refresh);
+    // console.log(localStorage.getItem("access"));
     await dispatch(loadUser());
 
     return response.data;
@@ -103,8 +104,11 @@ export const checkIsAuthenticated = createAsyncThunk(
     );
 
     if (res.data.code !== "token_not_valid") {
+      // console.log(localStorage.getItem("access"));
+      // console.log(res);
       return true;
     } else {
+      // console.log(res);
       return false;
     }
   }
@@ -190,13 +194,15 @@ const authSlice = createSlice({
         localStorage.removeItem("access");
         localStorage.removeItem("refresh");
       })
+
       .addCase(register.fulfilled, (state, action) => {
         state.status = "succeeded";
       })
-      .addCase(register.rejected, (state, action) => {
+      .addCase(register.rejected, (state, action: any) => {
         state.status = "failed";
         state.error = action.payload;
       })
+
       .addCase(checkIsAuthenticated.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.isAuthenticated = action.payload;
@@ -205,12 +211,14 @@ const authSlice = createSlice({
         state.status = "failed";
         state.isAuthenticated = false;
       })
+
       .addCase(activation.fulfilled, (state, action) => {
         state.status = "succeeded";
       })
       .addCase(activation.rejected, (state, action) => {
         state.status = "failed";
       })
+
       .addCase(loadUser.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.user = action.payload;
@@ -223,7 +231,10 @@ const authSlice = createSlice({
 
 export const { logOut } = authSlice.actions;
 
-export const getIsAuthenticated = (state: any) => state.auth.isAuthenticated;
-export const getStatus = (state: any) => state.auth.status;
+export const getIsAuthenticated = (state: RootState) => {
+  // console.log(state.auth.isAuthenticated);
+  return state.auth.isAuthenticated;
+};
+export const getStatus = (state: RootState) => state.auth.status;
 
 export default authSlice.reducer;

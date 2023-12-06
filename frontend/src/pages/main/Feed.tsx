@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import Post from "../../components/Post";
 import AddPostForm from "../../components/AddPostForm";
 import {
@@ -6,9 +5,11 @@ import {
   selectPostIds,
 } from "../../features/posts/postsSlice";
 import { useSelector } from "react-redux";
+import PageTitle from "../../components/PageTitle";
 
 const Feed = () => {
-  const { isLoading, isSuccess, isError, error } = useGetPostsQuery();
+  const { isLoading, isSuccess, isError, error, refetch } =
+    useGetPostsQuery(undefined);
 
   const orderedPostIds = useSelector(selectPostIds);
 
@@ -16,21 +17,22 @@ const Feed = () => {
   if (isLoading) {
     content = <p>"Loading..."</p>;
   } else if (isSuccess) {
-    content = orderedPostIds.map((postId: Number) => (
-      <Post key={postId} postId={postId} />
-    ));
+    if (Array.isArray(orderedPostIds)) {
+      content = orderedPostIds.map((postId) => (
+        <Post key={postId} postId={postId} refetch={refetch} />
+      ));
+      // console.log(content);
+    } else {
+      content = <p>"Loading..."</p>;
+    }
   } else if (isError) {
-    content = <p>{error}</p>;
+    content = <p>{"Refresh the page! It should help :)"}</p>;
   }
 
   return (
     <div>
-      <div className="flex justify-between my-6">
-        <h2 className="text-[24px]">Feed</h2>
-        {/* <button>TurnOn</button> */}
-      </div>
+      <PageTitle title="Feed" />
 
-      {/* <div>{testText()}</div> */}
       <AddPostForm />
       {content}
     </div>

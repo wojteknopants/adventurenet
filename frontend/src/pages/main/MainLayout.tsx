@@ -12,14 +12,6 @@ import {
 const MainLayout = () => {
   const isAuthenticated = useSelector(getIsAuthenticated);
   const navigate = useNavigate();
-  // const dispatch: AppDispatch = useDispatch();
-
-  // dispatch(checkIsAuthenticated()).then(() => {
-  //   console.log(isAuthenticated);
-  //   if (!isAuthenticated) {
-  //     navigate("/auth/login");
-  //   }
-  // });
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -28,19 +20,17 @@ const MainLayout = () => {
   }, [isAuthenticated]);
 
   return (
-    <div>
-      <div className="flex justify-between">
-        <div className="w-[362px]">
-          <Navbar currentPageId={"feed"} />
+    <div className="flex">
+      <div className="xs:inline hidden md:w-1/4">
+        <Navbar currentPageId={"feed"} />
+      </div>
+      <div className=" min-w-[320px] lg:w-1/2 min-h-screen h-full shadow-inner bg-slate-100">
+        <div className="lg:mx-5 mx-3">
+          <Outlet />
         </div>
-        <div className="w-[762px] min-h-screen h-full shadow-inner bg-slate-100">
-          <div className="mx-8">
-            <Outlet />
-          </div>
-        </div>
-        <div className="w-[362px]">
-          <Contacts />
-        </div>
+      </div>
+      <div className=" lg:block hidden">
+        <Contacts />
       </div>
     </div>
   );

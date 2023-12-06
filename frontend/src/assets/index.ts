@@ -3,6 +3,7 @@ import loginEmail from "./email.svg";
 import loginLock from "./lock.svg";
 import loginPerson from "./person.svg";
 import logo from "./logo.svg";
+import smallLogo from "./smallLogo.svg";
 import iconHome from "./iconHome.svg";
 import iconExplore from "./iconExplore.svg";
 import iconNotifications from "./iconNotifications.svg";
@@ -16,7 +17,8 @@ import iconSearch from "./iconSearch.svg";
 import iconPhoto from "./iconPhoto.svg";
 import iconAddPost from "./iconAddPost.svg";
 import postsPlaceholder from "./postsPlaceHolder.svg";
-import profilePlaceholder from "./profilePlaceholder.svg";
+// import profilePlaceholder from "./profilePlaceholder.svg";
+import profilePlaceholder from "./1-crop.jpg";
 
 export {
   profilePlaceholder,
@@ -28,6 +30,7 @@ export {
   loginEmail,
   loginPerson,
   logo,
+  smallLogo,
   iconHome,
   iconExplore,
   iconNotifications,

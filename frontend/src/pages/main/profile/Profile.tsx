@@ -3,19 +3,14 @@ import AddPostForm from "../../../components/AddPostForm";
 import AvatarProfile from "./AvatarProfile";
 import Card from "../../../components/Card";
 import Cover from "./Cover";
-import Post from "../../../components/Post";
 import {
-  useGetPostsQuery,
-  selectPostIds,
-} from "../../../features/posts/postsSlice";
-import {
-  useGetProfilesQuery,
-  selectProfileIds,
   useGetProfileQuery,
   useUpdateProfileMutation,
 } from "../../../features/profile/profileSlice";
 import { useDispatch, useSelector } from "react-redux";
 import ProfilePosts from "./ProfilePosts";
+import { useParams } from "react-router-dom";
+import PageTitle from "../../../components/PageTitle";
 
 interface Profile {
   user: number;
@@ -31,16 +26,22 @@ interface Profile {
 }
 
 const Profile = () => {
-  const dispatch = useDispatch();
-
   const [profile, setProfile] = useState<Profile | null>(null);
   const [newCover, setNewCover] = useState(null);
-  const [newAvatar, setNewAvatar] = useState<string | undefined>();
-
+  const [newAvatar, setNewAvatar] = useState(null);
+  const dispatch = useDispatch();
   // const { isLoading: profilesIsLoading } = useGetProfilesQuery();
   // const profilesIsd = useSelector(selectProfileIds);
 
-  const { data, isLoading, isSuccess, isError, error } = useGetProfileQuery();
+  const { uid } = useParams<{ uid: string }>();
+
+  const { data, isLoading, isSuccess, isError, error, refetch } =
+    useGetProfileQuery(uid);
+  if (uid !== undefined) {
+    localStorage.setItem("uid", uid);
+  }
+  // console.log("UID : " + localStorage.getItem("uid"));
+  // console.log(data);
 
   const [updateProfile] = useUpdateProfileMutation();
 
@@ -65,7 +66,9 @@ const Profile = () => {
         formData.append("profile_picture", newAvatar);
       }
 
-      await dispatch(updateProfile(formData)).unwrap();
+      await updateProfile(formData).unwrap();
+      setNewAvatar(null);
+      setNewCover(null);
       console.log("Profile updated successfully!");
     } catch (err) {
       console.error("Failed to update the profile", err);
@@ -77,10 +80,14 @@ const Profile = () => {
     if (newCover) {
       onProfileChange();
     }
+    if (newAvatar) {
+      onProfileChange();
+    }
   }, [newCover, newAvatar]);
 
   useEffect(() => {
     if (isLoading) {
+      console.log("Loading...");
     } else if (isSuccess) {
       const updatedProfile = { ...data };
 
@@ -90,15 +97,13 @@ const Profile = () => {
     } else if (isError) {
       console.error(error);
     }
-  }, [isLoading, data]);
 
-  console.log(profile);
+    console.log(profile);
+  }, [isLoading, data]);
 
   return (
     <div>
-      <div className="flex justify-between my-6">
-        <h2 className="text-[24px]">My profile</h2>
-      </div>
+      <PageTitle title="My profile" />
       <Card noPadding={true}>
         <div className="relative">
           <Cover
@@ -119,7 +124,7 @@ const Profile = () => {
                 {profile?.surname == null ? "Jones" : profile?.surname} */}
                 {profile?.user}
               </h1>
-              <div className="text=gray-500 leading-4">City, Country</div>
+              <div className="text=gray-500 leading-4">Poznan, Poland</div>
             </div>
             <div className="mt-10 flex gap-1">
               <div>
@@ -165,7 +170,7 @@ const Profile = () => {
         </div>
       </Card>
       <AddPostForm />
-      <ProfilePosts />
+      <ProfilePosts uid={uid} />
     </div>
   );
 };

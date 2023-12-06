@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Feed from "./pages/main/Feed";
 import Messages from "./pages/main/Messages";
 import Settings from "./pages/main/Settings";
@@ -11,45 +11,55 @@ import RegistrationForm from "./pages/auth/RegistrationForm";
 import ActivateUser from "./pages/auth/ActivateForm";
 import NotFound from "./pages/NotFound";
 
-import { Provider } from "react-redux";
-import store from "./store";
-import Layout from "./pages/hocs/Layout";
+import { Provider, useSelector } from "react-redux";
+import Layout from "./pages/_hocs/Layout";
 import Logout from "./pages/main/Logout";
 import Notifications from "./pages/main/Notifications";
 import Bookmarks from "./pages/main/Bookmarks";
+import { getIsAuthenticated } from "./features/auth/authSlice";
 
-import { postsApiSlice } from "./features/posts/postsSlice";
-
-store.dispatch(postsApiSlice.endpoints.getPosts.initiate());
+// store.dispatch(postsApiSlice.endpoints.getPosts.initiate(undefined));
 
 const App = () => {
+  const isAuthenticated = useSelector(getIsAuthenticated);
+
   return (
     <>
-      <Provider store={store}>
-        <Routes>
+      <Routes>
+        {isAuthenticated ? (
           <Route path="/" element={<Layout />}>
             <Route path="/" element={<MainLayout />}>
               <Route path="/feed" element={<Feed />} />
               <Route path="/messages" element={<Messages />} />
               <Route path="/settings" element={<Settings />} />
-              <Route path="/profile/:user" element={<Profile />} />
+              <Route path="/profile/:uid" element={<Profile />} />
               <Route path="/explore" element={<Explore />} />
               <Route path="/notifications" element={<Notifications />} />
               <Route path="/bookmarks" element={<Bookmarks />} />
               <Route path="/logout" element={<Logout />} />
             </Route>
-            <Route path="/auth" element={<AuthLayout />}>
-              <Route path="/auth/login" element={<LoginForm />} />
-              <Route path="/auth/registration" element={<RegistrationForm />} />
-              <Route
-                path="/auth/activate/:uid/:token"
-                element={<ActivateUser />}
-              />
-            </Route>
-            <Route path="*" element={<NotFound />} />
           </Route>
-        </Routes>
-      </Provider>
+        ) : (
+          <Route path="/auth" element={<AuthLayout />}>
+            <Route path="/auth/login" element={<LoginForm />} />
+            <Route path="/auth/registration" element={<RegistrationForm />} />
+            <Route
+              path="/auth/activate/:uid/:token"
+              element={<ActivateUser />}
+            />
+          </Route>
+        )}
+        <Route
+          path="*"
+          element={
+            !isAuthenticated ? (
+              <Navigate to="/auth/login" />
+            ) : (
+              <Navigate to="/feed" />
+            )
+          }
+        />
+      </Routes>
     </>
   );
 };

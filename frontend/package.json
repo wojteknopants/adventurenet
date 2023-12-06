@@ -21,9 +21,12 @@
     "baseui": "^12.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-horizontal-scrolling-menu": "^4.1.1",
+    "react-icons": "^4.12.0",
     "react-router-dom": "^6.11.0",
     "styletron-engine-atomic": "^1.5.0",
-    "styletron-react": "^6.1.0"
+    "styletron-react": "^6.1.0",
+    "tailwind-scrollbar-hide": "^1.1.7"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",
