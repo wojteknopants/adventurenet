@@ -11,6 +11,12 @@ from rest_framework_simplejwt.token_blacklist.models import OutstandingToken, Bl
 from rest_framework.response import Response
 from rest_framework import status
 
+from .services.flight_services import fetch_flight_offers, preprocess_data
+from .services.amadeus_services import get_city_search, get_points_of_interest, get_tours_and_activities
+
+from datetime import datetime
+
+
 # for ordering posts from newest to oldest
 from rest_framework.filters import OrderingFilter
 
@@ -364,3 +370,111 @@ class UserImagesListView(ListAPIView):
             user_id = user.pk
 
         return Image.objects.filter(user_id=user_id)
+    
+
+#FLIGHTS (Skyscanner)
+
+class FlightOffersAPIView(APIView):
+    """
+    API View to fetch flight offers.
+    """
+
+    def get(self, request, *args, **kwargs):
+        # Extract query parameters
+        current_year = datetime.now().year
+        current_month = datetime.now().month
+
+        origin_place = request.query_params.get('originPlace', '27544008')  # Default value
+        year = request.query_params.get('year', str(current_year))
+        month = request.query_params.get('month', str(current_month))
+        currency = request.query_params.get('currency', 'GBP')  # Default value
+        locale = request.query_params.get('locale', 'en-GB')  # Default value
+        market = request.query_params.get('market', 'UK')  # Default value
+
+        # Validate the parameters
+        try:
+            year = int(year)
+            month = int(month)
+            if not (1 <= month <= 12):
+                raise ValueError("Month must be between 1 and 12.")
+
+            # Ensure the year is within the next two years
+            if year < current_year or year > current_year + 2:
+                raise ValueError("Year must be within the range of current year to next two years.")
+
+            # Ensure the month is not in the past for the current year
+            if year == current_year and month < current_month:
+                raise ValueError("Month cannot be in the past for the current year.")
+
+        except ValueError as e:
+            return Response({'detail': "wtf " + str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            # Fetch and preprocess flight offers
+            raw_data = fetch_flight_offers(origin_place, year, month, currency, locale, market)
+            processed_data = preprocess_data(raw_data)
+        except Exception as e:
+            # Log the error for debugging
+            print("kurr " + str(e))
+            # Return a generic error response
+            return Response({'detail': 'Error fetching flight offers.'}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+
+        # Return the processed data as a JSON response
+        return Response(processed_data)
+    
+
+class CitySearchAPIView(APIView):
+    """
+    API View to get City names suggestions.
+    """
+
+    def get(self, request, *args, **kwargs):
+        keyword = request.query_params.get('keyword')
+        if not keyword:
+            return Response({"error": "Keyword parameter is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            results = get_city_search(keyword)
+            if results is None:
+                return Response({"error": "Error fetching data from Amadeus API."}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+            return Response(results)
+        except Exception as e:
+            # Log the error for debugging
+            print(f"Internal server error: {e}")
+            return Response({"error": "Internal server error."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class POISearchAPIView(APIView):
+    def get(self, request, *args, **kwargs):
+        latitude = request.query_params.get('latitude')
+        longitude = request.query_params.get('longitude')
+
+        if not latitude or not longitude:
+            return Response({"error": "Latitude and longitude parameters are required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            results = get_points_of_interest(latitude, longitude)
+            if results is None:
+                return Response({"error": "Error fetching data from Amadeus API."}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+            return Response(results)
+        except Exception as e:
+            # Log the error for debugging
+            print(f"Internal server error: {e}")
+            return Response({"error": "Internal server error."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+class ToursActivitiesSearchAPIView(APIView):
+    def get(self, request, *args, **kwargs):
+        latitude = request.query_params.get('latitude')
+        longitude = request.query_params.get('longitude')
+
+        if not latitude or not longitude:
+            return Response({"error": "Latitude and longitude parameters are required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            results = get_tours_and_activities(latitude, longitude)
+            if results is None:
+                return Response({"error": "Error fetching data from Amadeus API."}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+            return Response(results)
+        except Exception as e:
+            # Log the error for debugging
+            print(f"Internal server error: {e}")
+            return Response({"error": "Internal server error."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

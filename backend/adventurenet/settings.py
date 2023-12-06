@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
 from pathlib import Path
-
+import yaml
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -239,4 +239,15 @@ EMAIL_HOST_PASSWORD = 'ivzzymnduuhrnxli'
 #MEDIA folder for Django Rest Framework
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+SKYSCANNER_KEY = ''
+AMADEUS_KEY = ''
+AMADEUS_SECRET = ''
+
+from decouple import config
+
+AMADEUS_API_KEY = config('AMADEUS_API_KEY')
+AMADEUS_API_SECRET = config('AMADEUS_API_SECRET')
+SKYSCANNER_API_KEY = config('SKYSCANNER_API_KEY')
+
 
