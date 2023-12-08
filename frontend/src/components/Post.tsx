@@ -44,7 +44,7 @@ interface PostProps {
 }
 
 const Post = ({ postId, refetch }: PostProps) => {
-  const post = useSelector((state) => selectPostById(state, postId));
+  const post = useSelector((state: any) => selectPostById(state, postId));
   const [deletePost] = useDeletePostMutation();
   const dispatch: AppDispatch = useDispatch();
   const comments = useSelector(selectComments);
