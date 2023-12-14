@@ -1,11 +1,11 @@
 import Card from "./Card";
-import Searchbar from "./Searchbar";
+import Search from "./Search";
 
 const Contacts = () => {
   return (
     <div className="fixed flex flex-col justify-between p-[10px] mb-0.5">
       <div className="flex-col">
-        <Searchbar />
+        <Search />
       </div>
       {/* <div className="w-48 h-48">
       <Card noPadding={false}>

@@ -4,6 +4,10 @@ import { BsImage } from "react-icons/bs";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import Slider from "../../components/Slider";
 import PageTitle from "../../components/PageTitle";
+import { useDispatch } from "react-redux";
+import { getCities } from "../../features/explore/exploreSlice";
+import { AppDispatch } from "../../store";
+import Search from "../../components/Search";
 
 const hotels = [
   { name: "Hotel One", stars: 4, price: "$$" },
@@ -51,6 +55,7 @@ const Explore = () => {
   return (
     <div>
       <PageTitle title="Explore" />
+      <Search />
       <Slider content={content} />
     </div>
   );
