@@ -43,8 +43,8 @@ const Navbar = ({ currentPageId }: NavbarProps) => {
   ));
 
   return (
-    <nav className=" flex flex-col justify-between px-[8px] xl:px-[64px] lg:px-[32px]">
-      <header className="flex flex-1">
+    <nav className=" flex flex-col justify-between px-[8px] xl:px-[64px] lg:px-[32px] fixed">
+      <header className="flex flex-1 ">
         <img className="my-[32px] font-bold lg:flex flex-1 hidden" src={logo} />
         <img
           className="my-[32px] font-bold flex flex-1 lg:hidden"

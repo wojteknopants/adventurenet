@@ -23,7 +23,7 @@ export default function Search({
           </button>
         </div>
         {searched && (
-          <ul className="flex flex-col top-2 shadow-md bg-white/95 rounded-xl relative z-10 px-2 py-2">
+          <ul className="flex flex-col mt-14 shadow-md bg-white/95 rounded-xl absolute z-10 px-2 py-2">
             {searched}
           </ul>
         )}

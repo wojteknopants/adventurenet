@@ -5,6 +5,7 @@ import Slider from "../../components/Slider";
 import PageTitle from "../../components/PageTitle";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  getActivities,
   getCities,
   searchedCities,
   selectCity,
@@ -48,6 +49,12 @@ const Explore = () => {
     console.log(city);
     setSelectedCity(city);
     dispatch(selectCity(city));
+    dispatch(
+      getActivities({
+        latitude: city.geoCode.latitude,
+        longitude: city.geoCode.longitude,
+      })
+    );
   };
 
   const handleOnSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
