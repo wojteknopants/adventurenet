@@ -5,6 +5,7 @@ import { RootState } from "../../store";
 interface exploreParams {
   cities: any;
   status: "fulfilled" | "rejected" | "panding";
+  selectedCity: any;
 }
 
 export const getCities = createAsyncThunk(
@@ -41,10 +42,14 @@ const exploreSlice = createSlice({
   initialState: {
     cities: [{}],
     status: "fulfilled",
+    selectedCity: {},
   } as exploreParams,
   reducers: {
     logOut(state) {
       state.status = "fulfilled";
+    },
+    selectCity(state, action) {
+      state.selectedCity = action.payload;
     },
   },
   extraReducers(builder) {
@@ -59,6 +64,7 @@ const exploreSlice = createSlice({
 });
 
 // export const { logOut } = exploreSlice.actions;
+export const { selectCity } = exploreSlice.actions;
 
 // export const getIsAuthenticated = (state: any) => state.auth.isAuthenticated;
 export const searchedCities = (state: RootState) => {

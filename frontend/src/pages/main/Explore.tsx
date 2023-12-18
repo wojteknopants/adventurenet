@@ -5,7 +5,7 @@ import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import Slider from "../../components/Slider";
 import PageTitle from "../../components/PageTitle";
 import { useDispatch } from "react-redux";
-import { getCities } from "../../features/explore/exploreSlice";
+import { getCities, selectCity } from "../../features/explore/exploreSlice";
 import { AppDispatch } from "../../store";
 import Search from "../../components/Search";
 
