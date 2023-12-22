@@ -37,6 +37,8 @@ class PostSerializer(serializers.ModelSerializer):
     new_images = serializers.ListField(child=serializers.ImageField(), write_only=True, max_length=10, required=False)
     new_tags = serializers.ListField(child=serializers.CharField(), write_only=True, max_length=10, required=False)
 
+    user_pfp = serializers.SerializerMethodField()
+
     tags = serializers.SlugRelatedField(
         many=True,
         queryset=Tag.objects.all(),
@@ -52,14 +54,14 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('id', 'user', 'title','tags', 'new_tags', 'content', 'images', 'new_images','images_to_delete', 'comments_count', 'likes_count', 'is_liked', 'created_at', 'updated_at')
-        read_only_fields = ('id', 'user', 'images', 'comments_count', 'likes_count', 'is_liked', 'created_at', 'updated_at')
+        fields = ('id', 'user', 'user_pfp' 'title','tags', 'new_tags', 'content', 'images', 'new_images','images_to_delete', 'comments_count', 'likes_count', 'is_liked', 'created_at', 'updated_at')
+        read_only_fields = ('id', 'user', 'images', 'comments_count', 'likes_count', 'is_liked', 'created_at', 'updated_at', 'user_pfp')
         write_only_fields = ('new_images','new_tags', 'images_to_delete')
         #images and tags are for outcoming data, new_images and new_tags are for incoming data (these are separate models and needs some workaround when creating/updating)
 
     def create(self, validated_data):
         tags_data = validated_data.pop('new_tags', [])
-        images_data = validated_data.pop('new_images', [])
+        images_data = validated_data.pop('new_images', []), 
         post = Post.objects.create(**validated_data)
 
         for tag_name in tags_data:
@@ -99,6 +101,13 @@ class PostSerializer(serializers.ModelSerializer):
         if user.is_authenticated:
             return PostLike.objects.filter(post=obj, user=user).exists()
         return False
+    
+    def get_user_pfp(self, obj):
+        # Assuming each user has a related UserProfile instance
+        profile = UserProfile.objects.filter(user=obj.user).first()
+        if profile and profile.profile_picture:
+            return profile.profile_picture.url
+        return None  # Or a default image URL
 
 
 
