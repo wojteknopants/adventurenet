@@ -66,7 +66,7 @@ export const getActivities = createAsyncThunk(
   }
 );
 
-export const getActivities = createAsyncThunk(
+export const getFlights = createAsyncThunk(
   "explore/getActivities",
   async ({ cityFrom }: { cityFrom: string }) => {
     try {
