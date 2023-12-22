@@ -57,13 +57,23 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return "Profile of " + self.user.email 
-    
+
+class Tag(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    # Optionally, add more fields to store additional info like type (city, country, etc.)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
 class Post(models.Model):
     user = models.ForeignKey(UserAccount, on_delete=models.CASCADE, related_name='posts')
     title = models.CharField(max_length=255)
     content = models.TextField()
     comments_count = models.IntegerField(default=0)
     likes_count = models.IntegerField(default=0)
+    tags = models.ManyToManyField(Tag, related_name='posts')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -120,4 +130,9 @@ class Image(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+class Itinerary(models.Model):
+    user = models.ForeignKey(UserAccount, related_name='itineraries', on_delete=models.CASCADE)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
