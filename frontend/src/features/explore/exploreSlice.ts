@@ -66,6 +66,34 @@ export const getActivities = createAsyncThunk(
   }
 );
 
+export const getActivities = createAsyncThunk(
+  "explore/getActivities",
+  async ({ cityFrom }: { cityFrom: string }) => {
+    try {
+      const url = `/tours-activities-search/`;
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `JWT ${localStorage.getItem("access")}`,
+          Accept: "application/json",
+        },
+
+        params: { latitude: `${latitude}`, longitude: `${longitude}` },
+      };
+
+      const res = await axios.get(
+        `${import.meta.env.VITE_REACT_APP_API_URL}${url}`,
+        config
+      );
+
+      console.log(res.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 const exploreSlice = createSlice({
   name: "explore",
   initialState: {
@@ -93,6 +121,12 @@ const exploreSlice = createSlice({
       state.status = "fulfilled";
     });
     builder.addCase(getActivities.rejected, (state, action) => {
+      state.status = "rejected";
+    });
+    builder.addCase(getFlights.rejected, (state, action) => {
+      state.status = "fulfilled";
+    });
+    builder.addCase(getFlights.rejected, (state, action) => {
       state.status = "rejected";
     });
   },

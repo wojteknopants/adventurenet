@@ -9,7 +9,6 @@ export default function Search({
   searched,
   handleOnSearchChange,
 }: searchProps) {
-  console.log("AAAAAA", searched);
   return (
     <div className="flex mt-4 gap-3">
       <div className="flex flex-col grow">
