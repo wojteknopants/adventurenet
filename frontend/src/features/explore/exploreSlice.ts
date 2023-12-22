@@ -67,7 +67,7 @@ export const getActivities = createAsyncThunk(
 );
 
 export const getFlights = createAsyncThunk(
-  "explore/getActivities",
+  "explore/getFlights",
   async ({ cityFrom }: { cityFrom: string }) => {
     try {
       const url = `/tours-activities-search/`;
@@ -78,8 +78,6 @@ export const getFlights = createAsyncThunk(
           Authorization: `JWT ${localStorage.getItem("access")}`,
           Accept: "application/json",
         },
-
-        params: { latitude: `${latitude}`, longitude: `${longitude}` },
       };
 
       const res = await axios.get(
@@ -123,7 +121,7 @@ const exploreSlice = createSlice({
     builder.addCase(getActivities.rejected, (state, action) => {
       state.status = "rejected";
     });
-    builder.addCase(getFlights.rejected, (state, action) => {
+    builder.addCase(getFlights.fulfilled, (state, action) => {
       state.status = "fulfilled";
     });
     builder.addCase(getFlights.rejected, (state, action) => {
