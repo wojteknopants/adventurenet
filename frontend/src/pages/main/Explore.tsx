@@ -64,21 +64,22 @@ const Explore = () => {
 
     timeout = setTimeout(() => {
       dispatch(getCities({ city: inputValue }));
-
-      console.log(inputValue);
     }, 300);
   };
 
-  const searched = cities.map((city: any, index: any) => (
-    <li key={index}>
-      <button
-        onClick={() => handleOnCityClick(city)}
-        className="flex grow w-full text-mainGray hover:bg-mainLightGray hover:text-mainBlue transition-all rounded-lg px-2 py-1 text-lg"
-      >
-        {city.name}
-      </button>
-    </li>
-  ));
+  const searched = cities.map((city: any, index: any) => {
+    console.log(city);
+    return (
+      <li key={index}>
+        <button
+          onClick={() => handleOnCityClick(city)}
+          className="flex grow w-full text-mainGray hover:bg-mainLightGray hover:text-mainBlue transition-all rounded-lg px-2 py-1 text-lg"
+        >
+          {city.name}
+        </button>
+      </li>
+    );
+  });
 
   const content = hotels.map((hotel, index) => (
     <div
