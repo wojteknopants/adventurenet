@@ -2,8 +2,8 @@ from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpda
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from djoser.permissions import CurrentUserOrAdminOrReadOnly
 from .permissions import OwnerOrAdmin, OwnerOrAdminOrReadOnly
-from .models import UserProfile, Post, Comment, PostLike, CommentLike, Image
-from .serializers import UserProfileSerializer, PostSerializer, CommentSerializer, PostLikeSerializer, CommentLikeSerializer, ImageSerializer
+from .models import UserProfile, Post, Comment, PostLike, CommentLike, Image, Itinerary
+from .serializers import UserProfileSerializer, PostSerializer, CommentSerializer, PostLikeSerializer, CommentLikeSerializer, ImageSerializer, GenerateItinerarySerializer, ItinerarySerializer
 
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -11,8 +11,10 @@ from rest_framework_simplejwt.token_blacklist.models import OutstandingToken, Bl
 from rest_framework.response import Response
 from rest_framework import status
 
-from .services.flight_services import fetch_flight_offers, preprocess_data
-from .services.amadeus_services import get_city_search, get_points_of_interest, get_tours_and_activities
+from .services.flight_services import fetch_flight_culturedata, fetch_flight_search_suggestions, fetch_flight_offers, preprocess_data
+from .services.amadeus_services import get_city_search, get_points_of_interest, get_tours_and_activities, preprocess_poi_data, clean_tours_data
+from .services.openai_services import generate_itinerary
+from .services.mapbox_services import mapbox_search_retrieve, mapbox_search_suggest, extract_location_tags
 
 from datetime import datetime
 
@@ -273,65 +275,6 @@ class CommentLikeView(APIView):
         else:
             return Response({'detail': 'Not liked yet'}, status=status.HTTP_400_BAD_REQUEST)
         
-# OLD VERSIONS, RETURNS SOMETHING ELSE
-# class PostLikeView(APIView):
-#     """
-#     View to handle POST and DELETE requests for liking a Post (PostLike).
-#     """
-#     def post(self, request, pk):
-#         post = Post.objects.get(pk=pk)
-#         post_like, created = PostLike.objects.get_or_create(user=request.user, post=post)
-
-#         if created:
-#             serializer = PostLikeSerializer(post_like)
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         else:
-#             return Response({'detail': 'Already liked'}, status=status.HTTP_400_BAD_REQUEST)
-
-#     def delete(self, request, pk):
-#         post = Post.objects.get(pk=pk)
-#         post_like = PostLike.objects.filter(user=request.user, post=post)
-
-#         if post_like.exists():
-#             post_like.delete()
-#             return Response({'detail': 'Post unliked'}, status=status.HTTP_204_NO_CONTENT)
-#         else:
-#             return Response({'detail': 'Not liked yet'}, status=status.HTTP_400_BAD_REQUEST)
-
-# class CommentLikeView(APIView):
-#     """
-#     View to handle POST and DELETE requests for liking a Comment (CommentLike).
-#     """
-#     def post(self, request, pk):
-#         comment = Comment.objects.get(pk=pk)
-#         comment_like, created = CommentLike.objects.get_or_create(user=request.user, comment=comment)
-
-#         if created:
-#             serializer = CommentLikeSerializer(comment_like)
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         else:
-#             return Response({'detail': 'Already liked'}, status=status.HTTP_400_BAD_REQUEST)
-
-#     def delete(self, request, pk):
-#         comment = Comment.objects.get(pk=pk)
-#         comment_like = CommentLike.objects.filter(user=request.user, comment=comment)
-
-#         if comment_like.exists():
-#             comment_like.delete()
-#             return Response({'detail': 'Post unliked'}, status=status.HTTP_204_NO_CONTENT)
-#         else:
-#             return Response({'detail': 'Not liked yet'}, status=status.HTTP_400_BAD_REQUEST)
-
-#     def delete(self, request, pk):
-#         comment = Comment.objects.get(pk=pk)
-#         try:
-#             comment_like = CommentLike.objects.get(user=request.user, comment=comment)
-#             comment_like.delete()
-#             return Response({'detail': 'Post unliked'}, status=status.HTTP_204_NO_CONTENT)
-#         except CommentLike.DoesNotExist:
-#             return Response({'detail': 'Not liked yet'}, status=status.HTTP_400_BAD_REQUEST)
-
-
 class CommentLikesListView(ListAPIView):
     """GET all likes for specific comment"""
     serializer_class = CommentLikeSerializer
@@ -373,6 +316,48 @@ class UserImagesListView(ListAPIView):
     
 
 #FLIGHTS (Skyscanner)
+class FlightCultureDataAPIView(APIView):
+
+    def get(self, request, *args, **kwargs):
+        # Extract query parameters
+
+        ipAddress = request.query_params.get('ipAddress')
+
+        try:
+            # Fetch and preprocess flight offers
+            culturedata= fetch_flight_culturedata(ipAddress)
+        except Exception as e:           
+            # Return a generic error response
+            return Response({'detail': 'Error fetching culture data.'}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+
+        # Return the processed data as a JSON response
+        return Response(culturedata)
+     
+
+
+
+class FlightSearchSuggestAPIView(APIView):
+    """
+    API View to fetch flight offers.
+    """
+
+    def post(self, request, *args, **kwargs):
+        # Extract data directly from the request
+        searchTerm = request.data.get('searchTerm')
+        locale = request.data.get('locale')
+        market = request.data.get('market')
+
+        # Validate the data as necessary
+        if not searchTerm or not locale or not market:
+            return Response({"error": "Missing parameters"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            search_suggestions= fetch_flight_search_suggestions(searchTerm, locale, market)
+        except Exception as e:
+            # Return a generic error response
+            return Response({'detail': 'Error fetching flight search suggestions.'}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        # Return a response
+        return Response(search_suggestions)
 
 class FlightOffersAPIView(APIView):
     """
@@ -384,7 +369,7 @@ class FlightOffersAPIView(APIView):
         current_year = datetime.now().year
         current_month = datetime.now().month
 
-        origin_place = request.query_params.get('originPlace', '27544008')  # Default value
+        origin_place = request.query_params.get('originPlace')  # Default value
         year = request.query_params.get('year', str(current_year))
         month = request.query_params.get('month', str(current_month))
         currency = request.query_params.get('currency', 'GBP')  # Default value
@@ -407,22 +392,21 @@ class FlightOffersAPIView(APIView):
                 raise ValueError("Month cannot be in the past for the current year.")
 
         except ValueError as e:
-            return Response({'detail': "wtf " + str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'detail': + str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             # Fetch and preprocess flight offers
             raw_data = fetch_flight_offers(origin_place, year, month, currency, locale, market)
             processed_data = preprocess_data(raw_data)
-        except Exception as e:
-            # Log the error for debugging
-            print("kurr " + str(e))
+        except Exception as e:           
             # Return a generic error response
             return Response({'detail': 'Error fetching flight offers.'}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
 
         # Return the processed data as a JSON response
         return Response(processed_data)
     
-
+#AMADEUS 
+    
 class CitySearchAPIView(APIView):
     """
     API View to get City names suggestions.
@@ -478,3 +462,95 @@ class ToursActivitiesSearchAPIView(APIView):
             # Log the error for debugging
             print(f"Internal server error: {e}")
             return Response({"error": "Internal server error."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+import time
+
+#OPENAI
+
+class GenerateItineraryView(APIView):
+    def post(self, request, *args, **kwargs):
+        start_time = time.perf_counter()
+        serializer = GenerateItinerarySerializer(data=request.data)
+        if serializer.is_valid():
+            validated_data = serializer.validated_data
+            latitude = validated_data.get('latitude')
+            longitude = validated_data.get('longitude')
+            number_of_days = validated_data.get('number_of_days')
+            intensiveness = validated_data.get('intensiveness')
+
+            # Assuming you have defined these functions
+            poi_data = get_points_of_interest(latitude, longitude)
+            tour_data = get_tours_and_activities(latitude, longitude)
+            cleaned_tour_data = clean_tours_data(tour_data)
+            itinerary_poi_dict = preprocess_poi_data(poi_data, cleaned_tour_data, number_of_days, intensiveness)
+            end_time = time.perf_counter()
+            print(end_time-start_time)
+            start_time = time.perf_counter()
+            itinerary_narrated = generate_itinerary(itinerary_poi_dict)
+            end_time = time.perf_counter()
+            print(end_time-start_time)
+
+            return Response(itinerary_narrated, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#MAPBOX (tags)
+        
+class MapboxSuggestView(APIView):
+    def get(self, request, *args, **kwargs):
+        query = request.query_params.get('query')
+        if not query:
+            return Response({"error": "Query parameter is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            response = mapbox_search_suggest(query)
+            return Response(response)
+        except Exception:
+            return Response({"error": "An error occurred while processing your request."}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+
+class MapboxRetrieveView(APIView):
+    def get(self, request, *args, **kwargs):
+        place_id = request.query_params.get('place_id')
+        if not place_id:
+            return Response({"error": "Place ID parameter is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            response = mapbox_search_retrieve(place_id)
+            tags = extract_location_tags(response)
+            return Response({"tags": tags})
+        except Exception:
+            return Response({"error": "An error occurred while processing your request."}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+
+#ITINERARIES CRUD
+        
+class ItineraryListCreateView(ListCreateAPIView):
+    queryset = Itinerary.objects.all()
+    serializer_class = ItinerarySerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+class ItineraryRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
+    queryset = Itinerary.objects.all()
+    serializer_class = ItinerarySerializer
+    permission_classes = [IsAuthenticated, OwnerOrAdminOrReadOnly]
+    lookup_field = 'id'
+
+class UserItinerariesListView(ListAPIView):
+    """GET all posts from specific user"""
+    serializer_class = ItinerarySerializer
+    permission_classes = [IsAuthenticated]
+
+    ordering_fields = ['created_at']
+    ordering = ['-created_at']
+
+    def get_queryset(self):
+
+        user_id = self.kwargs['user__pk']  # keyword variable captured from url
+        # if instead profiles/{user.id}/ we would use profiles/me/ (to capture user.id from JWT token)
+        if self.kwargs['user__pk'] == 'me':
+            user = self.request.user
+            user_id = user.pk
+
+        return Itinerary.objects.filter(user_id=user_id)

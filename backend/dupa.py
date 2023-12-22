@@ -266,3 +266,13 @@ def clean_tours_data(response):
     response["data"] = cleaned_tours
     response["meta"]["count"] = len(cleaned_tours)
     return response
+
+
+#print(get_city_search('PARI'))
+rsp= get_points_of_interest(latitude=48.85341, longitude=2.3488)
+rspt= get_tours_and_activities(latitude=48.85341, longitude=2.3488)
+#print(rsp)
+#print(clean_tours_data(rspt))
+print(preprocess_poi_data(rsp, rspt, 2, "hard"))
+
+

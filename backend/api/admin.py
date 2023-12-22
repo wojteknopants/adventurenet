@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 
-from .models import UserAccount, UserProfile, Post, Comment, PostLike, CommentLike
+from .models import UserAccount, UserProfile, Post, Comment, PostLike, CommentLike, Tag, Itinerary
 
 @admin.register(UserAccount)
 class UserAccountAdmin(admin.ModelAdmin):
@@ -16,8 +16,14 @@ class UserProfileAdmin(admin.ModelAdmin):
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'title', 'content', 'comments_count', 'likes_count', 'created_at','updated_at')
+    list_display = ('id', 'user', 'title', 'display_tags', 'content', 'comments_count', 'likes_count', 'created_at','updated_at')
     # Customize other options as needed
+
+    def display_tags(self, obj):
+        """Function to display the tags in the admin list view."""
+        return ', '.join([tag.name for tag in obj.tags.all()])
+    
+    display_tags.short_description = 'Tags'
 
 
 @admin.register(Comment)
@@ -34,3 +40,11 @@ class PostLikeAdmin(admin.ModelAdmin):
 class CommentLikeAdmin(admin.ModelAdmin):
     list_display = ('id', 'comment', 'user', 'created_at')
     # Customize other options as needed
+
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    list_display = ('name', 'created_at')
+
+@admin.register(Itinerary)
+class ItineraryAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'content', 'created_at')

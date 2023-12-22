@@ -3,13 +3,59 @@ from datetime import datetime
 from requests.exceptions import RequestException
 from django.conf import settings
 
+CORS_API_CONFIGS = {
+	"corsProxy": 'https://proxy.cors.sh/',
+	"CORS_API_KEY": 'temp_63a747a611787b66d6f36b85833d6aa4' #cors.sh test api key for development
+	}
 SKYSCANNER_API_KEY = settings.SKYSCANNER_API_KEY
 # Constants
+SEARCH_URL = 'https://partners.api.skyscanner.net/apiservices/v3/autosuggest/flights'
 BASE_URL = "https://partners.api.skyscanner.net/apiservices/v3/flights/indicative/search"
 
 
+def fetch_flight_culturedata(ipAddress):
+    """
+    Fetch flight search suggestions from the API 
+    """
 
+    CULTURE_URL = f"https://partners.api.skyscanner.net/apiservices/v3/culture/nearestculture?ipAddress={ipAddress}"
+    headers = {"x-api-key": SKYSCANNER_API_KEY,
+               'x-cors-api-key': CORS_API_CONFIGS['CORS_API_KEY']}  # Replace with your actual API key
+    
+    try:
+        response = requests.get(url=CULTURE_URL, headers=headers)
+        response.raise_for_status()  # Raise an exception for HTTP error codes
+        return response.json()
+    except RequestException as e:
+        print(f"Error fetching flight culture data: {e}")
+        # Return or raise an appropriate error or response
+        return {"error": str(e)}
 
+def fetch_flight_search_suggestions(searchTerm, locale, market):
+    """
+    Fetch flight search suggestions from the API 
+    """
+    headers = {"x-api-key": SKYSCANNER_API_KEY}  # Replace with your actual API key
+    payload = {
+        "query": {
+            "locale": locale,
+            "market": market,
+            "searchTerm": searchTerm,
+            "includedEntityTypes": ['PLACE_TYPE_AIRPORT', 'PLACE_TYPE_CITY', 'PLACE_TYPE_COUNTRY'],
+            
+        },
+        "limit": 10,  #Adjust as needed. Setting to 10 for now
+		"isDestination": False # Adjust based on your requirements
+    }
+
+    try:
+        response = requests.post(SEARCH_URL, headers=headers, json=payload)
+        response.raise_for_status()  # Raise an exception for HTTP error codes
+        return response.json()
+    except RequestException as e:
+        print(f"Error fetching flight search: {e}")
+        # Return or raise an appropriate error or response
+        return {"error": str(e)}
 
 def fetch_flight_offers(origin_place, year, month, currency="GBP", locale="en-GB", market="UK"):
     """

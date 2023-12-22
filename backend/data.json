@@ -1,0 +1,571 @@
+{
+  "days": [
+    {
+      "activities": {
+        "morning": {
+          "eating": {
+            "type": "location",
+            "subType": "POINT_OF_INTEREST",
+            "id": "E9C13A1913",
+            "self": {
+              "href": "https://test.api.amadeus.com/v1/reference-data/locations/pois/E9C13A1913",
+              "methods": ["GET"]
+            },
+            "geoCode": { "latitude": 48.865093, "longitude": 2.328464 },
+            "name": "Angelina",
+            "category": "RESTAURANT",
+            "rank": 5,
+            "tags": [
+              "restaurant",
+              "tea",
+              "sightseeing",
+              "tourguide",
+              "shopping",
+              "attraction",
+              "activities",
+              "bakery",
+              "commercialplace",
+              "transport",
+              "health&medical"
+            ]
+          },
+          "doing": [
+            {
+              "type": "location",
+              "subType": "POINT_OF_INTEREST",
+              "id": "7CBD79F4BD",
+              "self": {
+                "href": "https://test.api.amadeus.com/v1/reference-data/locations/pois/7CBD79F4BD",
+                "methods": ["GET"]
+              },
+              "geoCode": { "latitude": 48.864246, "longitude": 2.324892 },
+              "name": "Jardin des Tuileries",
+              "category": "SIGHTS",
+              "rank": 5,
+              "tags": [
+                "restaurant",
+                "landmark",
+                "sightseeing",
+                "garden",
+                "park",
+                "tourguide",
+                "sights",
+                "attraction",
+                "nature",
+                "commercialplace",
+                "professionalservices",
+                "hiking",
+                "beauty&spas",
+                "events",
+                "activities"
+              ]
+            },
+            {
+              "type": "location",
+              "subType": "POINT_OF_INTEREST",
+              "id": "EC7AE15DF5",
+              "self": {
+                "href": "https://test.api.amadeus.com/v1/reference-data/locations/pois/EC7AE15DF5",
+                "methods": ["GET"]
+              },
+              "geoCode": { "latitude": 48.860825, "longitude": 2.352633 },
+              "name": "Centre Pompidou",
+              "category": "SIGHTS",
+              "rank": 5,
+              "tags": [
+                "museum",
+                "sightseeing",
+                "restaurant",
+                "artgallerie",
+                "tourguide",
+                "sights",
+                "transport",
+                "activities",
+                "attraction",
+                "shopping",
+                "square",
+                "parking",
+                "professionalservices",
+                "bus",
+                "theater",
+                "events",
+                "commercialplace"
+              ]
+            }
+          ]
+        },
+        "afternoon": {
+          "eating": {
+            "type": "location",
+            "subType": "POINT_OF_INTEREST",
+            "id": "33EA4449E4",
+            "self": {
+              "href": "https://test.api.amadeus.com/v1/reference-data/locations/pois/33EA4449E4",
+              "methods": ["GET"]
+            },
+            "geoCode": { "latitude": 48.86621, "longitude": 2.33801 },
+            "name": "Le Grand Véfour",
+            "category": "RESTAURANT",
+            "rank": 5,
+            "tags": [
+              "restaurant",
+              "sightseeing",
+              "commercialplace",
+              "professionalservices",
+              "events",
+              "activities"
+            ]
+          },
+          "doing": [
+            {
+              "type": "location",
+              "subType": "POINT_OF_INTEREST",
+              "id": "AA8E41776E",
+              "self": {
+                "href": "https://test.api.amadeus.com/v1/reference-data/locations/pois/AA8E41776E",
+                "methods": ["GET"]
+              },
+              "geoCode": { "latitude": 48.852966, "longitude": 2.349902 },
+              "name": "Cathédrale Notre-Dame de Paris",
+              "category": "SIGHTS",
+              "rank": 5,
+              "tags": [
+                "church",
+                "sightseeing",
+                "restaurant",
+                "tourguide",
+                "sights",
+                "temple",
+                "landmark",
+                "historicplace",
+                "historic",
+                "attraction",
+                "activities",
+                "professionalservices",
+                "sports",
+                "bike",
+                "rental",
+                "commercialplace",
+                "outdoorplace"
+              ]
+            },
+            {
+              "type": "location",
+              "subType": "POINT_OF_INTEREST",
+              "id": "13D98F7D12",
+              "self": {
+                "href": "https://test.api.amadeus.com/v1/reference-data/locations/pois/13D98F7D12",
+                "methods": ["GET"]
+              },
+              "geoCode": { "latitude": 48.84681, "longitude": 2.337546 },
+              "name": "Jardin du Luxembourg",
+              "category": "SIGHTS",
+              "rank": 5,
+              "tags": [
+                "sightseeing",
+                "restaurant",
+                "tourguide",
+                "sights",
+                "park",
+                "landmark",
+                "historicplace",
+                "historic",
+                "garden",
+                "attraction",
+                "activities",
+                "hiking",
+                "beauty&spas",
+                "theater",
+                "commercialplace",
+                "nature"
+              ]
+            },
+            {
+              "type": "location",
+              "subType": "POINT_OF_INTEREST",
+              "id": "521DE91E65",
+              "self": {
+                "href": "https://test.api.amadeus.com/v1/reference-data/locations/pois/521DE91E65",
+                "methods": ["GET"]
+              },
+              "geoCode": { "latitude": 48.88672, "longitude": 2.343002 },
+              "name": "Basilique du Sacré-Cœur de Montmartre",
+              "category": "SIGHTS",
+              "rank": 5,
+              "tags": [
+                "church",
+                "sightseeing",
+                "sights",
+                "temple",
+                "landmark",
+                "tourguide",
+                "restaurant",
+                "attraction",
+                "commercialplace",
+                "activities",
+                "professionalservices"
+              ]
+            }
+          ]
+        },
+        "evening": {
+          "eating": {
+            "type": "location",
+            "subType": "POINT_OF_INTEREST",
+            "id": "31CEFDF0ED",
+            "self": {
+              "href": "https://test.api.amadeus.com/v1/reference-data/locations/pois/31CEFDF0ED",
+              "methods": ["GET"]
+            },
+            "geoCode": { "latitude": 48.87301, "longitude": 2.33269 },
+            "name": "Galeries Lafayette Haussmann",
+            "category": "RESTAURANT",
+            "rank": 5,
+            "tags": [
+              "restaurant",
+              "sightseeing",
+              "shopping",
+              "tourguide",
+              "mall",
+              "clothing",
+              "fashion",
+              "attraction",
+              "activities",
+              "parking",
+              "professionalservices",
+              "taxi",
+              "liquor"
+            ]
+          },
+          "doing": [
+            {
+              "type": "location",
+              "subType": "POINT_OF_INTEREST",
+              "id": "7CBD79F4BD",
+              "self": {
+                "href": "https://test.api.amadeus.com/v1/reference-data/locations/pois/7CBD79F4BD",
+                "methods": ["GET"]
+              },
+              "geoCode": { "latitude": 48.864246, "longitude": 2.324892 },
+              "name": "Jardin des Tuileries",
+              "category": "SIGHTS",
+              "rank": 5,
+              "tags": [
+                "restaurant",
+                "landmark",
+                "sightseeing",
+                "garden",
+                "park",
+                "tourguide",
+                "sights",
+                "attraction",
+                "nature",
+                "commercialplace",
+                "professionalservices",
+                "hiking",
+                "beauty&spas",
+                "events",
+                "activities"
+              ]
+            },
+            {
+              "type": "location",
+              "subType": "POINT_OF_INTEREST",
+              "id": "EC7AE15DF5",
+              "self": {
+                "href": "https://test.api.amadeus.com/v1/reference-data/locations/pois/EC7AE15DF5",
+                "methods": ["GET"]
+              },
+              "geoCode": { "latitude": 48.860825, "longitude": 2.352633 },
+              "name": "Centre Pompidou",
+              "category": "SIGHTS",
+              "rank": 5,
+              "tags": [
+                "museum",
+                "sightseeing",
+                "restaurant",
+                "artgallerie",
+                "tourguide",
+                "sights",
+                "transport",
+                "activities",
+                "attraction",
+                "shopping",
+                "square",
+                "parking",
+                "professionalservices",
+                "bus",
+                "theater",
+                "events",
+                "commercialplace"
+              ]
+            }
+          ]
+        }
+      },
+      "distances": [0, 0.28, 2.06, 1.23, 1.71, 1.13, 4.46, 1.7, 1.13, 2.06],
+      "total_distance": 15.76
+    },
+    {
+      "activities": {
+        "morning": {
+          "eating": {
+            "type": "location",
+            "subType": "POINT_OF_INTEREST",
+            "id": "49A0A389A7",
+            "self": {
+              "href": "https://test.api.amadeus.com/v1/reference-data/locations/pois/49A0A389A7",
+              "methods": ["GET"]
+            },
+            "geoCode": { "latitude": 48.871944, "longitude": 2.331666 },
+            "name": "Opéra National de Paris - Palais Garnier",
+            "category": "RESTAURANT",
+            "rank": 5,
+            "tags": [
+              "restaurant",
+              "events",
+              "attraction",
+              "activities",
+              "operahouse",
+              "sightseeing",
+              "commercialplace",
+              "theater",
+              "sights",
+              "schools",
+              "tourguide",
+              "landmark",
+              "musicvenue",
+              "hiking",
+              "bar",
+              "publicplace"
+            ]
+          },
+          "doing": [
+            {
+              "type": "activity",
+              "id": "76281",
+              "self": {
+                "href": "https://test.api.amadeus.com/v1/shopping/activities/76281",
+                "methods": ["GET"]
+              },
+              "name": "Pastry & Chocolate Family Tour in the Marais",
+              "description": "Are you dying to taste all the famous sweets from around France, but simply don’t have the time? Fret not, because this tour has it all! Take your kids on a treasure hunt through the charming Parisian distract of le Marais and taste sweet specialties from all over France. Yum! At the beginning of the tour, your children will receive a map of France with the various regions. They will then become detectives and will have to find their way through le Marais to locate the places where you will be able to taste the regional specialties. At the end of the treasure hunt, a chocolate heaven is waiting to reward you all! Here your kids will unleash their creativity by decorating a dessert. Last but not least, they will receive a certificate as a French Regional Sweet Specialties Connoisseur. Super cool, right?",
+              "geoCode": {
+                "latitude": 48.86456699999999,
+                "longitude": 2.33382
+              },
+              "rating": "4.9",
+              "price": { "amount": "400.0", "currencyCode": "EUR" },
+              "pictures": [
+                "https://media.tacdn.com/media/attractions-splice-spp-674x446/09/2e/18/6e.jpg"
+              ],
+              "bookingLink": "http://www.partner.viator.com/en/13257/tours/Paris/Pastry-and-Chocolate-Family-Tour-in-the-Marais/d479-51919P29?eap=prod-lFcqmEVtIaXxELR2I9lo-13257&aid=vba13257en",
+              "minimumDuration": "2 hours"
+            }
+          ]
+        },
+        "afternoon": {
+          "eating": {
+            "type": "location",
+            "subType": "POINT_OF_INTEREST",
+            "id": "9DBE48CBDA",
+            "self": {
+              "href": "https://test.api.amadeus.com/v1/reference-data/locations/pois/9DBE48CBDA",
+              "methods": ["GET"]
+            },
+            "geoCode": { "latitude": 48.870876, "longitude": 2.331753 },
+            "name": "Café de la Paix",
+            "category": "RESTAURANT",
+            "rank": 5,
+            "tags": ["restaurant", "sightseeing", "shopping", "commercialplace"]
+          },
+          "doing": [
+            {
+              "type": "location",
+              "subType": "POINT_OF_INTEREST",
+              "id": "7CBD79F4BD",
+              "self": {
+                "href": "https://test.api.amadeus.com/v1/reference-data/locations/pois/7CBD79F4BD",
+                "methods": ["GET"]
+              },
+              "geoCode": { "latitude": 48.864246, "longitude": 2.324892 },
+              "name": "Jardin des Tuileries",
+              "category": "SIGHTS",
+              "rank": 5,
+              "tags": [
+                "restaurant",
+                "landmark",
+                "sightseeing",
+                "garden",
+                "park",
+                "tourguide",
+                "sights",
+                "attraction",
+                "nature",
+                "commercialplace",
+                "professionalservices",
+                "hiking",
+                "beauty&spas",
+                "events",
+                "activities"
+              ]
+            },
+            {
+              "type": "location",
+              "subType": "POINT_OF_INTEREST",
+              "id": "EC7AE15DF5",
+              "self": {
+                "href": "https://test.api.amadeus.com/v1/reference-data/locations/pois/EC7AE15DF5",
+                "methods": ["GET"]
+              },
+              "geoCode": { "latitude": 48.860825, "longitude": 2.352633 },
+              "name": "Centre Pompidou",
+              "category": "SIGHTS",
+              "rank": 5,
+              "tags": [
+                "museum",
+                "sightseeing",
+                "restaurant",
+                "artgallerie",
+                "tourguide",
+                "sights",
+                "transport",
+                "activities",
+                "attraction",
+                "shopping",
+                "square",
+                "parking",
+                "professionalservices",
+                "bus",
+                "theater",
+                "events",
+                "commercialplace"
+              ]
+            },
+            {
+              "type": "location",
+              "subType": "POINT_OF_INTEREST",
+              "id": "AA8E41776E",
+              "self": {
+                "href": "https://test.api.amadeus.com/v1/reference-data/locations/pois/AA8E41776E",
+                "methods": ["GET"]
+              },
+              "geoCode": { "latitude": 48.852966, "longitude": 2.349902 },
+              "name": "Cathédrale Notre-Dame de Paris",
+              "category": "SIGHTS",
+              "rank": 5,
+              "tags": [
+                "church",
+                "sightseeing",
+                "restaurant",
+                "tourguide",
+                "sights",
+                "temple",
+                "landmark",
+                "historicplace",
+                "historic",
+                "attraction",
+                "activities",
+                "professionalservices",
+                "sports",
+                "bike",
+                "rental",
+                "commercialplace",
+                "outdoorplace"
+              ]
+            }
+          ]
+        },
+        "evening": {
+          "eating": {
+            "type": "location",
+            "subType": "POINT_OF_INTEREST",
+            "id": "33EA4449E4",
+            "self": {
+              "href": "https://test.api.amadeus.com/v1/reference-data/locations/pois/33EA4449E4",
+              "methods": ["GET"]
+            },
+            "geoCode": { "latitude": 48.86621, "longitude": 2.33801 },
+            "name": "Le Grand Véfour",
+            "category": "RESTAURANT",
+            "rank": 5,
+            "tags": [
+              "restaurant",
+              "sightseeing",
+              "commercialplace",
+              "professionalservices",
+              "events",
+              "activities"
+            ]
+          },
+          "doing": [
+            {
+              "type": "location",
+              "subType": "POINT_OF_INTEREST",
+              "id": "7CBD79F4BD",
+              "self": {
+                "href": "https://test.api.amadeus.com/v1/reference-data/locations/pois/7CBD79F4BD",
+                "methods": ["GET"]
+              },
+              "geoCode": { "latitude": 48.864246, "longitude": 2.324892 },
+              "name": "Jardin des Tuileries",
+              "category": "SIGHTS",
+              "rank": 5,
+              "tags": [
+                "restaurant",
+                "landmark",
+                "sightseeing",
+                "garden",
+                "park",
+                "tourguide",
+                "sights",
+                "attraction",
+                "nature",
+                "commercialplace",
+                "professionalservices",
+                "hiking",
+                "beauty&spas",
+                "events",
+                "activities"
+              ]
+            },
+            {
+              "type": "location",
+              "subType": "POINT_OF_INTEREST",
+              "id": "EC7AE15DF5",
+              "self": {
+                "href": "https://test.api.amadeus.com/v1/reference-data/locations/pois/EC7AE15DF5",
+                "methods": ["GET"]
+              },
+              "geoCode": { "latitude": 48.860825, "longitude": 2.352633 },
+              "name": "Centre Pompidou",
+              "category": "SIGHTS",
+              "rank": 5,
+              "tags": [
+                "museum",
+                "sightseeing",
+                "restaurant",
+                "artgallerie",
+                "tourguide",
+                "sights",
+                "transport",
+                "activities",
+                "attraction",
+                "shopping",
+                "square",
+                "parking",
+                "professionalservices",
+                "bus",
+                "theater",
+                "events",
+                "commercialplace"
+              ]
+            }
+          ]
+        }
+      },
+      "distances": [0, 0, 0.12, 0.89, 2.06, 0.9, 1.71, 0.98, 2.06],
+      "total_distance": 8.72
+    }
+  ]
+}
