@@ -21,10 +21,30 @@ import AddCommentForm from "./AddCommentForm";
 import PostFooter from "./PostFooter";
 import PostContent from "./PostContent";
 import PostHeader from "./PostHeader";
+import { QueryActionCreatorResult } from "@reduxjs/toolkit/dist/query/core/buildInitiate";
+import {
+  BaseQueryFn,
+  FetchArgs,
+  FetchBaseQueryError,
+  QueryDefinition,
+} from "@reduxjs/toolkit/dist/query";
+import { EntityId } from "@reduxjs/toolkit";
 
-//{ { postId }: { postId: number }
-const Post = ({ postId, refetch }: any) => {
-  const post = useSelector((state) => selectPostById(state, postId));
+interface PostProps {
+  postId: EntityId;
+  refetch: () => QueryActionCreatorResult<
+    QueryDefinition<
+      any,
+      BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError>,
+      "Post" | "ProfilePost" | "Profile" | "Comments",
+      any,
+      "api"
+    >
+  >;
+}
+
+const Post = ({ postId, refetch }: PostProps) => {
+  const post = useSelector((state: any) => selectPostById(state, postId));
   const [deletePost] = useDeletePostMutation();
   const dispatch: AppDispatch = useDispatch();
   const comments = useSelector(selectComments);
@@ -53,11 +73,11 @@ const Post = ({ postId, refetch }: any) => {
     });
   };
 
-  const handleOnChangeAdd = (event: any) => {
+  const handleOnChangeAdd = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAddCommentInput(event.target.value);
   };
 
-  const handleOnAddClick = (e: any) => {
+  const handleOnAddClick = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     dispatch(addComment({ postId, content: addCommentInput })).then(() =>
@@ -69,7 +89,7 @@ const Post = ({ postId, refetch }: any) => {
     setAddCommentInput("");
   };
 
-  const handleLikeClick = async (event: any) => {
+  const handleLikeClick = async () => {
     if (!post.is_liked) {
       try {
         await addPostLike({ id: post.id }).unwrap();
@@ -85,7 +105,7 @@ const Post = ({ postId, refetch }: any) => {
     }
 
     setIsLiked((prev) => {
-      console.log(!prev);
+      // console.log(!prev);
       return !prev;
     });
   };

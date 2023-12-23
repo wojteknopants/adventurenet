@@ -37,9 +37,11 @@ const Profile = () => {
 
   const { data, isLoading, isSuccess, isError, error, refetch } =
     useGetProfileQuery(uid);
-
-  console.log("UID : " + uid);
-  console.log(data);
+  if (uid !== undefined) {
+    localStorage.setItem("uid", uid);
+  }
+  // console.log("UID : " + localStorage.getItem("uid"));
+  // console.log(data);
 
   const [updateProfile] = useUpdateProfileMutation();
 

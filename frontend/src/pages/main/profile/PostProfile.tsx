@@ -82,7 +82,7 @@ const PostProfile = ({ postData, postId, refetch }: any) => {
     }
 
     setIsLiked((prev) => {
-      console.log(!prev);
+      // console.log(!prev);
       return !prev;
     });
   };

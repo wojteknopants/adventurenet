@@ -5,7 +5,8 @@ from .views import (LogoutView, LogoutAllView,
                     PostRetrieveUpdateDeleteView, PostListCreateView, UserPostListView,
                     CommentRetrieveUpdateDeleteView, PostCommentListCreateView, UserCommentListView, CommentListView,
                     PostLikeView, CommentLikeView, PostLikesListView, CommentLikesListView,
-                    UserImagesListView)
+                    UserImagesListView, FlightCultureDataAPIView, FlightSearchSuggestAPIView, FlightOffersAPIView, CitySearchAPIView, POISearchAPIView, ToursActivitiesSearchAPIView, GenerateItineraryView,
+                    MapboxSuggestView, MapboxRetrieveView, ItineraryListCreateView, ItineraryRetrieveUpdateDestroyView, UserItinerariesListView, )
 
 urlpatterns = [
     #logout - blacklist JWT refresh token
@@ -35,6 +36,29 @@ urlpatterns = [
 
     #images
     path('profiles/<str:user__pk>/images/', UserImagesListView.as_view(), name='user_images_list'), #retrieve all images from posts made by particular user
+
+    #flights
+    path('flight-culture-data/', FlightCultureDataAPIView.as_view(), name='flight_culture_data'),
+    path('flight-search-suggest/', FlightSearchSuggestAPIView.as_view(), name='flight_search_suggest'),
+    path('flight-offers/', FlightOffersAPIView.as_view(), name='flight_offers'),
+    
+
+    #amadeus
+    path('city-search/', CitySearchAPIView.as_view(), name='city_search'),
+    path('poi-search/', POISearchAPIView.as_view(), name='poi_search'),
+    path('tours-activities-search/', ToursActivitiesSearchAPIView.as_view(), name='tours_activities_search'),
+
+    #openai narrate itinerary
+    path('generate-itinerary/', GenerateItineraryView.as_view(), name='generate_itinerary'),
+
+    #mapbox 
+    path('mapbox/search-suggest/', MapboxSuggestView.as_view(), name='mapbox-suggest'),
+    path('mapbox/search-retrieve/', MapboxRetrieveView.as_view(), name='mapbox-retrieve'),
+
+    #itineraries
+    path('itineraries/<int:pk>/', ItineraryRetrieveUpdateDestroyView.as_view(), name='itinerary_retrieve_update_delete'),
+    path('itineraries/', ItineraryListCreateView.as_view(), name='itineraries_list_create'), 
+    path('profiles/<str:user__pk>/itineraries/', UserItinerariesListView.as_view(), name='user_itineraries_list'),
 
 
 

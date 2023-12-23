@@ -1,69 +1,143 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { RootState } from "../../store";
 
-interface LoginParams {
-  email: string;
-  password: string;
+interface exploreParams {
+  cities: any;
+  status: "fulfilled" | "rejected" | "panding";
+  selectedCity: any;
 }
 
-interface AuthParams {
-  access: string | null;
-  refresh: string | null;
-  isAuthenticated: boolean;
-  user: object;
-  status: "idle" | "succeeded" | "failed";
-  error: string | undefined;
-}
+export const getCities = createAsyncThunk(
+  "explore/getCities",
+  async ({ city }: { city: string }) => {
+    try {
+      const url = `/city-search/`;
 
-export const login = createAsyncThunk(
-  "auth/login",
-  async ({ email, password }: LoginParams, { dispatch }) => {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    const body = JSON.stringify({ email, password });
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `JWT ${localStorage.getItem("access")}`,
+          Accept: "application/json",
+        },
 
-    const response = await axios.post(
-      `${import.meta.env.VITE_REACT_APP_API_URL}/auth/jwt/create/`,
-      body,
-      config
-    );
+        params: { keyword: `${city}` },
+      };
 
-    return response.data;
+      const res = await axios.get(
+        `${import.meta.env.VITE_REACT_APP_API_URL}${url}`,
+        config
+      );
+
+      console.log(res.data.data);
+      if (res.data.data === undefined) return [{ name: "Not found" }];
+      return res.data.data;
+    } catch (error) {
+      console.log(error);
+    }
   }
 );
 
-const authSlice = createSlice({
-  name: "auth",
+export const getActivities = createAsyncThunk(
+  "explore/getActivities",
+  async ({ latitude, longitude }: { latitude: string; longitude: string }) => {
+    try {
+      const url = `/tours-activities-search/`;
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `JWT ${localStorage.getItem("access")}`,
+          Accept: "application/json",
+        },
+
+        params: { latitude: `${latitude}`, longitude: `${longitude}` },
+      };
+
+      const res = await axios.get(
+        `${import.meta.env.VITE_REACT_APP_API_URL}${url}`,
+        config
+      );
+
+      console.log(res.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+export const getFlights = createAsyncThunk(
+  "explore/getFlights",
+  async ({ cityFrom }: { cityFrom: string }) => {
+    try {
+      const url = `/tours-activities-search/`;
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `JWT ${localStorage.getItem("access")}`,
+          Accept: "application/json",
+        },
+      };
+
+      const res = await axios.get(
+        `${import.meta.env.VITE_REACT_APP_API_URL}${url}`,
+        config
+      );
+
+      console.log(res.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+const exploreSlice = createSlice({
+  name: "explore",
   initialState: {
-    access: localStorage.getItem("access"),
-    refresh: localStorage.getItem("refresh"),
-    isAuthenticated: false,
-    user: {},
-    status: "idle",
-    error: "",
-  } as AuthParams,
+    cities: [{}],
+    status: "fulfilled",
+    selectedCity: {},
+  } as exploreParams,
   reducers: {
     logOut(state) {
-      state.status = "succeeded";
+      state.status = "fulfilled";
+    },
+    selectCity(state, action) {
+      state.selectedCity = action.payload;
     },
   },
   extraReducers(builder) {
-    builder
-      .addCase(login.fulfilled, (state, action) => {
-        state.status = "succeeded";
-      })
-      .addCase(login.rejected, (state, action) => {
-        state.status = "failed";
-      });
+    builder.addCase(getCities.fulfilled, (state, action) => {
+      state.status = "fulfilled";
+      state.cities = action.payload;
+    });
+    builder.addCase(getCities.rejected, (state, action) => {
+      state.status = "rejected";
+    });
+    builder.addCase(getActivities.fulfilled, (state, action) => {
+      state.status = "fulfilled";
+    });
+    builder.addCase(getActivities.rejected, (state, action) => {
+      state.status = "rejected";
+    });
+    builder.addCase(getFlights.fulfilled, (state, action) => {
+      state.status = "fulfilled";
+    });
+    builder.addCase(getFlights.rejected, (state, action) => {
+      state.status = "rejected";
+    });
   },
 });
 
-// export const { logOut } = authSlice.actions;
+export const { selectCity } = exploreSlice.actions;
 
 // export const getIsAuthenticated = (state: any) => state.auth.isAuthenticated;
-// export const getStatus = (state: any) => state.auth.status;
+export const searchedCities = (state: RootState) => {
+  if (state.explore && state.explore.cities) {
+    return state.explore.cities;
+  }
+  return [];
+};
 
-export default authSlice.reducer;
+export default exploreSlice.reducer;

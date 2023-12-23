@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { RootState } from "../../store";
 
 interface LoginParams {
   email: string;
@@ -43,7 +44,7 @@ export const login = createAsyncThunk(
     );
     localStorage.setItem("access", response.data.access);
     localStorage.setItem("refresh", response.data.refresh);
-    console.log(localStorage.getItem("access"));
+    // console.log(localStorage.getItem("access"));
     await dispatch(loadUser());
 
     return response.data;
@@ -103,11 +104,11 @@ export const checkIsAuthenticated = createAsyncThunk(
     );
 
     if (res.data.code !== "token_not_valid") {
-      console.log(localStorage.getItem("access"));
-      console.log(res);
+      // console.log(localStorage.getItem("access"));
+      // console.log(res);
       return true;
     } else {
-      console.log(res);
+      // console.log(res);
       return false;
     }
   }
@@ -230,7 +231,10 @@ const authSlice = createSlice({
 
 export const { logOut } = authSlice.actions;
 
-export const getIsAuthenticated = (state: any) => state.auth.isAuthenticated;
-export const getStatus = (state: any) => state.auth.status;
+export const getIsAuthenticated = (state: RootState) => {
+  // console.log(state.auth.isAuthenticated);
+  return state.auth.isAuthenticated;
+};
+export const getStatus = (state: RootState) => state.auth.status;
 
 export default authSlice.reducer;

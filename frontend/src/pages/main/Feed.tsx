@@ -5,8 +5,6 @@ import {
   selectPostIds,
 } from "../../features/posts/postsSlice";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
-import { selectComments } from "../../features/posts/commentsSlice";
 import PageTitle from "../../components/PageTitle";
 
 const Feed = () => {
@@ -23,7 +21,7 @@ const Feed = () => {
       content = orderedPostIds.map((postId) => (
         <Post key={postId} postId={postId} refetch={refetch} />
       ));
-      console.log(content);
+      // console.log(content);
     } else {
       content = <p>"Loading..."</p>;
     }
