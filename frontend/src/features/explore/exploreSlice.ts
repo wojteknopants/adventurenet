@@ -176,7 +176,7 @@ export const getFlights = createAsyncThunk(
         config
       );
 
-      console.log(res.data);
+      console.log(res);
       // if (res.data.data === undefined) return [{ name: "Not found" }];
       return res.data;
     } catch (error) {
@@ -210,6 +210,7 @@ const exploreSlice = createSlice({
     },
     selectCity(state, action) {
       state.selectedCity = action.payload;
+      state.citiesForFlights = null;
     },
   },
   extraReducers(builder) {
@@ -260,13 +261,14 @@ export const searchedCitiesForPOI = (state: RootState) => {
   return [];
 };
 export const searchedCitiesForFlights = (state: RootState) => {
-  if (state.explore && state.explore.countriesToFlight) {
+  if (state.explore && state.explore.citiesForFlights) {
     return state.explore.citiesForFlights;
   }
   return [];
 };
 
 export const countriesToFlight = (state: RootState) => {
+  console.log(state.explore.countriesToFlight);
   if (state.explore && state.explore.countriesToFlight) {
     return state.explore.countriesToFlight;
   }
