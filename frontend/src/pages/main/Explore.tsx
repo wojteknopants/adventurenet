@@ -6,9 +6,9 @@ import PageTitle from "../../components/PageTitle";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getActivities,
-  getCitiesForFlights,
   getCitiesForPOI,
   getFlightCultureData,
+  getFlights,
   getFlightsSearchSuggestions,
   searchedCitiesForFlights,
   searchedCitiesForPOI,
@@ -48,9 +48,8 @@ const Explore = () => {
   let timeout: NodeJS.Timeout;
 
   const citiesForPOI = useSelector(searchedCitiesForPOI);
-  const citiesForFlights = useSelector(searchedCitiesForFlights);
 
-  const handleOnCityClick = (city: any) => {
+  const handleOnPOICityClick = (city: any) => {
     console.log(city);
     setSelectedCity(city);
     dispatch(selectCity(city));
@@ -75,26 +74,11 @@ const Explore = () => {
     }, 300);
   };
 
-  const handleOnFlightsSearchChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const inputValue = e.target.value;
-
-    clearTimeout(timeout);
-
-    timeout = setTimeout(() => {
-      dispatch(getFlightCultureData()).then(() => {
-        dispatch(getFlightsSearchSuggestions({ searchedCity: inputValue }));
-      });
-      dispatch(getCitiesForFlights({ city: inputValue }));
-    }, 300);
-  };
-
   const searchedPOICities = citiesForPOI.map((city: any, index: any) => {
     return (
       <li key={index}>
         <button
-          onClick={() => handleOnCityClick(city)}
+          onClick={() => handleOnPOICityClick(city)}
           className="flex grow w-full text-mainGray hover:bg-mainLightGray hover:text-mainBlue transition-all rounded-lg px-2 py-1 text-lg"
         >
           {city.name}
@@ -102,20 +86,6 @@ const Explore = () => {
       </li>
     );
   });
-  const searchedFlightsCities = citiesForFlights.map(
-    (city: any, index: any) => {
-      return (
-        <li key={index}>
-          <button
-            onClick={() => handleOnCityClick(city)}
-            className="flex grow w-full text-mainGray hover:bg-mainLightGray hover:text-mainBlue transition-all rounded-lg px-2 py-1 text-lg"
-          >
-            {city.name}
-          </button>
-        </li>
-      );
-    }
-  );
 
   const content = hotels.map((hotel, index) => (
     <div
@@ -142,10 +112,10 @@ const Explore = () => {
         handleOnSearchChange={handleOnPOICitySearchChange}
       />
       <Slider content={content} />
-      <Search
+      {/* <Search
         searched={searchedFlightsCities}
         handleOnSearchChange={handleOnFlightsSearchChange}
-      />
+      /> */}
     </div>
   );
 };

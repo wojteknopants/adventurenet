@@ -26,7 +26,7 @@ const Navbar = ({ currentPageId }: NavbarProps) => {
         <img
           src={nav.icon}
           alt="icon"
-          className={`mt-1 transition p-2.5 rounded-2xl ${
+          className={`transition p-2.5 rounded-2xl ${
             selectedId === nav.id ? " fill-current text-white " : "bg-none"
           } `}
           style={{

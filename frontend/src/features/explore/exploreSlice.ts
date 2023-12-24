@@ -63,36 +63,6 @@ export const getActivities = createAsyncThunk(
   }
 );
 
-export const getCitiesForFlights = createAsyncThunk(
-  "explore/getCitiesForFlights",
-  async ({ city }: { city: string }) => {
-    try {
-      const url = `/city-search/`;
-
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `JWT ${localStorage.getItem("access")}`,
-          Accept: "application/json",
-        },
-
-        params: { keyword: `${city}` },
-      };
-
-      const res = await axios.get(
-        `${import.meta.env.VITE_REACT_APP_API_URL}${url}`,
-        config
-      );
-
-      console.log(res.data.data);
-      if (res.data.data === undefined) return [{ name: "Not found" }];
-      return res.data.data;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-);
-
 export const getFlightCultureData = createAsyncThunk(
   "explore/getFlightCultureData",
   async () => {
@@ -134,6 +104,7 @@ export const getFlightCultureData = createAsyncThunk(
     }
   }
 );
+
 export const getFlightsSearchSuggestions = createAsyncThunk(
   "explore/getFlightsSearchSuggestions",
   async ({ searchedCity }: { searchedCity: string }, { getState }) => {
@@ -162,7 +133,52 @@ export const getFlightsSearchSuggestions = createAsyncThunk(
         config
       );
 
-      console.log(res);
+      console.log(res.data.places);
+      return res.data.places;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+export const getFlights = createAsyncThunk(
+  "explore/getFlights",
+  async ({ entityId }: { entityId: string }, { getState }) => {
+    try {
+      const flightCultureData = {
+        ...(getState() as RootState).explore.flightCultureData,
+      };
+      console.log(flightCultureData);
+      const originPlace = entityId;
+      const year = 2023; // hardcoded for now
+      const month = 12; // hardcoded for now
+
+      const url = `/flight-offers/`;
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `JWT ${localStorage.getItem("access")}`,
+          Accept: "application/json",
+        },
+        params: {
+          originPlace,
+          year,
+          month,
+          locale: flightCultureData.locale, // From the Culture API
+          market: flightCultureData.market,
+          currency: flightCultureData.currency,
+        },
+      };
+
+      const res = await axios.get(
+        `${import.meta.env.VITE_REACT_APP_API_URL}${url}`,
+        config
+      );
+
+      console.log(res.data);
+      // if (res.data.data === undefined) return [{ name: "Not found" }];
+      return res.data;
     } catch (error) {
       console.log(error);
     }
@@ -175,6 +191,7 @@ interface exploreParams {
   status: "fulfilled" | "rejected" | "pending";
   selectedCity: any;
   flightCultureData: any;
+  countriesToFlight: any;
 }
 
 const exploreSlice = createSlice({
@@ -185,6 +202,7 @@ const exploreSlice = createSlice({
     selectedCity: {},
     citiesForFlights: null,
     flightCultureData: [],
+    countriesToFlight: null,
   } as exploreParams,
   reducers: {
     logOut(state) {
@@ -208,11 +226,11 @@ const exploreSlice = createSlice({
     builder.addCase(getActivities.rejected, (state, action) => {
       state.status = "rejected";
     });
-    builder.addCase(getCitiesForFlights.fulfilled, (state, action) => {
+    builder.addCase(getFlights.fulfilled, (state, action) => {
       state.status = "fulfilled";
-      state.citiesForFlights = action.payload;
+      state.countriesToFlight = action.payload;
     });
-    builder.addCase(getCitiesForFlights.rejected, (state, action) => {
+    builder.addCase(getFlights.rejected, (state, action) => {
       state.status = "rejected";
     });
     builder.addCase(getFlightCultureData.fulfilled, (state, action) => {
@@ -224,6 +242,7 @@ const exploreSlice = createSlice({
     });
     builder.addCase(getFlightsSearchSuggestions.fulfilled, (state, action) => {
       state.status = "fulfilled";
+      state.citiesForFlights = action.payload;
     });
     builder.addCase(getFlightsSearchSuggestions.rejected, (state, action) => {
       state.status = "rejected";
@@ -241,8 +260,15 @@ export const searchedCitiesForPOI = (state: RootState) => {
   return [];
 };
 export const searchedCitiesForFlights = (state: RootState) => {
-  if (state.explore && state.explore.citiesForFlights) {
+  if (state.explore && state.explore.countriesToFlight) {
     return state.explore.citiesForFlights;
+  }
+  return [];
+};
+
+export const countriesToFlight = (state: RootState) => {
+  if (state.explore && state.explore.countriesToFlight) {
+    return state.explore.countriesToFlight;
   }
   return [];
 };

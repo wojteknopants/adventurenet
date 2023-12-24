@@ -1,6 +1,7 @@
 import {
   iconBookmarks,
   iconExplore,
+  iconFlights,
   iconHome,
   iconLogout,
   iconMessages,
@@ -19,6 +20,11 @@ export const navLinks = [
     id: "explore",
     title: "Explore",
     icon: iconExplore,
+  },
+  {
+    id: "flights",
+    title: "Flights",
+    icon: iconFlights,
   },
   {
     id: "notifications",
