@@ -74,7 +74,6 @@ const Flights = () => {
       );
     }
   );
-
   const flightOffers = Object.keys(countriesOffers).map((country) => (
     <div
       key={country}
