@@ -20,6 +20,7 @@ import {
   selectComments,
 } from "../../../features/posts/commentsSlice";
 import CommentsList from "../../../components/CommentsList";
+import { useGetProfileQuery } from "../../../features/profile/profileSlice";
 
 const PostProfile = ({ postData, postId, refetch }: any) => {
   const post = postData;
@@ -31,6 +32,8 @@ const PostProfile = ({ postData, postId, refetch }: any) => {
   const [deleteLike] = useDeletePostLikeMutation();
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [addCommentInput, setAddCommentInput] = useState<string>("");
+
+  const { data } = useGetProfileQuery(post.user);
 
   const formatRelativeTime = (timestamp: string): string => {
     const parsedDate = parseISO(timestamp);
@@ -90,6 +93,7 @@ const PostProfile = ({ postData, postId, refetch }: any) => {
   return (
     <Card noPadding={false}>
       <PostHeader
+        user_pfp={data?.profile_picture}
         user={post.user}
         created_at={post.created_at}
         onDeletePostClicked={onDeletePostClicked}

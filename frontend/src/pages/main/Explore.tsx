@@ -6,8 +6,12 @@ import PageTitle from "../../components/PageTitle";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getActivities,
-  getCities,
-  searchedCities,
+  getCitiesForFlights,
+  getCitiesForPOI,
+  getFlightCultureData,
+  getFlightsSearchSuggestions,
+  searchedCitiesForFlights,
+  searchedCitiesForPOI,
   selectCity,
 } from "../../features/explore/exploreSlice";
 import { AppDispatch } from "../../store";
@@ -43,12 +47,14 @@ const Explore = () => {
   const [selectedCity, setSelectedCity] = useState();
   let timeout: NodeJS.Timeout;
 
-  const cities = useSelector(searchedCities);
+  const citiesForPOI = useSelector(searchedCitiesForPOI);
+  const citiesForFlights = useSelector(searchedCitiesForFlights);
 
   const handleOnCityClick = (city: any) => {
     console.log(city);
     setSelectedCity(city);
     dispatch(selectCity(city));
+
     dispatch(
       getActivities({
         latitude: city.geoCode.latitude,
@@ -57,18 +63,34 @@ const Explore = () => {
     );
   };
 
-  const handleOnSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleOnPOICitySearchChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const inputValue = e.target.value;
 
     clearTimeout(timeout);
 
     timeout = setTimeout(() => {
-      dispatch(getCities({ city: inputValue }));
+      dispatch(getCitiesForPOI({ city: inputValue }));
     }, 300);
   };
 
-  const searched = cities.map((city: any, index: any) => {
-    console.log(city);
+  const handleOnFlightsSearchChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const inputValue = e.target.value;
+
+    clearTimeout(timeout);
+
+    timeout = setTimeout(() => {
+      dispatch(getFlightCultureData()).then(() => {
+        dispatch(getFlightsSearchSuggestions({ searchedCity: inputValue }));
+      });
+      dispatch(getCitiesForFlights({ city: inputValue }));
+    }, 300);
+  };
+
+  const searchedPOICities = citiesForPOI.map((city: any, index: any) => {
     return (
       <li key={index}>
         <button
@@ -80,6 +102,20 @@ const Explore = () => {
       </li>
     );
   });
+  const searchedFlightsCities = citiesForFlights.map(
+    (city: any, index: any) => {
+      return (
+        <li key={index}>
+          <button
+            onClick={() => handleOnCityClick(city)}
+            className="flex grow w-full text-mainGray hover:bg-mainLightGray hover:text-mainBlue transition-all rounded-lg px-2 py-1 text-lg"
+          >
+            {city.name}
+          </button>
+        </li>
+      );
+    }
+  );
 
   const content = hotels.map((hotel, index) => (
     <div
@@ -101,8 +137,15 @@ const Explore = () => {
   return (
     <div>
       <PageTitle title="Explore" />
-      <Search searched={searched} handleOnSearchChange={handleOnSearchChange} />
+      <Search
+        searched={searchedPOICities}
+        handleOnSearchChange={handleOnPOICitySearchChange}
+      />
       <Slider content={content} />
+      <Search
+        searched={searchedFlightsCities}
+        handleOnSearchChange={handleOnFlightsSearchChange}
+      />
     </div>
   );
 };

@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 interface PostHeaderProps {
   user: any;
   created_at: any;
+  user_pfp: any;
   onDeletePostClicked: () => void;
   formatRelativeTime: (timestamp: string) => string;
 }
@@ -12,13 +13,14 @@ interface PostHeaderProps {
 const PostHeader = ({
   user,
   created_at,
+  user_pfp,
   onDeletePostClicked,
   formatRelativeTime,
 }: PostHeaderProps) => {
   return (
     <div className="flex gap-3">
       <div>
-        <Avatar size={""} />
+        <Avatar size={""} user_pfp={user_pfp} />
       </div>
       <div className="grow">
         <p>

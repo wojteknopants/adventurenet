@@ -12,7 +12,7 @@ export default function Search({
   return (
     <div className="flex mt-4 gap-3">
       <div className="flex flex-col grow">
-        <div className="border grow rounded-xl relative">
+        <div className="shadow-md grow rounded-xl relative">
           <input
             onChange={handleOnSearchChange}
             className="block w-full p-3 px-4 overflow-hidden h-12 rounded-xl"
