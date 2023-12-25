@@ -1,7 +1,7 @@
 from djoser.serializers import UserCreateSerializer
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from .models import UserProfile, Post, Comment, PostLike, CommentLike, Image, Tag, Itinerary
+from .models import UserProfile, Post, Comment, PostLike, CommentLike, Image, Tag, Itinerary, ChatMessage
 User = get_user_model()
 
 # class UserAccountSerializer(serializers.ModelSerializer):
@@ -148,3 +148,13 @@ class ItinerarySerializer(serializers.ModelSerializer):
         fields = ['id', 'user', 'content', 'created_at', 'updated_at']
 
 
+#CHAT SERIALIZERS
+
+class ChatMessageSerializer(serializers.ModelSerializer):
+    
+    reciever_profile = UserProfileSerializer(read_only=True)
+    sender_profile = UserProfileSerializer(read_only=True)
+    
+    class Meta:
+        model = ChatMessage
+        fields = ['id','user','sender','sender_profile','reciever','reciever_profile','message','is_read','date']

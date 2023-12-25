@@ -6,7 +6,7 @@ from .views import (LogoutView, LogoutAllView,
                     CommentRetrieveUpdateDeleteView, PostCommentListCreateView, UserCommentListView, CommentListView,
                     PostLikeView, CommentLikeView, PostLikesListView, CommentLikesListView,
                     UserImagesListView, FlightCultureDataAPIView, FlightSearchSuggestAPIView, FlightOffersAPIView, CitySearchAPIView, POISearchAPIView, ToursActivitiesSearchAPIView, GenerateItineraryView,
-                    MapboxSuggestView, MapboxRetrieveView, ItineraryListCreateView, ItineraryRetrieveUpdateDestroyView, UserItinerariesListView, )
+                    MapboxSuggestView, MapboxRetrieveView, ItineraryListCreateView, ItineraryRetrieveUpdateDestroyView, UserItinerariesListView, MyInboxView, GetMessagesView, SendMessageView, ProfileDetailsView, SearchUserView)
 
 urlpatterns = [
     #logout - blacklist JWT refresh token
@@ -60,7 +60,13 @@ urlpatterns = [
     path('itineraries/', ItineraryListCreateView.as_view(), name='itineraries_list_create'), 
     path('profiles/<str:user__pk>/itineraries/', UserItinerariesListView.as_view(), name='user_itineraries_list'),
 
-
+    #chat
+    path('my-messages/<user_id>/',MyInboxView.as_view()),
+    path('get-messages/<sender_id>/<reciever_id>/',GetMessagesView.as_view()),
+    path('send-messages/',SendMessageView.as_view()),
+    
+    path('profile/<int:pk>/',ProfileDetailsView.as_view()),
+    path('search/<username>/',SearchUserView.as_view()),
 
 
 ]
