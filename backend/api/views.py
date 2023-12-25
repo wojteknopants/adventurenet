@@ -1,9 +1,9 @@
-from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateAPIView, RetrieveUpdateDestroyAPIView, DestroyAPIView
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from djoser.permissions import CurrentUserOrAdminOrReadOnly
 from .permissions import OwnerOrAdmin, OwnerOrAdminOrReadOnly
-from .models import UserProfile, Post, Comment, PostLike, CommentLike, Image, Itinerary
-from .serializers import UserProfileSerializer, PostSerializer, CommentSerializer, PostLikeSerializer, CommentLikeSerializer, ImageSerializer, GenerateItinerarySerializer, ItinerarySerializer
+from .models import UserProfile, Post, Comment, PostLike, CommentLike, Image, Itinerary, SavedItem
+from .serializers import UserProfileSerializer, PostSerializer, CommentSerializer, PostLikeSerializer, CommentLikeSerializer, ImageSerializer, GenerateItinerarySerializer, ItinerarySerializer, SavedItemSerializer
 
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -400,7 +400,7 @@ class FlightOffersAPIView(APIView):
             processed_data = preprocess_data(raw_data)
         except Exception as e:           
             # Return a generic error response
-            return Response({'detail': 'Error fetching flight offers.'}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+            return Response({'detail': 'Error fetching flight offers.' + str(e)}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
 
         # Return the processed data as a JSON response
         return Response(processed_data)
@@ -538,7 +538,7 @@ class ItineraryRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     lookup_field = 'id'
 
 class UserItinerariesListView(ListAPIView):
-    """GET all posts from specific user"""
+    """GET all itineraries from specific user"""
     serializer_class = ItinerarySerializer
     permission_classes = [IsAuthenticated]
 
@@ -554,3 +554,31 @@ class UserItinerariesListView(ListAPIView):
             user_id = user.pk
 
         return Itinerary.objects.filter(user_id=user_id)
+    
+class UserSavedItemListCreateView(ListCreateAPIView):
+    serializer_class = SavedItemSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def get_queryset(self):
+        user_pk = self.kwargs.get('user__pk')
+        if self.request.user.pk == user_pk:
+            # The user is viewing their own saved items
+            return SavedItem.objects.filter(user=self.request.user)
+        else:
+            # Viewing another user's saved items
+            # Logic is split in case we want to implement separate permissions for privacy
+            return SavedItem.objects.filter(user__pk=user_pk)
+
+class SavedItemDestroyView(DestroyAPIView):
+    queryset = SavedItem.objects.all()
+    serializer_class = SavedItemSerializer
+    permission_classes = [IsAuthenticated, OwnerOrAdmin]
+    lookup_field = 'id'
+
+    def get_queryset(self):
+        # The user can delete their own saved items
+        return SavedItem.objects.filter(user=self.request.user)
+        

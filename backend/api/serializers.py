@@ -1,7 +1,8 @@
 from djoser.serializers import UserCreateSerializer
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from .models import UserProfile, Post, Comment, PostLike, CommentLike, Image, Tag, Itinerary
+from .models import UserProfile, Post, Comment, PostLike, CommentLike, Image, Tag, Itinerary, SavedItem
+from django.contrib.contenttypes.models import ContentType
 User = get_user_model()
 
 # class UserAccountSerializer(serializers.ModelSerializer):
@@ -37,7 +38,8 @@ class PostSerializer(serializers.ModelSerializer):
     new_images = serializers.ListField(child=serializers.ImageField(), write_only=True, max_length=10, required=False)
     new_tags = serializers.ListField(child=serializers.CharField(), write_only=True, max_length=10, required=False)
 
-    user_pfp = serializers.SerializerMethodField()
+    user_profile = UserProfileSerializer(read_only=True, source='user.userprofile')  # Assuming the relation name from User to UserProfile is 'userprofile'
+
 
     tags = serializers.SlugRelatedField(
         many=True,
@@ -54,7 +56,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('id', 'user', 'user_pfp' 'title','tags', 'new_tags', 'content', 'images', 'new_images','images_to_delete', 'comments_count', 'likes_count', 'is_liked', 'created_at', 'updated_at')
+        fields = ('id', 'user', 'user_profile', 'title','tags', 'new_tags', 'content', 'images', 'new_images','images_to_delete', 'comments_count', 'likes_count', 'is_liked', 'created_at', 'updated_at')
         read_only_fields = ('id', 'user', 'images', 'comments_count', 'likes_count', 'is_liked', 'created_at', 'updated_at', 'user_pfp')
         write_only_fields = ('new_images','new_tags', 'images_to_delete')
         #images and tags are for outcoming data, new_images and new_tags are for incoming data (these are separate models and needs some workaround when creating/updating)
@@ -102,12 +104,7 @@ class PostSerializer(serializers.ModelSerializer):
             return PostLike.objects.filter(post=obj, user=user).exists()
         return False
     
-    def get_user_pfp(self, obj):
-        # Assuming each user has a related UserProfile instance
-        profile = UserProfile.objects.filter(user=obj.user).first()
-        if profile and profile.profile_picture:
-            return profile.profile_picture.url
-        return None  # Or a default image URL
+   
 
 
 
@@ -146,5 +143,39 @@ class ItinerarySerializer(serializers.ModelSerializer):
     class Meta:
         model = Itinerary
         fields = ['id', 'user', 'content', 'created_at', 'updated_at']
+
+class SavedItemSerializer(serializers.ModelSerializer):
+    content_object = serializers.SerializerMethodField()
+
+    class Meta:
+        model = SavedItem
+        fields = ('id', 'user', 'content_type', 'object_id', 'content_object', 'created_at')
+
+    def get_content_object(self, obj):
+        # obj is an instance of SavedItem
+        # Dynamically choose the serializer based on the type of the content_object
+        if isinstance(obj.content_object, Post):
+            return PostSerializer(obj.content_object).data
+        elif isinstance(obj.content_object, Itinerary):
+            return ItinerarySerializer(obj.content_object).data
+        return None
+
+    def create(self, validated_data):
+        # Handle creation of SavedItem
+        content_type = validated_data.pop('content_type', None)
+        object_id = validated_data.pop('object_id', None)
+        user = self.context['request'].user
+
+        # Get the ContentType object based on the provided content_type
+        content_type_obj = ContentType.objects.get(model=content_type)
+
+        saved_item = SavedItem.objects.create(
+            user=user,
+            content_type=content_type_obj,
+            object_id=object_id,
+            **validated_data
+        )
+
+        return saved_item
 
 
