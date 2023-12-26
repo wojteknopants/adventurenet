@@ -153,9 +153,23 @@ class GenerateItinerarySerializer(serializers.Serializer):
     intensiveness = serializers.ChoiceField(choices=["hard", "easy"])
 
 class ItinerarySerializer(serializers.ModelSerializer):
+    is_saved = serializers.SerializerMethodField()
+
     class Meta:
         model = Itinerary
-        fields = ['id', 'user', 'content', 'created_at', 'updated_at']
+        fields = ['id', 'user', 'content', 'is_saved', 'created_at', 'updated_at']
+        read_only_fields = ('id', 'user', 'is_saved', 'created_at', 'updated_at')
+
+    def get_is_saved(self, obj):
+        user = self.context.get('request').user if self.context.get('request') else None
+        if user and user.is_authenticated:
+            content_type = ContentType.objects.get_for_model(obj)
+            return SavedItem.objects.filter(
+                user=user, 
+                content_type=content_type, 
+                object_id=obj.id
+            ).exists()
+        return False
 
 class ContentTypeField(serializers.Field):
     #helper field for SavedItemSerializer
@@ -195,8 +209,8 @@ class SavedItemSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = self.context['request'].user
-        content_type = validated_data.get('content_type')
-        object_id = validated_data.get('object_id')
+        content_type = validated_data.pop('content_type')
+        object_id = validated_data.pop('object_id')
 
         # Check if the item is already saved by the user
         existing_saved_item = SavedItem.objects.filter(
@@ -213,7 +227,7 @@ class SavedItemSerializer(serializers.ModelSerializer):
             user=user, 
             content_type=content_type, 
             object_id=object_id, 
-            **validated_data
+            
         )
 
         return saved_item
