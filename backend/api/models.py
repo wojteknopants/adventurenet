@@ -146,6 +146,9 @@ class SavedItem(models.Model):
     content_object = GenericForeignKey('content_type', 'object_id')
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        unique_together = ('user', 'content_type', 'object_id')
+
     def __str__(self):
-        return f"{self.content_type} saved on {self.created_at}"
+        return f"{self.content_type.model} saved on {self.created_at}"
 

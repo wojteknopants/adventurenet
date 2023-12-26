@@ -144,38 +144,64 @@ class ItinerarySerializer(serializers.ModelSerializer):
         model = Itinerary
         fields = ['id', 'user', 'content', 'created_at', 'updated_at']
 
+class ContentTypeField(serializers.Field):
+    #helper field for SavedItemSerializer
+    def to_representation(self, value):
+        return value.model
+
+    def to_internal_value(self, data):
+        if data not in ['post', 'itinerary']:
+            raise serializers.ValidationError("Content type must be 'post' or 'itinerary'.")
+
+        try:
+            # Ensure the ContentType exists for the given model name
+            if data == 'post':
+                return ContentType.objects.get_for_model(Post)
+            elif data == 'itinerary':
+                return ContentType.objects.get_for_model(Itinerary)
+        except ContentType.DoesNotExist:
+            raise serializers.ValidationError(f"Content type '{data}' does not exist.")
+
 class SavedItemSerializer(serializers.ModelSerializer):
     content_object = serializers.SerializerMethodField()
+    content_type = ContentTypeField()  # Custom field
 
     class Meta:
         model = SavedItem
         fields = ('id', 'user', 'content_type', 'object_id', 'content_object', 'created_at')
+        read_only_fields = ('id', 'user', 'created_at')
 
     def get_content_object(self, obj):
-        # obj is an instance of SavedItem
-        # Dynamically choose the serializer based on the type of the content_object
         if isinstance(obj.content_object, Post):
-            return PostSerializer(obj.content_object).data
+            # Pass the current context to the nested serializer
+            return PostSerializer(obj.content_object, context=self.context).data
         elif isinstance(obj.content_object, Itinerary):
-            return ItinerarySerializer(obj.content_object).data
+            return ItinerarySerializer(obj.content_object, context=self.context).data
         return None
 
+
     def create(self, validated_data):
-        # Handle creation of SavedItem
-        content_type = validated_data.pop('content_type', None)
-        object_id = validated_data.pop('object_id', None)
         user = self.context['request'].user
+        content_type = validated_data.get('content_type')
+        object_id = validated_data.get('object_id')
 
-        # Get the ContentType object based on the provided content_type
-        content_type_obj = ContentType.objects.get(model=content_type)
+        # Check if the item is already saved by the user
+        existing_saved_item = SavedItem.objects.filter(
+            user=user, 
+            content_type=content_type, 
+            object_id=object_id
+        ).first()
 
+        if existing_saved_item:
+            raise serializers.ValidationError('This item is already saved.')
+
+        # Proceed to create a new saved item if it's not already saved
         saved_item = SavedItem.objects.create(
-            user=user,
-            content_type=content_type_obj,
-            object_id=object_id,
+            user=user, 
+            content_type=content_type, 
+            object_id=object_id, 
             **validated_data
         )
 
         return saved_item
-
 
