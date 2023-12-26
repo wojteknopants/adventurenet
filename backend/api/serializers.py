@@ -64,11 +64,15 @@ class PostSerializer(serializers.ModelSerializer):
 =======
         fields = ('id', 'user', 'user_profile', 'title','tags', 'new_tags', 'content', 'images', 'new_images','images_to_delete', 'comments_count', 'likes_count', 'is_liked', 'is_saved', 'created_at', 'updated_at')
 <<<<<<< HEAD
+<<<<<<< HEAD
         read_only_fields = ('id', 'user', 'images', 'comments_count', 'likes_count', 'is_liked', 'is_saved', 'created_at', 'updated_at', 'user_pfp')
 >>>>>>> 332d279cdbf06ece6a3d964136dd46f34f4cf420
 =======
         read_only_fields = ('id', 'user', 'images','tags', 'comments_count', 'likes_count', 'is_liked', 'is_saved', 'created_at', 'updated_at', 'user_pfp')
 >>>>>>> b0b2c9ffb39db564c7829331a03e2b3c6d7f2a52
+=======
+        read_only_fields = ('id', 'user', 'images','tags', 'comments_count', 'likes_count', 'is_liked', 'is_saved', 'created_at', 'updated_at', 'user_profile')
+>>>>>>> c499aa30b319c7942a02308c54ce0a62c7e8e0e4
         write_only_fields = ('new_images','new_tags', 'images_to_delete')
         #images and tags are for outcoming data, new_images and new_tags are for incoming data (these are separate models and needs some workaround when creating/updating)
 
