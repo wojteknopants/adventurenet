@@ -59,22 +59,24 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ('id', 'user', 'user_profile', 'title','tags', 'new_tags', 'content', 'images', 'new_images','images_to_delete', 'comments_count', 'likes_count', 'is_liked', 'is_saved', 'created_at', 'updated_at')
-        read_only_fields = ('id', 'user', 'images', 'comments_count', 'likes_count', 'is_liked', 'is_saved', 'created_at', 'updated_at', 'user_pfp')
+        read_only_fields = ('id', 'user', 'images','tags', 'comments_count', 'likes_count', 'is_liked', 'is_saved', 'created_at', 'updated_at', 'user_pfp')
         write_only_fields = ('new_images','new_tags', 'images_to_delete')
         #images and tags are for outcoming data, new_images and new_tags are for incoming data (these are separate models and needs some workaround when creating/updating)
 
     def create(self, validated_data):
+        validated_data.pop('tags', None)
+
         tags_data = validated_data.pop('new_tags', [])
         images_data = validated_data.pop('new_images', []), 
         post = Post.objects.create(**validated_data)
-
-        for tag_name in tags_data:
-            tag, _ = Tag.objects.get_or_create(name=tag_name)
-            post.tags.add(tag)
-
-        for img in images_data:
-            Image.objects.create(post=post, image=img, user=post.user)
-
+        if tags_data:
+            for tag_name in tags_data:
+                tag, _ = Tag.objects.get_or_create(name=tag_name)
+                post.tags.add(tag)
+        if images_data:
+            for img in images_data:
+                Image.objects.create(post=post, image=img, user=post.user)
+        
         return post
 
 
