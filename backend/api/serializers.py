@@ -63,23 +63,32 @@ class PostSerializer(serializers.ModelSerializer):
         read_only_fields = ('id', 'user', 'images', 'comments_count', 'likes_count', 'is_liked', 'created_at', 'updated_at', 'user_pfp')
 =======
         fields = ('id', 'user', 'user_profile', 'title','tags', 'new_tags', 'content', 'images', 'new_images','images_to_delete', 'comments_count', 'likes_count', 'is_liked', 'is_saved', 'created_at', 'updated_at')
+<<<<<<< HEAD
         read_only_fields = ('id', 'user', 'images', 'comments_count', 'likes_count', 'is_liked', 'is_saved', 'created_at', 'updated_at', 'user_pfp')
 >>>>>>> 332d279cdbf06ece6a3d964136dd46f34f4cf420
+=======
+        read_only_fields = ('id', 'user', 'images','tags', 'comments_count', 'likes_count', 'is_liked', 'is_saved', 'created_at', 'updated_at', 'user_pfp')
+>>>>>>> b0b2c9ffb39db564c7829331a03e2b3c6d7f2a52
         write_only_fields = ('new_images','new_tags', 'images_to_delete')
         #images and tags are for outcoming data, new_images and new_tags are for incoming data (these are separate models and needs some workaround when creating/updating)
 
     def create(self, validated_data):
+        validated_data.pop('tags', None)
+        validated_data.pop('images', None)
+
         tags_data = validated_data.pop('new_tags', [])
-        images_data = validated_data.pop('new_images', []), 
+        images_data = validated_data.pop('new_images', None), 
         post = Post.objects.create(**validated_data)
 
-        for tag_name in tags_data:
-            tag, _ = Tag.objects.get_or_create(name=tag_name)
-            post.tags.add(tag)
-
-        for img in images_data:
-            Image.objects.create(post=post, image=img, user=post.user)
-
+        if len(tags_data)>=1:
+            for tag_name in tags_data:
+                tag, _ = Tag.objects.get_or_create(name=tag_name)
+                post.tags.add(tag)
+        if len(images_data)>=1:
+            for img in images_data:
+                if img and hasattr(img, 'read'):  # Check if img is a valid file
+                    Image.objects.create(post=post, image=img, user=post.user)
+        
         return post
 
 
