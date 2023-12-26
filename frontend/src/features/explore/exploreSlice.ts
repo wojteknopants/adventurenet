@@ -94,6 +94,7 @@ export const getFlightCultureData = createAsyncThunk(
       const payload = {
         locale: res.data.locale.code,
         market: res.data.market.code,
+        currency: res.data.currency.code,
         searchTerm: "",
       };
       // console.log(payload);
@@ -268,9 +269,15 @@ export const searchedCitiesForFlights = (state: RootState) => {
 };
 
 export const countriesToFlight = (state: RootState) => {
-  console.log(state.explore.countriesToFlight);
   if (state.explore && state.explore.countriesToFlight) {
     return state.explore.countriesToFlight;
+  }
+  return [];
+};
+
+export const getCultureData = (state: RootState) => {
+  if (state.explore && state.explore.flightCultureData) {
+    return state.explore.flightCultureData;
   }
   return [];
 };

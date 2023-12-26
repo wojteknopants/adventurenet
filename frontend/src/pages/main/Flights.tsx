@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../store";
 import {
   countriesToFlight,
+  getCultureData,
   getFlightCultureData,
   getFlights,
   getFlightsSearchSuggestions,
@@ -29,6 +30,7 @@ const Flights = () => {
 
   const citiesForFlights = useSelector(searchedCitiesForFlights);
   const countriesOffers = useSelector(countriesToFlight);
+  const cultureData = useSelector(getCultureData);
 
   const handleOnFlightCityClick = (city: any) => {
     console.log(city);
@@ -77,12 +79,15 @@ const Flights = () => {
   const flightOffers = Object.keys(countriesOffers).map((country) => (
     <div
       key={country}
-      className="p-4 flex flex-col text-lg bg-white text-mainGray transition-all hover:bg-mainLightGray hover:text-mainBlue rounded-lg shadow-md cursor-pointer gap-2"
+      className="p-4 flex flex-col text-lg bg-white text-mainGray transition-all hover:bg-mainLightGray hover:text-mainBlue rounded-lg shadow-md cursor-pointer gap-2 justify-between"
       onClick={() => handleOnCardClick(countriesOffers[country], country)}
     >
       <div className="">{country}</div>
       <div className="text-sm text-mainGray/50 ">
-        <div>Cheapest price : {countriesOffers[country].cheapest}</div>
+        <div>
+          Cheapest price : {countriesOffers[country].cheapest}{" "}
+          {cultureData.currency}
+        </div>
         <div>
           Has direct flights :{" "}
           {countriesOffers[country].has_direct ? "YES" : "NO"}
@@ -94,11 +99,11 @@ const Flights = () => {
   const handleClosePopup = () => {
     setShowFlights(false);
   };
-
   return (
     <div className="">
       <PageTitle title="Flights" />
       <Search
+        placeholder={"Type from where you what to flight ..."}
         searched={searchedFlightsCities}
         handleOnSearchChange={handleOnFlightsSearchChange}
       />
@@ -108,6 +113,7 @@ const Flights = () => {
           <FlightsPopup
             selectedFlightCountry={selectedFlightCountry}
             closePopup={handleClosePopup}
+            currency={cultureData.currency}
           />
         )}
       </div>

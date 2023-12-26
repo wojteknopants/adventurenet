@@ -108,6 +108,7 @@ const Explore = () => {
     <div>
       <PageTitle title="Explore" />
       <Search
+        placeholder={"Type city you want to visit..."}
         searched={searchedPOICities}
         handleOnSearchChange={handleOnPOICitySearchChange}
       />
