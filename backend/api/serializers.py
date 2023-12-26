@@ -68,18 +68,20 @@ class PostSerializer(serializers.ModelSerializer):
         validated_data.pop('images', None)
 
         tags_data = validated_data.pop('new_tags', [])
-        images_data = validated_data.pop('new_images', None), 
+        images_data = validated_data.pop('new_images', [])  # Ensure this is a list
+
         post = Post.objects.create(**validated_data)
 
-        if len(tags_data)>=1:
+        if tags_data:
             for tag_name in tags_data:
                 tag, _ = Tag.objects.get_or_create(name=tag_name)
                 post.tags.add(tag)
-        if len(images_data)>=1:
+
+        if images_data:
             for img in images_data:
-                if img and hasattr(img, 'read'):  # Check if img is a valid file
+                if img:  # Check if img is a valid file
                     Image.objects.create(post=post, image=img, user=post.user)
-        
+
         return post
 
 
