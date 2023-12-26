@@ -526,6 +526,8 @@ class MapboxRetrieveView(APIView):
 #ITINERARIES CRUD
         
 class ItineraryListCreateView(ListCreateAPIView):
+    """POST body: content: string,
+    thats all"""
     queryset = Itinerary.objects.all()
     serializer_class = ItinerarySerializer
     permission_classes = [IsAuthenticated]
