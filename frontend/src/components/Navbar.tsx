@@ -14,7 +14,7 @@ const Navbar = ({ currentPageId }: NavbarProps) => {
     <li className="mt-2" key={nav.id}>
       <Link
         to={`/${nav.id}`}
-        className={`flex items-center transition px-2 text-xl rounded-xl drop-shadow-md focus:drop-shadow hover:bg-blue-100 ${
+        className={`flex items-center transition-all px-2 text-xl rounded-xl drop-shadow-md focus:drop-shadow hover:bg-blue-100 ${
           selectedId === nav.id
             ? "shadow-md shadow-blue-400/50 text-white bg-blue-400 hover:bg-blue-400/90 "
             : "text-blue-400 bg-none"
@@ -26,7 +26,7 @@ const Navbar = ({ currentPageId }: NavbarProps) => {
         <img
           src={nav.icon}
           alt="icon"
-          className={`mt-1 transition p-2.5 rounded-2xl ${
+          className={`transition p-2.5 rounded-2xl ${
             selectedId === nav.id ? " fill-current text-white " : "bg-none"
           } `}
           style={{
@@ -43,8 +43,8 @@ const Navbar = ({ currentPageId }: NavbarProps) => {
   ));
 
   return (
-    <nav className=" flex flex-col justify-between px-[8px] xl:px-[64px] lg:px-[32px]">
-      <header className="flex flex-1">
+    <nav className=" flex flex-col justify-between px-[8px] xl:px-[64px] lg:px-[32px] fixed">
+      <header className="flex flex-1 ">
         <img className="my-[32px] font-bold lg:flex flex-1 hidden" src={logo} />
         <img
           className="my-[32px] font-bold flex flex-1 lg:hidden"

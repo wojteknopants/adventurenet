@@ -12,6 +12,7 @@ const Card = ({
   if (!noPadding) {
     classes += " py-3 px-6";
   }
+
   return <div className={classes}>{children}</div>;
 };
 

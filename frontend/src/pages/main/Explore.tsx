@@ -1,9 +1,21 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { BsImage } from "react-icons/bs";
-import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import Slider from "../../components/Slider";
 import PageTitle from "../../components/PageTitle";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getActivities,
+  getCitiesForPOI,
+  getFlightCultureData,
+  getFlights,
+  getFlightsSearchSuggestions,
+  searchedCitiesForFlights,
+  searchedCitiesForPOI,
+  selectCity,
+} from "../../features/explore/exploreSlice";
+import { AppDispatch } from "../../store";
+import Search from "../../components/Search";
 
 const hotels = [
   { name: "Hotel One", stars: 4, price: "$$" },
@@ -31,6 +43,50 @@ const hotels = [
 const Explore = () => {
   const cardRef = useRef(null);
 
+  const dispatch = useDispatch<AppDispatch>();
+  const [selectedCity, setSelectedCity] = useState();
+  let timeout: NodeJS.Timeout;
+
+  const citiesForPOI = useSelector(searchedCitiesForPOI);
+
+  const handleOnPOICityClick = (city: any) => {
+    console.log(city);
+    setSelectedCity(city);
+    dispatch(selectCity(city));
+
+    dispatch(
+      getActivities({
+        latitude: city.geoCode.latitude,
+        longitude: city.geoCode.longitude,
+      })
+    );
+  };
+
+  const handleOnPOICitySearchChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const inputValue = e.target.value;
+
+    clearTimeout(timeout);
+
+    timeout = setTimeout(() => {
+      dispatch(getCitiesForPOI({ city: inputValue }));
+    }, 300);
+  };
+
+  const searchedPOICities = citiesForPOI.map((city: any, index: any) => {
+    return (
+      <li key={index}>
+        <button
+          onClick={() => handleOnPOICityClick(city)}
+          className="flex grow w-full text-mainGray hover:bg-mainLightGray hover:text-mainBlue transition-all rounded-lg px-2 py-1 text-lg"
+        >
+          {city.name}
+        </button>
+      </li>
+    );
+  });
+
   const content = hotels.map((hotel, index) => (
     <div
       key={index}
@@ -51,7 +107,16 @@ const Explore = () => {
   return (
     <div>
       <PageTitle title="Explore" />
+      <Search
+        placeholder={"Type city you want to visit..."}
+        searched={searchedPOICities}
+        handleOnSearchChange={handleOnPOICitySearchChange}
+      />
       <Slider content={content} />
+      {/* <Search
+        searched={searchedFlightsCities}
+        handleOnSearchChange={handleOnFlightsSearchChange}
+      /> */}
     </div>
   );
 };

@@ -1,16 +1,20 @@
 import Avatar from "./Avatar";
 import Card from "./Card";
 import { useAddNewPostMutation } from "../features/posts/postsSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddPostPopupProps from "./AddPostPopup";
 import { iconAddPost } from "../assets";
+import { useSelector } from "react-redux";
+import Profile from "../pages/main/profile/Profile";
+import { useGetProfileQuery } from "../features/profile/profileSlice";
 
 const AddPostForm = () => {
   const [addNewPost, { isLoading }] = useAddNewPostMutation();
-
+  const { data, isSuccess, isError } = useGetProfileQuery("me");
   const [content, setContent] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [image, setImage] = useState<File | "">("");
+  const [picture, setPicture] = useState(null);
 
   const onContentChanged = (event: any) => setContent(event.target.value);
 
@@ -46,12 +50,24 @@ const AddPostForm = () => {
       }
     }
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      setPicture(data.profile_picture);
+      // setCover(updatedProfile.background_image);
+      // setUserPhoto(updatedProfile.profile_picture);
+    } else if (isError) {
+      console.error("ERROR");
+    }
+
+    console.log(picture);
+  }, [isLoading, data]);
   return (
     <>
       <Card noPadding={false}>
         <div className="flex gap-2">
           <div className="m-auto mx-0">
-            <Avatar size={""} />
+            <Avatar size={""} user_pfp={picture} />
           </div>
           <input
             className="grow m-auto h-14 ml-3 focus:outline-none"

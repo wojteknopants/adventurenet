@@ -236,4 +236,3 @@ class SavedItemSerializer(serializers.ModelSerializer):
         )
 
         return saved_item
-

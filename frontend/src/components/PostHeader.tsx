@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "./Avatar";
 import { Link } from "react-router-dom";
+import { FiEdit } from "react-icons/fi";
+import { IoMdClose } from "react-icons/io";
+import { BsThreeDots } from "react-icons/bs";
 
 interface PostHeaderProps {
   user: any;
   created_at: any;
+  user_pfp: any;
   onDeletePostClicked: () => void;
   formatRelativeTime: (timestamp: string) => string;
 }
@@ -12,13 +16,15 @@ interface PostHeaderProps {
 const PostHeader = ({
   user,
   created_at,
+  user_pfp,
   onDeletePostClicked,
   formatRelativeTime,
 }: PostHeaderProps) => {
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="flex gap-3">
       <div>
-        <Avatar size={""} />
+        <Avatar size={""} user_pfp={user_pfp} />
       </div>
       <div className="grow">
         <p>
@@ -30,24 +36,27 @@ const PostHeader = ({
           {formatRelativeTime(created_at)}
         </p>
       </div>
-      <div>
-        <button className="text-red-400" onClick={onDeletePostClicked}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 18 18"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-6 h-6"
+
+      {isOpen ? (
+        <div className="flex gap-4 text-sm">
+          <button className="text-mainGray rounded-lg  px-2 border-mainGray">
+            Edit
+          </button>
+          <button
+            className="text-red-400 rounded-lg  px-2 border-red-400"
+            onClick={onDeletePostClicked}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
+            Delete
+          </button>
+        </div>
+      ) : (
+        <button
+          className=" text-mainGray"
+          onClick={() => setIsOpen((prev) => !prev)}
+        >
+          <BsThreeDots />
         </button>
-      </div>
+      )}
     </div>
   );
 };

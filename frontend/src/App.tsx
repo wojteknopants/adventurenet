@@ -17,6 +17,7 @@ import Logout from "./pages/main/Logout";
 import Notifications from "./pages/main/Notifications";
 import Bookmarks from "./pages/main/Bookmarks";
 import { getIsAuthenticated } from "./features/auth/authSlice";
+import Flights from "./pages/main/Flights";
 
 // store.dispatch(postsApiSlice.endpoints.getPosts.initiate(undefined));
 
@@ -34,6 +35,7 @@ const App = () => {
               <Route path="/settings" element={<Settings />} />
               <Route path="/profile/:uid" element={<Profile />} />
               <Route path="/explore" element={<Explore />} />
+              <Route path="/flights" element={<Flights />} />
               <Route path="/notifications" element={<Notifications />} />
               <Route path="/bookmarks" element={<Bookmarks />} />
               <Route path="/logout" element={<Logout />} />
