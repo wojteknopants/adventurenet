@@ -33,6 +33,8 @@ class ImageSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
 
     is_liked = serializers.SerializerMethodField()
+    is_saved = serializers.SerializerMethodField()
+
    
     images = ImageSerializer(many=True, read_only=True)
     new_images = serializers.ListField(child=serializers.ImageField(), write_only=True, max_length=10, required=False)
@@ -56,8 +58,8 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('id', 'user', 'user_profile', 'title','tags', 'new_tags', 'content', 'images', 'new_images','images_to_delete', 'comments_count', 'likes_count', 'is_liked', 'created_at', 'updated_at')
-        read_only_fields = ('id', 'user', 'images', 'comments_count', 'likes_count', 'is_liked', 'created_at', 'updated_at', 'user_pfp')
+        fields = ('id', 'user', 'user_profile', 'title','tags', 'new_tags', 'content', 'images', 'new_images','images_to_delete', 'comments_count', 'likes_count', 'is_liked', 'is_saved', 'created_at', 'updated_at')
+        read_only_fields = ('id', 'user', 'images', 'comments_count', 'likes_count', 'is_liked', 'is_saved', 'created_at', 'updated_at', 'user_pfp')
         write_only_fields = ('new_images','new_tags', 'images_to_delete')
         #images and tags are for outcoming data, new_images and new_tags are for incoming data (these are separate models and needs some workaround when creating/updating)
 
@@ -102,6 +104,17 @@ class PostSerializer(serializers.ModelSerializer):
         user = self.context['request'].user
         if user.is_authenticated:
             return PostLike.objects.filter(post=obj, user=user).exists()
+        return False
+    
+    def get_is_saved(self, obj):
+        user = self.context.get('request').user if self.context.get('request') else None
+        if user and user.is_authenticated:
+            content_type = ContentType.objects.get_for_model(obj)
+            return SavedItem.objects.filter(
+                user=user, 
+                content_type=content_type, 
+                object_id=obj.id
+            ).exists()
         return False
     
    

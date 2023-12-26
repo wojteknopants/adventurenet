@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 
-from .models import UserAccount, UserProfile, Post, Comment, PostLike, CommentLike, Tag, Itinerary
+from .models import UserAccount, UserProfile, Post, Comment, PostLike, CommentLike, Tag, Itinerary, SavedItem
 
 @admin.register(UserAccount)
 class UserAccountAdmin(admin.ModelAdmin):
@@ -48,3 +48,7 @@ class TagAdmin(admin.ModelAdmin):
 @admin.register(Itinerary)
 class ItineraryAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'content', 'created_at')
+
+@admin.register(SavedItem)
+class SavedItemAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'content_type', 'object_id', 'created_at')
