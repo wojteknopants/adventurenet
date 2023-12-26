@@ -25,7 +25,7 @@ const AvatarProfile = ({ size, photo, handleChangePhoto }: Props) => {
   };
   return (
     <div className={`${width} relative`}>
-      <div className=" rounded-full overflow-hidden">
+      <div className=" aspect-square rounded-full overflow-hidden">
         <img src={photo ? photo : profilePlaceholder} alt="" />
       </div>
       <button

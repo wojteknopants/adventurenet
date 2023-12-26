@@ -29,6 +29,7 @@ import {
   QueryDefinition,
 } from "@reduxjs/toolkit/dist/query";
 import { EntityId } from "@reduxjs/toolkit";
+import { useGetProfileQuery } from "../features/profile/profileSlice";
 
 interface PostProps {
   postId: EntityId;
@@ -53,6 +54,8 @@ const Post = ({ postId, refetch }: PostProps) => {
   const [deletePostLike] = useDeletePostLikeMutation();
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [addCommentInput, setAddCommentInput] = useState<string>("");
+
+  const { data } = useGetProfileQuery(post.user);
 
   const formatRelativeTime = (timestamp: string): string => {
     const parsedDate = parseISO(timestamp);
@@ -109,10 +112,12 @@ const Post = ({ postId, refetch }: PostProps) => {
       return !prev;
     });
   };
-
+  console.log(post.user_pfp);
   return (
     <Card noPadding={false}>
       <PostHeader
+        // user_pfp={"http://localhost:8000" + post.user_pfp}
+        user_pfp={data?.profile_picture}
         user={post.user}
         created_at={post.created_at}
         onDeletePostClicked={onDeletePostClicked}

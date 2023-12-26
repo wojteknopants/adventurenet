@@ -22,7 +22,7 @@ const Slider = ({ content }: SliderProps) => {
     }
   };
   return (
-    <div className="relative items-center mt-8">
+    <div className="relative items-center mt-6">
       <MdChevronLeft
         onClick={slideLeft}
         size={40}
