@@ -5,6 +5,7 @@ import { fetchTags, selectTagSuggestions } from "../features/posts/tagsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../store";
 import Search from "./Search";
+import Tags from "./Tags";
 
 interface AddPostPopupProps {
   handlePopup: () => void;
@@ -13,6 +14,10 @@ interface AddPostPopupProps {
   handleOnSaveClick: () => void;
   image: File | "";
   text: string;
+  tagsSuggestions: any;
+  selectedTags: any;
+  handleSelectTag: (arg: any) => any;
+  handleDeleteTag: (arg: any) => any;
 }
 
 const AddPostPopup = ({
@@ -20,24 +25,21 @@ const AddPostPopup = ({
   handleAddImage,
   handleAddText,
   handleOnSaveClick,
+  handleDeleteTag,
+  handleSelectTag,
   image,
   text,
+  tagsSuggestions,
+  selectedTags,
 }: AddPostPopupProps) => {
   const dispatch = useDispatch<AppDispatch>();
-  const [selectedTag, setSelectedTag] = useState();
 
-  const tagsSuggestions = useSelector(selectTagSuggestions);
-  console.log(tagsSuggestions);
   const hiddenFileInput = useRef<HTMLInputElement>(null);
 
   let timeout: NodeJS.Timeout;
 
   const handleClick = () => {
     if (hiddenFileInput.current) hiddenFileInput.current.click();
-  };
-
-  const handleOnTagClick = (tag: any) => {
-    console.log(tag);
   };
 
   const handleOnTagSearchChange = (
@@ -52,7 +54,7 @@ const AddPostPopup = ({
 
   const searched = tagsSuggestions.map((tag: any, index: any) => (
     <button
-      onClick={() => handleOnTagClick(tag)}
+      onClick={() => handleSelectTag(tag)}
       className="flex flex-col grow w-full text-mainGray hover:bg-mainLightGray hover:text-mainBlue transition-all rounded-lg px-2 py-1 text-lg "
       key={index}
     >
@@ -135,7 +137,7 @@ const AddPostPopup = ({
               className=" bg-white"
               placeholder="Tags..."
             /> */}
-
+            <Tags handleDelete={handleDeleteTag} tags={selectedTags} />
             <input
               value={text}
               onChange={handleAddText}
