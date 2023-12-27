@@ -6,6 +6,7 @@ import logo from "./logo.svg";
 import smallLogo from "./smallLogo.svg";
 import iconHome from "./iconHome.svg";
 import iconExplore from "./iconExplore.svg";
+import iconFlights from "./iconFlights.svg";
 import iconNotifications from "./iconNotifications.svg";
 import iconMessages from "./iconMessages.svg";
 import iconBookmarks from "./iconBookmarks.svg";
@@ -33,6 +34,7 @@ export {
   smallLogo,
   iconHome,
   iconExplore,
+  iconFlights,
   iconNotifications,
   iconMessages,
   iconBookmarks,

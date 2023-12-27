@@ -12,6 +12,7 @@ interface PostParams {
   user: number;
   title: string;
   content: string;
+  user_pfp: any;
   images?: [{ image: any }];
   new_images?: any;
   comments_count: number;

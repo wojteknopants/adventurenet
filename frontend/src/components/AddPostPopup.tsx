@@ -1,6 +1,11 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import Blur from "./Blur";
 import Avatar from "./Avatar";
+import { fetchTags, selectTagSuggestions } from "../features/posts/tagsSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "../store";
+import Search from "./Search";
+import Tags from "./Tags";
 
 interface AddPostPopupProps {
   handlePopup: () => void;
@@ -9,6 +14,10 @@ interface AddPostPopupProps {
   handleOnSaveClick: () => void;
   image: File | "";
   text: string;
+  tagsSuggestions: any;
+  selectedTags: any;
+  handleSelectTag: (arg: any) => any;
+  handleDeleteTag: (arg: any) => any;
 }
 
 const AddPostPopup = ({
@@ -16,21 +25,50 @@ const AddPostPopup = ({
   handleAddImage,
   handleAddText,
   handleOnSaveClick,
+  handleDeleteTag,
+  handleSelectTag,
   image,
   text,
+  tagsSuggestions,
+  selectedTags,
 }: AddPostPopupProps) => {
+  const dispatch = useDispatch<AppDispatch>();
+
   const hiddenFileInput = useRef<HTMLInputElement>(null);
+
+  let timeout: NodeJS.Timeout;
 
   const handleClick = () => {
     if (hiddenFileInput.current) hiddenFileInput.current.click();
   };
+
+  const handleOnTagSearchChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    clearTimeout(timeout);
+
+    timeout = setTimeout(() => {
+      dispatch(fetchTags({ query: event.target.value }));
+    }, 300);
+  };
+
+  const searched = tagsSuggestions.map((tag: any, index: any) => (
+    <button
+      onClick={() => handleSelectTag(tag)}
+      className="flex flex-col grow w-full text-mainGray hover:bg-mainLightGray hover:text-mainBlue transition-all rounded-lg px-2 py-1 text-lg "
+      key={index}
+    >
+      <div>{tag.name}</div>
+      <div className="text-sm text-mainGray/50">{tag.place_formatted}</div>
+    </button>
+  ));
 
   return (
     <>
       <div className="fixed z-10">
         <Blur zIndex={1} blurInPx={4} />
 
-        <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] max-h-fit rounded-xl px-6 py-3 drop-shadow-lg bg-white">
+        <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 lg:w-1/2 md:w-2/3 w-11/12 max-h-fit rounded-xl px-6 py-3 drop-shadow-lg bg-white">
           <div className="flex flex-col">
             <div className="flex flex-row justify-between">
               <div className="items-center flex gap-3">
@@ -61,6 +99,12 @@ const AddPostPopup = ({
                 </svg>
               </button>
             </div>
+            <Search
+              placeholder={"Type some tags..."}
+              handleOnSearchChange={handleOnTagSearchChange}
+              searched={searched}
+              offShadows
+            />
             <div className="my-[20px] flex justify-center">
               {image ? (
                 <div>
@@ -73,7 +117,7 @@ const AddPostPopup = ({
               ) : (
                 <div
                   onClick={handleClick}
-                  className="flex justify-center w-[600px] h-[400px] rounded-xl bg-mainLightGray cursor-pointer"
+                  className="flex justify-center w-full h-[50vh] rounded-xl bg-mainLightGray cursor-pointer"
                 >
                   <input
                     ref={hiddenFileInput}
@@ -82,10 +126,18 @@ const AddPostPopup = ({
                     onChange={handleAddImage}
                     style={{ display: "none" }}
                   />
+
                   <div className="m-auto">Add photo</div>
                 </div>
               )}
             </div>
+            {/* <input
+              value={tagSearch}
+              onChange={handleOnTagSearchChange}
+              className=" bg-white"
+              placeholder="Tags..."
+            /> */}
+            <Tags handleDelete={handleDeleteTag} tags={selectedTags} />
             <input
               value={text}
               onChange={handleAddText}

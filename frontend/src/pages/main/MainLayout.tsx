@@ -21,10 +21,10 @@ const MainLayout = () => {
 
   return (
     <div className="flex">
-      <div className="xs:inline hidden md:w-1/4 min-w-[78px]">
+      <div className="xs:inline hidden lg:w-1/4 min-w-[78px]">
         <Navbar currentPageId={"feed"} />
       </div>
-      <div className=" min-w-[320px] lg:w-1/2 min-h-screen h-full shadow-inner bg-slate-100">
+      <div className=" min-w-[320px] lg:w-1/2 w-full min-h-[110vh] h-full shadow-inner bg-mainLightGray">
         <div className="lg:mx-5 mx-3">
           <Outlet />
         </div>

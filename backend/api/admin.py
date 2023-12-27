@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 
-from .models import UserAccount, UserProfile, Post, Comment, PostLike, CommentLike, Tag, Itinerary, ChatMessage
+from .models import UserAccount, UserProfile, Post, Comment, PostLike, CommentLike, Tag, Itinerary, SavedItem, ChatMessage
 
 @admin.register(UserAccount)
 class UserAccountAdmin(admin.ModelAdmin):
@@ -53,3 +53,7 @@ class ItineraryAdmin(admin.ModelAdmin):
 class ChatMessageAdmin(admin.ModelAdmin):
     list_editable = ['is_read']
     list_display = ('sender', 'reciever', 'message', 'is_read')
+
+@admin.register(SavedItem)
+class SavedItemAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'content_type', 'object_id', 'created_at')

@@ -1,9 +1,9 @@
-from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
+from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateAPIView, RetrieveUpdateDestroyAPIView, DestroyAPIView, CreateAPIView
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from djoser.permissions import CurrentUserOrAdminOrReadOnly
 from .permissions import OwnerOrAdmin, OwnerOrAdminOrReadOnly
-from .models import UserProfile, Post, Comment, PostLike, CommentLike, Image, Itinerary, ChatMessage, UserAccount
-from .serializers import UserProfileSerializer, PostSerializer, CommentSerializer, PostLikeSerializer, CommentLikeSerializer, ImageSerializer, GenerateItinerarySerializer, ItinerarySerializer, ChatMessageSerializer
+from .models import UserProfile, Post, Comment, PostLike, CommentLike, Image, Itinerary, SavedItem, ChatMessage, UserAccount
+from .serializers import UserProfileSerializer, PostSerializer, CommentSerializer, PostLikeSerializer, CommentLikeSerializer, ImageSerializer, GenerateItinerarySerializer, ItinerarySerializer, SavedItemSerializer, ChatMessageSerializer
 
 from django.db.models import Subquery,OuterRef, Q
 
@@ -278,25 +278,27 @@ class CommentLikeView(APIView):
             return Response({'detail': 'Not liked yet'}, status=status.HTTP_400_BAD_REQUEST)
         
 class CommentLikesListView(ListAPIView):
-    """GET all likes for specific comment"""
+    """GET all likes for a specific comment"""
     serializer_class = CommentLikeSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-
-        comment_id = self.kwargs['pk']  # keyword variable captured from url
-        return CommentLike.objects.filter(comment=comment_id)
+        comment_id = self.kwargs.get('pk')  # Use .get() to avoid KeyError
+        if comment_id:
+            return CommentLike.objects.filter(comment=comment_id)
+        return CommentLike.objects.none()  # Return an empty queryset when 'pk' is not available
 
 
 class PostLikesListView(ListAPIView):
-    """GET all likes for specific post"""
+    """GET all likes for a specific post"""
     serializer_class = PostLikeSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-
-        post_id = self.kwargs['pk']  # keyword variable captured from url
-        return PostLike.objects.filter(post=post_id)
+        post_id = self.kwargs.get('pk')  # Use .get() to avoid KeyError
+        if post_id:
+            return PostLike.objects.filter(post=post_id)
+        return PostLike.objects.none()  # Return an empty queryset when 'pk' is not available
 
 # IMAGES (apart from built ins in Posts and Profiles)
 
@@ -402,7 +404,7 @@ class FlightOffersAPIView(APIView):
             processed_data = preprocess_data(raw_data)
         except Exception as e:           
             # Return a generic error response
-            return Response({'detail': 'Error fetching flight offers.'}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+            return Response({'detail': 'Error fetching flight offers.' + str(e)}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
 
         # Return the processed data as a JSON response
         return Response(processed_data)
@@ -456,7 +458,7 @@ class ToursActivitiesSearchAPIView(APIView):
             return Response({"error": "Latitude and longitude parameters are required."}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            results = get_tours_and_activities(latitude, longitude)
+            results = clean_tours_data(get_tours_and_activities(latitude, longitude))
             if results is None:
                 return Response({"error": "Error fetching data from Amadeus API."}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
             return Response(results)
@@ -526,6 +528,8 @@ class MapboxRetrieveView(APIView):
 #ITINERARIES CRUD
         
 class ItineraryListCreateView(ListCreateAPIView):
+    """POST body: content: string,
+    thats all"""
     queryset = Itinerary.objects.all()
     serializer_class = ItinerarySerializer
     permission_classes = [IsAuthenticated]
@@ -540,7 +544,7 @@ class ItineraryRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     lookup_field = 'id'
 
 class UserItinerariesListView(ListAPIView):
-    """GET all posts from specific user"""
+    """GET all itineraries from specific user"""
     serializer_class = ItinerarySerializer
     permission_classes = [IsAuthenticated]
 
@@ -629,3 +633,53 @@ class SearchUserView(ListAPIView):
         
         serializer = self.get_serializer(users, many=True)
         return Response(serializer.data)
+    
+    
+class UserSavedItemListView(ListAPIView):
+    serializer_class = SavedItemSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user_pk = self.kwargs.get('user__pk')
+        if self.kwargs['user__pk'] == 'me':
+            user = self.request.user
+            user_pk = user.pk
+
+        if self.request.user.pk == user_pk:
+        # The user is viewing their own saved items
+
+            return SavedItem.objects.filter(user=self.request.user)
+        else:
+        # Viewing another user's saved items
+        # Logic is split in case we want to implement separate permissions for privacy
+            
+            return SavedItem.objects.filter(user__pk=user_pk)
+
+class SavedItemCreateView(CreateAPIView):
+    serializer_class = SavedItemSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        saved_item = serializer.save(user=self.request.user)
+
+        # Check if content_object is Post or Itinerary
+        content_object = saved_item.content_object
+        if isinstance(content_object, Post) or isinstance(content_object, Itinerary):
+            # Prepare the response data
+            response_data = serializer.data
+            # Manually set the is_saved flag in the response data
+            response_data['content_object']['is_saved'] = True
+            return Response(response_data)
+
+        return super().perform_create(serializer)
+
+class SavedItemDestroyView(DestroyAPIView):
+    queryset = SavedItem.objects.all()
+    serializer_class = SavedItemSerializer
+    permission_classes = [IsAuthenticated, OwnerOrAdmin]
+    lookup_field = 'id'
+
+    def get_queryset(self):
+        # The user can delete their own saved items
+        return SavedItem.objects.filter(user=self.request.user)
+        

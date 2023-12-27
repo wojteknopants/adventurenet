@@ -6,7 +6,8 @@ from .views import (LogoutView, LogoutAllView,
                     CommentRetrieveUpdateDeleteView, PostCommentListCreateView, UserCommentListView, CommentListView,
                     PostLikeView, CommentLikeView, PostLikesListView, CommentLikesListView,
                     UserImagesListView, FlightCultureDataAPIView, FlightSearchSuggestAPIView, FlightOffersAPIView, CitySearchAPIView, POISearchAPIView, ToursActivitiesSearchAPIView, GenerateItineraryView,
-                    MapboxSuggestView, MapboxRetrieveView, ItineraryListCreateView, ItineraryRetrieveUpdateDestroyView, UserItinerariesListView, MyInboxView, GetMessagesView, SendMessageView, ProfileDetailsView, SearchUserView)
+                    MapboxSuggestView, MapboxRetrieveView, ItineraryListCreateView, ItineraryRetrieveUpdateDestroyView, UserItinerariesListView, MyInboxView, GetMessagesView, SendMessageView, ProfileDetailsView, SearchUserView,
+                    SavedItemCreateView, SavedItemDestroyView, UserSavedItemListView )
 
 urlpatterns = [
     #logout - blacklist JWT refresh token
@@ -67,6 +68,11 @@ urlpatterns = [
     
     path('profile/<int:pk>/',ProfileDetailsView.as_view()),
     path('search/<username>/',SearchUserView.as_view()),
+
+    #saved items (bookmarks) 
+    path('profiles/<str:user__pk>/saved-items/', UserSavedItemListView.as_view(), name='saved-item-list'),
+    path('saved-items/', SavedItemCreateView.as_view(), name='saved-item-create'),
+    path('saved-items/<int:id>/', SavedItemDestroyView.as_view(), name='saved-item-destroy'),
 
 
 ]

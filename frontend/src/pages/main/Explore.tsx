@@ -6,8 +6,12 @@ import PageTitle from "../../components/PageTitle";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getActivities,
-  getCities,
-  searchedCities,
+  getCitiesForPOI,
+  getFlightCultureData,
+  getFlights,
+  getFlightsSearchSuggestions,
+  searchedCitiesForFlights,
+  searchedCitiesForPOI,
   selectCity,
 } from "../../features/explore/exploreSlice";
 import { AppDispatch } from "../../store";
@@ -43,12 +47,13 @@ const Explore = () => {
   const [selectedCity, setSelectedCity] = useState();
   let timeout: NodeJS.Timeout;
 
-  const cities = useSelector(searchedCities);
+  const citiesForPOI = useSelector(searchedCitiesForPOI);
 
-  const handleOnCityClick = (city: any) => {
+  const handleOnPOICityClick = (city: any) => {
     console.log(city);
     setSelectedCity(city);
     dispatch(selectCity(city));
+
     dispatch(
       getActivities({
         latitude: city.geoCode.latitude,
@@ -57,22 +62,23 @@ const Explore = () => {
     );
   };
 
-  const handleOnSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleOnPOICitySearchChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const inputValue = e.target.value;
 
     clearTimeout(timeout);
 
     timeout = setTimeout(() => {
-      dispatch(getCities({ city: inputValue }));
+      dispatch(getCitiesForPOI({ city: inputValue }));
     }, 300);
   };
 
-  const searched = cities.map((city: any, index: any) => {
-    console.log(city);
+  const searchedPOICities = citiesForPOI.map((city: any, index: any) => {
     return (
       <li key={index}>
         <button
-          onClick={() => handleOnCityClick(city)}
+          onClick={() => handleOnPOICityClick(city)}
           className="flex grow w-full text-mainGray hover:bg-mainLightGray hover:text-mainBlue transition-all rounded-lg px-2 py-1 text-lg"
         >
           {city.name}
@@ -101,8 +107,16 @@ const Explore = () => {
   return (
     <div>
       <PageTitle title="Explore" />
-      <Search searched={searched} handleOnSearchChange={handleOnSearchChange} />
+      <Search
+        placeholder={"Type city you want to visit..."}
+        searched={searchedPOICities}
+        handleOnSearchChange={handleOnPOICitySearchChange}
+      />
       <Slider content={content} />
+      {/* <Search
+        searched={searchedFlightsCities}
+        handleOnSearchChange={handleOnFlightsSearchChange}
+      /> */}
     </div>
   );
 };
