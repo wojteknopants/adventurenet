@@ -4,11 +4,15 @@ import { Link } from "react-router-dom";
 import { FiEdit } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
 import { BsThreeDots } from "react-icons/bs";
+import AddPostPopup from "./AddPostPopup";
+import AddPostForm from "./AddPostForm";
+import EditPostForm from "./EditPostForm";
 
 interface PostHeaderProps {
   user: any;
   created_at: any;
   user_pfp: any;
+  editData: { postId: any; image: any; content: any; tags: any };
   onDeletePostClicked: () => void;
   formatRelativeTime: (timestamp: string) => string;
 }
@@ -17,10 +21,15 @@ const PostHeader = ({
   user,
   created_at,
   user_pfp,
+  editData,
   onDeletePostClicked,
   formatRelativeTime,
 }: PostHeaderProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isEdited, setIsEdited] = useState(false);
+
+  const handleOnEditClick = () => setIsEdited((prev) => !prev);
+
   return (
     <div className="flex gap-3">
       <div>
@@ -29,19 +38,28 @@ const PostHeader = ({
       <div className="grow">
         <p>
           <Link to={`/profile/${user}`}>
-            <a className="font-semibold">{user}</a>
+            <a className="font-semibold text-md text-mainBlue">@{user}</a>
           </Link>
         </p>
-        <p className="text-mainDarkGray text-sm">
+        <p className="text-mainGray text-sm">
           {formatRelativeTime(created_at)}
         </p>
       </div>
 
       {isOpen ? (
         <div className="flex gap-4 text-sm">
-          <button className="text-mainGray rounded-lg  px-2 border-mainGray">
+          <button
+            onClick={() => setIsEdited((prev) => !prev)}
+            className="text-mainGray rounded-lg  px-2 border-mainGray"
+          >
             Edit
           </button>
+          {isEdited && (
+            <EditPostForm
+              editData={editData}
+              handleOnClick={handleOnEditClick}
+            />
+          )}
           <button
             className="text-red-400 rounded-lg  px-2 border-red-400"
             onClick={onDeletePostClicked}

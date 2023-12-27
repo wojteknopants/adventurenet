@@ -94,6 +94,12 @@ const PostProfile = ({ postData, postId, refetch }: any) => {
   return (
     <Card noPadding={false}>
       <PostHeader
+        editData={{
+          postId,
+          image: post.images[0]?.image || postsPlaceholder,
+          content: post.content,
+          tags: post.tags,
+        }}
         user_pfp={data?.profile_picture}
         user={post.user}
         created_at={post.created_at}

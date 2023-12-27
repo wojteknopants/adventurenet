@@ -31,7 +31,7 @@ const AddPostForm = () => {
 
   const handleDeleteTag = (tagToDelete: any) => {
     const updatedSelectedTags = selectedTags.filter(
-      (tag) => tag !== tagToDelete
+      (tag) => tag.name !== tagToDelete
     );
 
     setSelectedTags(updatedSelectedTags);

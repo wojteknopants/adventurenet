@@ -115,7 +115,11 @@ const AddPostPopup = ({
                   <img
                     className=" rounded-xl max-h-[400px] max-w-[600px]"
                     alt="not found"
-                    src={URL.createObjectURL(image)}
+                    src={
+                      typeof image === "string"
+                        ? image
+                        : URL.createObjectURL(image)
+                    }
                   />
                 </div>
               ) : (
@@ -152,7 +156,7 @@ const AddPostPopup = ({
               className="bg-gray-100 hover:bg-gray-200 text-mainBlue font-bold mx-60 my-4 py-2 px-4 rounded-md"
               onClick={handleOnSaveClick}
             >
-              Add post
+              {typeof image === "string" ? "Update post" : "Add post"}
             </button>
           </div>
         </div>

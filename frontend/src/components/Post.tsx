@@ -116,7 +116,12 @@ const Post = ({ postId, refetch }: PostProps) => {
   return (
     <Card noPadding={false}>
       <PostHeader
-        // user_pfp={"http://localhost:8000" + post.user_pfp}
+        editData={{
+          postId,
+          image: post.images[0]?.image || postsPlaceholder,
+          content: post.content,
+          tags: post.tags,
+        }}
         user_pfp={profile?.profile_picture}
         user={post.user}
         created_at={post.created_at}
