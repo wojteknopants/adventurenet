@@ -18,6 +18,7 @@ interface AddPostPopupProps {
   selectedTags: any;
   handleSelectTag: (arg: any) => any;
   handleDeleteTag: (arg: any) => any;
+  user_pfp: any;
 }
 
 const AddPostPopup = ({
@@ -31,6 +32,7 @@ const AddPostPopup = ({
   text,
   tagsSuggestions,
   selectedTags,
+  user_pfp,
 }: AddPostPopupProps) => {
   const dispatch = useDispatch<AppDispatch>();
 
@@ -63,6 +65,8 @@ const AddPostPopup = ({
     </button>
   ));
 
+  const tags = selectedTags.map((tag: any) => tag.name);
+
   return (
     <>
       <div className="fixed z-10">
@@ -73,7 +77,7 @@ const AddPostPopup = ({
             <div className="flex flex-row justify-between">
               <div className="items-center flex gap-3">
                 <div>
-                  <Avatar size={""} />
+                  <Avatar size={""} user_pfp={user_pfp} />
                 </div>
                 <div className="grow">
                   <p>
@@ -137,7 +141,7 @@ const AddPostPopup = ({
               className=" bg-white"
               placeholder="Tags..."
             /> */}
-            <Tags handleDelete={handleDeleteTag} tags={selectedTags} />
+            <Tags handleDelete={handleDeleteTag} tags={tags} />
             <input
               value={text}
               onChange={handleAddText}

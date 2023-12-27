@@ -19,7 +19,7 @@ const PostFooter = ({
   handleLikeClick,
 }: PostFooterProps) => {
   return (
-    <div className="mt-5 flex gap-3 text-mainGray text-[14px]">
+    <div className=" flex gap-3 text-mainGray text-[14px]">
       <PostLikesCounter
         likes_count={likes_count}
         handleLikeClick={handleLikeClick}
