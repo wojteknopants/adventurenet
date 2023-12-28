@@ -2,8 +2,38 @@ import axios from "axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
 
-export const getCitiesForPOI = createAsyncThunk(
-  "explore/getCitiesForPOI",
+export const getSuggestionsForTours = createAsyncThunk(
+  "explore/getSuggestionsForTours",
+  async ({ city }: { city: string }) => {
+    try {
+      const url = `/city-search/`;
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `JWT ${localStorage.getItem("access")}`,
+          Accept: "application/json",
+        },
+
+        params: { keyword: `${city}` },
+      };
+
+      const res = await axios.get(
+        `${import.meta.env.VITE_REACT_APP_API_URL}${url}`,
+        config
+      );
+
+      console.log(res.data.data);
+      if (res.data.data === undefined) return [{ name: "Not found" }];
+      return res.data.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+export const getSuggestionsForItineraries = createAsyncThunk(
+  "explore/getSuggestionsForItineraries",
   async ({ city }: { city: string }) => {
     try {
       const url = `/city-search/`;
@@ -63,18 +93,11 @@ export const getActivities = createAsyncThunk(
   }
 );
 
-export const getFlightCultureData = createAsyncThunk(
-  "explore/getFlightCultureData",
-  async () => {
+export const generateItineraries = createAsyncThunk(
+  "explore/generateItineraries",
+  async ({ latitude, longitude }: { latitude: string; longitude: string }) => {
     try {
-      const ipResponse = await fetch("https://api.ipify.org?format=json");
-      if (!ipResponse.ok) {
-        throw new Error("Failed to fetch IP address");
-      }
-      const ipData = await ipResponse.json();
-      const ipAddress = ipData.ip;
-
-      const url = `/flight-culture-data/?ipAddress=${ipAddress}`;
+      const url = `/generate-itinerary/`;
 
       const config = {
         headers: {
@@ -82,51 +105,16 @@ export const getFlightCultureData = createAsyncThunk(
           Authorization: `JWT ${localStorage.getItem("access")}`,
           Accept: "application/json",
         },
+
+        params: {},
       };
 
-      const res = await axios.get(
-        `${import.meta.env.VITE_REACT_APP_API_URL}${url}`,
-        config
-      );
-
-      // console.log(res.data);
-
-      const payload = {
-        locale: res.data.locale.code,
-        market: res.data.market.code,
-        currency: res.data.currency.code,
-        searchTerm: "",
+      const body = {
+        latitude: `${latitude}`,
+        longitude: `${longitude}`,
+        number_of_days: 1,
+        intensiveness: "easy",
       };
-      // console.log(payload);
-
-      return payload;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-);
-
-export const getFlightsSearchSuggestions = createAsyncThunk(
-  "explore/getFlightsSearchSuggestions",
-  async ({ searchedCity }: { searchedCity: string }, { getState }) => {
-    try {
-      const flightCultureData = {
-        ...(getState() as RootState).explore.flightCultureData,
-      };
-      flightCultureData.searchTerm = searchedCity;
-      console.log(flightCultureData);
-
-      const url = "/flight-search-suggest/";
-
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `JWT ${localStorage.getItem("access")}`,
-          Accept: "application/json",
-        },
-      };
-
-      const body = flightCultureData;
 
       const res = await axios.post(
         `${import.meta.env.VITE_REACT_APP_API_URL}${url}`,
@@ -134,41 +122,27 @@ export const getFlightsSearchSuggestions = createAsyncThunk(
         config
       );
 
-      console.log(res.data.places);
-      return res.data.places;
+      console.log(res.data);
+      if (res.data) {
+        return res.data;
+      }
     } catch (error) {
       console.log(error);
     }
   }
 );
 
-export const getFlights = createAsyncThunk(
-  "explore/getFlights",
-  async ({ entityId }: { entityId: string }, { getState }) => {
+export const getItineraries = createAsyncThunk(
+  "explore/getItineraries",
+  async () => {
     try {
-      const flightCultureData = {
-        ...(getState() as RootState).explore.flightCultureData,
-      };
-      console.log(flightCultureData);
-      const originPlace = entityId;
-      const year = 2023; // hardcoded for now
-      const month = 12; // hardcoded for now
-
-      const url = `/flight-offers/`;
+      const url = `/itineraries/`;
 
       const config = {
         headers: {
           "Content-Type": "application/json",
           Authorization: `JWT ${localStorage.getItem("access")}`,
           Accept: "application/json",
-        },
-        params: {
-          originPlace,
-          year,
-          month,
-          locale: flightCultureData.locale, // From the Culture API
-          market: flightCultureData.market,
-          currency: flightCultureData.currency,
         },
       };
 
@@ -177,9 +151,10 @@ export const getFlights = createAsyncThunk(
         config
       );
 
-      console.log(res);
-      // if (res.data.data === undefined) return [{ name: "Not found" }];
-      return res.data;
+      console.log(res.data);
+      if (res.data) {
+        return res.data;
+      }
     } catch (error) {
       console.log(error);
     }
@@ -187,97 +162,111 @@ export const getFlights = createAsyncThunk(
 );
 
 interface exploreParams {
-  citiesForPOI: any;
-  citiesForFlights: any;
+  suggestionsForTours: any;
   status: "fulfilled" | "rejected" | "pending";
   selectedCity: any;
-  flightCultureData: any;
-  countriesToFlight: any;
+  suggestionsForItineraries: any;
+  generatedItinerary: any;
+  activities: any;
+  itineraries: any;
 }
 
 const exploreSlice = createSlice({
   name: "explore",
   initialState: {
-    citiesForPOI: null,
+    suggestionsForTours: null,
+    suggestionsForItineraries: null,
     status: "fulfilled",
     selectedCity: {},
-    citiesForFlights: null,
-    flightCultureData: [],
-    countriesToFlight: null,
+    generatedItinerary: null,
+    activities: [],
+    itineraries: [],
   } as exploreParams,
   reducers: {
     logOut(state) {
       state.status = "fulfilled";
     },
-    selectCity(state, action) {
+    selectCityForTours(state, action) {
       state.selectedCity = action.payload;
-      state.citiesForFlights = null;
+      state.suggestionsForTours = null;
+    },
+    selectCityForItineraries(state, action) {
+      state.selectedCity = action.payload;
+      state.suggestionsForItineraries = null;
     },
   },
   extraReducers(builder) {
-    builder.addCase(getCitiesForPOI.fulfilled, (state, action) => {
+    builder.addCase(getSuggestionsForTours.fulfilled, (state, action) => {
       state.status = "fulfilled";
-      state.citiesForPOI = action.payload;
+      state.suggestionsForTours = action.payload;
     });
-    builder.addCase(getCitiesForPOI.rejected, (state, action) => {
+    builder.addCase(getSuggestionsForTours.rejected, (state, action) => {
       state.status = "rejected";
     });
     builder.addCase(getActivities.fulfilled, (state, action) => {
       state.status = "fulfilled";
+      state.activities = action.payload;
+    });
+    builder.addCase(getActivities.pending, (state, action) => {
+      state.status = "pending";
     });
     builder.addCase(getActivities.rejected, (state, action) => {
       state.status = "rejected";
     });
-    builder.addCase(getFlights.fulfilled, (state, action) => {
+    builder.addCase(generateItineraries.fulfilled, (state, action) => {
       state.status = "fulfilled";
-      state.countriesToFlight = action.payload;
+      state.generatedItinerary = action.payload;
     });
-    builder.addCase(getFlights.rejected, (state, action) => {
+    builder.addCase(generateItineraries.pending, (state, action) => {
+      state.status = "pending";
+    });
+    builder.addCase(generateItineraries.rejected, (state, action) => {
       state.status = "rejected";
     });
-    builder.addCase(getFlightCultureData.fulfilled, (state, action) => {
+    builder.addCase(getSuggestionsForItineraries.fulfilled, (state, action) => {
       state.status = "fulfilled";
-      state.flightCultureData = action.payload;
+      state.suggestionsForItineraries = action.payload;
     });
-    builder.addCase(getFlightCultureData.rejected, (state, action) => {
+    builder.addCase(getSuggestionsForItineraries.rejected, (state, action) => {
       state.status = "rejected";
     });
-    builder.addCase(getFlightsSearchSuggestions.fulfilled, (state, action) => {
+    builder.addCase(getItineraries.fulfilled, (state, action) => {
       state.status = "fulfilled";
-      state.citiesForFlights = action.payload;
+      state.itineraries = action.payload;
     });
-    builder.addCase(getFlightsSearchSuggestions.rejected, (state, action) => {
+    builder.addCase(getItineraries.rejected, (state, action) => {
       state.status = "rejected";
     });
   },
 });
 
-export const { selectCity } = exploreSlice.actions;
+export const { selectCityForTours } = exploreSlice.actions;
+export const { selectCityForItineraries } = exploreSlice.actions;
 
-// export const getIsAuthenticated = (state: any) => state.auth.isAuthenticated;
-export const searchedCitiesForPOI = (state: RootState) => {
-  if (state.explore && state.explore.citiesForPOI) {
-    return state.explore.citiesForPOI;
-  }
-  return [];
-};
-export const searchedCitiesForFlights = (state: RootState) => {
-  if (state.explore && state.explore.citiesForFlights) {
-    return state.explore.citiesForFlights;
+export const selectSuggestionsForTours = (state: RootState) => {
+  if (state.explore && state.explore.suggestionsForTours) {
+    return state.explore.suggestionsForTours;
   }
   return [];
 };
 
-export const countriesToFlight = (state: RootState) => {
-  if (state.explore && state.explore.countriesToFlight) {
-    return state.explore.countriesToFlight;
+export const selectSuggestionsForItineraries = (state: RootState) => {
+  if (state.explore && state.explore.suggestionsForItineraries) {
+    return state.explore.suggestionsForItineraries;
   }
   return [];
 };
 
-export const getCultureData = (state: RootState) => {
-  if (state.explore && state.explore.flightCultureData) {
-    return state.explore.flightCultureData;
+export const selectItineraries = (state: RootState) => {
+  if (state.explore && state.explore.itineraries) {
+    return state.explore.itineraries;
+  }
+  return [];
+};
+
+export const selectActivities = (state: RootState) => {
+  if (state.explore && state.explore.activities) {
+    return state.explore.activities;
   }
   return [];
 };

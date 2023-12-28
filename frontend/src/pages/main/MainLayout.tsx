@@ -24,8 +24,8 @@ const MainLayout = () => {
       <div className="xs:inline hidden lg:w-1/4 min-w-[78px]">
         <Navbar currentPageId={"feed"} />
       </div>
-      <div className=" min-w-[320px] lg:w-1/2 w-full min-h-[110vh] h-full shadow-inner bg-mainLightGray">
-        <div className="lg:mx-5 mx-3">
+      <div className=" min-w-[320px] lg:w-1/2 w-full min-h-[200vh] h-full shadow-inner bg-mainLightGray">
+        <div className="flex flex-col gap-5 lg:mx-5 mx-3">
           <Outlet />
         </div>
       </div>

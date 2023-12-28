@@ -1,9 +1,14 @@
-import { useSelector } from "react-redux";
-import { selectTagSuggestions } from "../features/posts/tagsSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchTags,
+  selectTag,
+  selectTagSuggestions,
+} from "../features/posts/tagsSlice";
 import { useUpdatePostMutation } from "../features/posts/postsSlice";
 import { useGetProfileQuery } from "../features/profile/profileSlice";
 import AddPostPopup from "./AddPostPopup";
 import { useState } from "react";
+import { AppDispatch } from "../store";
 
 interface EditPostFormProps {
   editData: { postId: any; image: any; content: any; tags: any };
@@ -11,6 +16,9 @@ interface EditPostFormProps {
 }
 
 const EditPostForm = ({ editData, handleOnClick }: EditPostFormProps) => {
+  const dispatch = useDispatch<AppDispatch>();
+  let timeout: NodeJS.Timeout;
+
   const [updatePost, { isLoading }] = useUpdatePostMutation();
   const { data, isSuccess, isError } = useGetProfileQuery("me");
   const [content, setContent] = useState(editData.content);
@@ -46,6 +54,7 @@ const EditPostForm = ({ editData, handleOnClick }: EditPostFormProps) => {
     ) {
       const newSelectedTags = [...selectedTags, tag];
       setSelectedTags(newSelectedTags);
+      dispatch(selectTag({ tag }));
     }
 
     console.log(selectedTags);
@@ -78,6 +87,16 @@ const EditPostForm = ({ editData, handleOnClick }: EditPostFormProps) => {
     }
   };
 
+  const handleOnTagSearchChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    clearTimeout(timeout);
+
+    timeout = setTimeout(() => {
+      dispatch(fetchTags({ query: event.target.value }));
+    }, 300);
+  };
+
   return (
     <>
       <AddPostPopup
@@ -86,6 +105,7 @@ const EditPostForm = ({ editData, handleOnClick }: EditPostFormProps) => {
         text={content}
         tagsSuggestions={tagsSuggestions}
         selectedTags={selectedTags}
+        handleOnTagSearchChange={handleOnTagSearchChange}
         handlePopup={handleOnClick}
         handleAddImage={handleImageUpload}
         handleAddText={onContentChanged}

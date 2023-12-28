@@ -22,9 +22,33 @@ import {
 import CommentsList from "../../../components/CommentsList";
 import { useGetProfileQuery } from "../../../features/profile/profileSlice";
 import Tags from "../../../components/Tags";
+import { EntityId } from "@reduxjs/toolkit";
+import { QueryActionCreatorResult } from "@reduxjs/toolkit/dist/query/core/buildInitiate";
+import {
+  BaseQueryFn,
+  FetchArgs,
+  FetchBaseQueryError,
+  QueryDefinition,
+} from "@reduxjs/toolkit/dist/query";
 
-const PostProfile = ({ postData, postId, refetch }: any) => {
+interface PostProps {
+  postData: any;
+  postId: EntityId;
+  refetch: () => QueryActionCreatorResult<
+    QueryDefinition<
+      any,
+      BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError>,
+      "Post" | "ProfilePost" | "Profile" | "Comments",
+      any,
+      "api"
+    >
+  >;
+}
+
+const PostProfile = ({ postData, postId, refetch }: PostProps) => {
   const post = postData;
+  const { data } = useGetProfileQuery(post.user);
+
   const [deletePost] = useDeletePostMutation();
   const dispatch: AppDispatch = useDispatch();
   const comments = useSelector(selectComments);
@@ -33,13 +57,6 @@ const PostProfile = ({ postData, postId, refetch }: any) => {
   const [deleteLike] = useDeletePostLikeMutation();
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [addCommentInput, setAddCommentInput] = useState<string>("");
-
-  const { data } = useGetProfileQuery(post.user);
-
-  const formatRelativeTime = (timestamp: string): string => {
-    const parsedDate = parseISO(timestamp);
-    return formatDistanceToNow(parsedDate, { addSuffix: true });
-  };
 
   const onDeletePostClicked = async () => {
     try {
@@ -86,7 +103,6 @@ const PostProfile = ({ postData, postId, refetch }: any) => {
     }
 
     setIsLiked((prev) => {
-      // console.log(!prev);
       return !prev;
     });
   };
@@ -104,7 +120,6 @@ const PostProfile = ({ postData, postId, refetch }: any) => {
         user={post.user}
         created_at={post.created_at}
         onDeletePostClicked={onDeletePostClicked}
-        formatRelativeTime={formatRelativeTime}
       />
       <PostContent
         image={post.images[0]?.image}
@@ -119,13 +134,7 @@ const PostProfile = ({ postData, postId, refetch }: any) => {
         handleLikeClick={handleLikeClick}
         is_liked={post.is_liked}
       />
-      {isCommentsOpen && (
-        <CommentsList
-          formatRelativeTime={formatRelativeTime}
-          postId={postId}
-          comments={comments}
-        />
-      )}
+      {isCommentsOpen && <CommentsList postId={postId} comments={comments} />}
       <AddCommentForm
         input={addCommentInput}
         handleOnAddClick={handleOnAddClick}

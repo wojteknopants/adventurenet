@@ -30,12 +30,12 @@ const Feed = () => {
   }
 
   return (
-    <div>
+    <>
       <PageTitle title="Feed" />
 
       <AddPostForm />
       {content}
-    </div>
+    </>
   );
 };
 

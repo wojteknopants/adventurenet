@@ -14,7 +14,7 @@ export default function Search({
   offShadows = false,
 }: searchProps) {
   return (
-    <div className="flex mt-4 gap-3">
+    <div className="flex gap-3">
       <div className="flex flex-col grow">
         <div
           className={`

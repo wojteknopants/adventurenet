@@ -11,7 +11,7 @@ import {
   getFlightsSearchSuggestions,
   searchedCitiesForFlights,
   selectCity,
-} from "../../features/explore/exploreSlice";
+} from "../../features/explore/flightsSlice";
 import Card from "../../components/Card";
 import FlightsPopup from "../../components/FlightsPopup";
 
@@ -100,14 +100,14 @@ const Flights = () => {
     setShowFlights(false);
   };
   return (
-    <div className="">
+    <>
       <PageTitle title="Flights" />
       <Search
         placeholder={"Type from where you what to flight ..."}
         searched={searchedFlightsCities}
         handleOnSearchChange={handleOnFlightsSearchChange}
       />
-      <div className="mt-5 grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3 lg:gap-5">
         {flightOffers}
         {showFlights && (
           <FlightsPopup
@@ -117,7 +117,7 @@ const Flights = () => {
           />
         )}
       </div>
-    </div>
+    </>
   );
 };
 

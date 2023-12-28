@@ -7,25 +7,15 @@ import {
 import { useSelector } from "react-redux";
 
 const ProfilePosts = ({ uid }: any) => {
-  // const { isLoading, isSuccess, isError, error, refetch } =
-  //   useGetProfilePostsByIdQuery();
-
   const { data, isLoading, isSuccess, isError, error, refetch } =
     useGetProfilePostsByIdQuery(uid);
 
-  //const profilePosts = selectProfilePostsById(uid)(`getProfilePostsById("2")`);
-  // The last works, but adapter doesnt work, the first works and adapter also, dont give a fuck why. Thats why I will make it in this stange
-  //selectProfilePostIds(uid);
-  // selectProfilePostsResult(uid);
   const orderedPostIds = useSelector(selectProfilePostIds);
-  // console.log(orderedPostIds);
 
   let content;
   if (isLoading) {
     content = <p>"Loading..."</p>;
   } else if (isSuccess) {
-    // console.log(data.ids);
-    // console.log(data.entities[2]);
     content = data.ids.map((id: any) => (
       <PostProfile
         key={id}

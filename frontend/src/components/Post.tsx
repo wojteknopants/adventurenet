@@ -47,6 +47,8 @@ interface PostProps {
 
 const Post = ({ postId, refetch }: PostProps) => {
   const post = useSelector((state: any) => selectPostById(state, postId));
+  const { data: profile } = useGetProfileQuery(post.user);
+
   const [deletePost] = useDeletePostMutation();
   const dispatch: AppDispatch = useDispatch();
   const comments = useSelector(selectComments);
@@ -55,13 +57,6 @@ const Post = ({ postId, refetch }: PostProps) => {
   const [deletePostLike] = useDeletePostLikeMutation();
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [addCommentInput, setAddCommentInput] = useState<string>("");
-
-  const { data: profile } = useGetProfileQuery(post.user);
-
-  const formatRelativeTime = (timestamp: string): string => {
-    const parsedDate = parseISO(timestamp);
-    return formatDistanceToNow(parsedDate, { addSuffix: true });
-  };
 
   const onDeletePostClicked = async () => {
     try {
@@ -126,7 +121,6 @@ const Post = ({ postId, refetch }: PostProps) => {
         user={post.user}
         created_at={post.created_at}
         onDeletePostClicked={onDeletePostClicked}
-        formatRelativeTime={formatRelativeTime}
       />
       <PostContent
         image={post.images[0]?.image}
@@ -141,14 +135,7 @@ const Post = ({ postId, refetch }: PostProps) => {
         handleLikeClick={handleLikeClick}
         is_liked={post.is_liked}
       />
-      {isCommentsOpen && (
-        <CommentsList
-          postId={postId}
-          comments={comments}
-          formatRelativeTime={formatRelativeTime}
-        />
-      )}
-
+      {isCommentsOpen && <CommentsList postId={postId} comments={comments} />}
       <AddCommentForm
         input={addCommentInput}
         handleOnAddClick={handleOnAddClick}
