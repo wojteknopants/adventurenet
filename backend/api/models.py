@@ -3,6 +3,8 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 from django.core.validators import FileExtensionValidator
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
+from datetime import date
+
 
 # Create your models here.
 
@@ -133,6 +135,7 @@ class Image(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+
 class Itinerary(models.Model):
     user = models.ForeignKey(UserAccount, related_name='itineraries', on_delete=models.CASCADE)
     content = models.TextField()
@@ -152,3 +155,16 @@ class SavedItem(models.Model):
     def __str__(self):
         return f"{self.content_type.model} saved on {self.created_at}"
 
+class Adventure(models.Model):
+    user = models.ForeignKey(UserAccount, on_delete=models.CASCADE, related_name='adventures')
+    participants = models.ManyToManyField(UserAccount, related_name='participating_adventures', blank=True)
+    tags = models.ManyToManyField(Tag, related_name="adventures", blank=True)
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    itinerary = models.ForeignKey(Itinerary, on_delete=models.SET_NULL, null=True, blank=True)
+    desired_year_month = models.DateField(null=True)
+    desired_participants = models.PositiveIntegerField()
+
+
+    def __str__(self):
+        return self.title

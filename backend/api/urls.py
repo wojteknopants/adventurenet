@@ -7,7 +7,7 @@ from .views import (LogoutView, LogoutAllView,
                     PostLikeView, CommentLikeView, PostLikesListView, CommentLikesListView,
                     UserImagesListView, FlightCultureDataAPIView, FlightSearchSuggestAPIView, FlightOffersAPIView, CitySearchAPIView, POISearchAPIView, ToursActivitiesSearchAPIView, GenerateItineraryView,
                     MapboxSuggestView, MapboxRetrieveView, ItineraryListCreateView, ItineraryRetrieveUpdateDestroyView, UserItinerariesListView,
-                    SavedItemCreateView, SavedItemDestroyView, UserSavedItemListView )
+                    SavedItemCreateView, SavedItemDestroyView, UserSavedItemListView, AdventureCreateView, AdventureRetrieveUpdateDestroyView )
 
 urlpatterns = [
     #logout - blacklist JWT refresh token
@@ -64,7 +64,12 @@ urlpatterns = [
     #saved items (bookmarks) 
     path('profiles/<str:user__pk>/saved-items/', UserSavedItemListView.as_view(), name='saved-item-list'),
     path('saved-items/', SavedItemCreateView.as_view(), name='saved-item-create'),
-    path('saved-items/<int:id>/', SavedItemDestroyView.as_view(), name='saved-item-destroy'),
+    path('saved-items/<int:pk>/', SavedItemDestroyView.as_view(), name='saved-item-destroy'),
+
+    #adventures (LFG trip offer objects)
+    path('adventures/', AdventureCreateView.as_view(), name='adventure-create'),
+    path('adventures/<int:pk>/', AdventureRetrieveUpdateDestroyView.as_view(), name='adventure_retrieve_update_delete'),
+
 
 
 ]

@@ -2,8 +2,8 @@ from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpda
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from djoser.permissions import CurrentUserOrAdminOrReadOnly
 from .permissions import OwnerOrAdmin, OwnerOrAdminOrReadOnly
-from .models import UserProfile, Post, Comment, PostLike, CommentLike, Image, Itinerary, SavedItem
-from .serializers import UserProfileSerializer, PostSerializer, CommentSerializer, PostLikeSerializer, CommentLikeSerializer, ImageSerializer, GenerateItinerarySerializer, ItinerarySerializer, SavedItemSerializer
+from .models import UserProfile, Post, Comment, PostLike, CommentLike, Image, Itinerary, SavedItem, Adventure
+from .serializers import UserProfileSerializer, PostSerializer, CommentSerializer, PostLikeSerializer, CommentLikeSerializer, ImageSerializer, GenerateItinerarySerializer, ItinerarySerializer, SavedItemSerializer, AdventureSerializer
 
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -539,7 +539,7 @@ class ItineraryRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = Itinerary.objects.all()
     serializer_class = ItinerarySerializer
     permission_classes = [IsAuthenticated, OwnerOrAdminOrReadOnly]
-    lookup_field = 'id'
+    lookup_field = 'pk'
 
 class UserItinerariesListView(ListAPIView):
     """GET all itineraries from specific user"""
@@ -601,9 +601,23 @@ class SavedItemDestroyView(DestroyAPIView):
     queryset = SavedItem.objects.all()
     serializer_class = SavedItemSerializer
     permission_classes = [IsAuthenticated, OwnerOrAdmin]
-    lookup_field = 'id'
+    lookup_field = 'pk'
 
     def get_queryset(self):
         # The user can delete their own saved items
         return SavedItem.objects.filter(user=self.request.user)
+
+class AdventureCreateView(CreateAPIView):
+    queryset = Adventure.objects.all()
+    serializer_class = AdventureSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        # Assuming the 'user' field is meant to automatically refer to the request user
+        serializer.save(user=self.request.user)
         
+class AdventureRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
+    queryset = Adventure.objects.all()
+    serializer_class = AdventureSerializer
+    permission_classes = [IsAuthenticated, OwnerOrAdminOrReadOnly]
+    lookup_field = 'pk'
