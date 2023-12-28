@@ -188,7 +188,6 @@ const Explore = () => {
         searched={suggestionForItineraries}
         handleOnSearchChange={handleOnCityForItinerariesSearchChange}
       />
-
       {listOfItineraries}
     </>
   );
