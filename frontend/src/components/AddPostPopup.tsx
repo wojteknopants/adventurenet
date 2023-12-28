@@ -18,6 +18,7 @@ interface AddPostPopupProps {
   selectedTags: any;
   handleSelectTag: (arg: any) => any;
   handleDeleteTag: (arg: any) => any;
+  user_pfp: any;
 }
 
 const AddPostPopup = ({
@@ -31,6 +32,7 @@ const AddPostPopup = ({
   text,
   tagsSuggestions,
   selectedTags,
+  user_pfp,
 }: AddPostPopupProps) => {
   const dispatch = useDispatch<AppDispatch>();
 
@@ -63,6 +65,8 @@ const AddPostPopup = ({
     </button>
   ));
 
+  const tags = selectedTags.map((tag: any) => tag.name);
+
   return (
     <>
       <div className="fixed z-10">
@@ -73,7 +77,7 @@ const AddPostPopup = ({
             <div className="flex flex-row justify-between">
               <div className="items-center flex gap-3">
                 <div>
-                  <Avatar size={""} />
+                  <Avatar size={""} user_pfp={user_pfp} />
                 </div>
                 <div className="grow">
                   <p>
@@ -111,7 +115,11 @@ const AddPostPopup = ({
                   <img
                     className=" rounded-xl max-h-[400px] max-w-[600px]"
                     alt="not found"
-                    src={URL.createObjectURL(image)}
+                    src={
+                      typeof image === "string"
+                        ? image
+                        : URL.createObjectURL(image)
+                    }
                   />
                 </div>
               ) : (
@@ -137,7 +145,7 @@ const AddPostPopup = ({
               className=" bg-white"
               placeholder="Tags..."
             /> */}
-            <Tags handleDelete={handleDeleteTag} tags={selectedTags} />
+            <Tags handleDelete={handleDeleteTag} tags={tags} />
             <input
               value={text}
               onChange={handleAddText}
@@ -148,7 +156,7 @@ const AddPostPopup = ({
               className="bg-gray-100 hover:bg-gray-200 text-mainBlue font-bold mx-60 my-4 py-2 px-4 rounded-md"
               onClick={handleOnSaveClick}
             >
-              Add post
+              {typeof image === "string" ? "Update post" : "Add post"}
             </button>
           </div>
         </div>

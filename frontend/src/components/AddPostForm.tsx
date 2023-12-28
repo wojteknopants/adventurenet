@@ -31,7 +31,7 @@ const AddPostForm = () => {
 
   const handleDeleteTag = (tagToDelete: any) => {
     const updatedSelectedTags = selectedTags.filter(
-      (tag) => tag !== tagToDelete
+      (tag) => tag.name !== tagToDelete
     );
 
     setSelectedTags(updatedSelectedTags);
@@ -61,6 +61,9 @@ const AddPostForm = () => {
         formData.append("title", "TITLE_IS_NOT_EXIST");
         formData.append("content", content);
         if (image !== null) formData.append("new_images", image);
+        if (selectedTags !== null) {
+          selectedTags.forEach((tag) => formData.append("new_tags", tag.name));
+        }
 
         console.log(formData);
 
@@ -108,6 +111,7 @@ const AddPostForm = () => {
         </div>
         {isOpen ? (
           <AddPostPopup
+            user_pfp={data.profile_picture}
             image={image}
             text={content}
             tagsSuggestions={tagsSuggestions}

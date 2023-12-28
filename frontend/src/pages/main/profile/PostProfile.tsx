@@ -21,6 +21,7 @@ import {
 } from "../../../features/posts/commentsSlice";
 import CommentsList from "../../../components/CommentsList";
 import { useGetProfileQuery } from "../../../features/profile/profileSlice";
+import Tags from "../../../components/Tags";
 
 const PostProfile = ({ postData, postId, refetch }: any) => {
   const post = postData;
@@ -93,6 +94,12 @@ const PostProfile = ({ postData, postId, refetch }: any) => {
   return (
     <Card noPadding={false}>
       <PostHeader
+        editData={{
+          postId,
+          image: post.images[0]?.image || postsPlaceholder,
+          content: post.content,
+          tags: post.tags,
+        }}
         user_pfp={data?.profile_picture}
         user={post.user}
         created_at={post.created_at}
@@ -104,6 +111,7 @@ const PostProfile = ({ postData, postId, refetch }: any) => {
         postsPlaceholder={postsPlaceholder}
         content={post.content}
       />
+      <Tags tags={post.tags} hideDelete />
       <PostFooter
         comments_count={post.comments_count}
         likes_count={post.likes_count}
