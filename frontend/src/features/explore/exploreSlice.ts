@@ -164,6 +164,8 @@ export const getItineraries = createAsyncThunk(
 interface exploreParams {
   suggestionsForTours: any;
   status: "fulfilled" | "rejected" | "pending";
+  activitiesStatus: "fulfilled" | "rejected" | "pending";
+  generateStatus: "fulfilled" | "rejected" | "pending";
   selectedCity: any;
   suggestionsForItineraries: any;
   generatedItinerary: any;
@@ -179,6 +181,8 @@ const exploreSlice = createSlice({
     status: "fulfilled",
     selectedCity: {},
     generatedItinerary: null,
+    activitiesStatus: "fulfilled",
+    generateStatus: "fulfilled",
     activities: [],
     itineraries: [],
   } as exploreParams,
@@ -204,24 +208,24 @@ const exploreSlice = createSlice({
       state.status = "rejected";
     });
     builder.addCase(getActivities.fulfilled, (state, action) => {
-      state.status = "fulfilled";
+      state.activitiesStatus = "fulfilled";
       state.activities = action.payload;
     });
     builder.addCase(getActivities.pending, (state, action) => {
-      state.status = "pending";
+      state.activitiesStatus = "pending";
     });
     builder.addCase(getActivities.rejected, (state, action) => {
-      state.status = "rejected";
+      state.activitiesStatus = "rejected";
     });
     builder.addCase(generateItineraries.fulfilled, (state, action) => {
-      state.status = "fulfilled";
+      state.generateStatus = "fulfilled";
       state.generatedItinerary = action.payload;
     });
     builder.addCase(generateItineraries.pending, (state, action) => {
-      state.status = "pending";
+      state.generateStatus = "pending";
     });
     builder.addCase(generateItineraries.rejected, (state, action) => {
-      state.status = "rejected";
+      state.generateStatus = "rejected";
     });
     builder.addCase(getSuggestionsForItineraries.fulfilled, (state, action) => {
       state.status = "fulfilled";
@@ -264,11 +268,19 @@ export const selectItineraries = (state: RootState) => {
   return [];
 };
 
+export const selectGenerateStatus = (state: RootState) => {
+  return state.explore.generateStatus;
+};
+
 export const selectActivities = (state: RootState) => {
   if (state.explore && state.explore.activities) {
     return state.explore.activities;
   }
   return [];
+};
+
+export const selectActivitiesStatus = (state: RootState) => {
+  return state.explore.activitiesStatus;
 };
 
 export default exploreSlice.reducer;

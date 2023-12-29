@@ -6,6 +6,8 @@ import {
 } from "../../features/posts/postsSlice";
 import { useSelector } from "react-redux";
 import PageTitle from "../../components/PageTitle";
+import Card from "../../components/Card";
+import LoadingCard from "../../components/LoadingCard";
 
 const Feed = () => {
   const { isLoading, isSuccess, isError, error, refetch } =
@@ -15,7 +17,7 @@ const Feed = () => {
 
   let content;
   if (isLoading) {
-    content = <p>"Loading..."</p>;
+    content = <LoadingCard>Loading posts...</LoadingCard>;
   } else if (isSuccess) {
     if (Array.isArray(orderedPostIds)) {
       content = orderedPostIds.map((postId) => (

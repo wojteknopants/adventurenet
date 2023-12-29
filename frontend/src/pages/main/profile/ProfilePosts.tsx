@@ -5,6 +5,7 @@ import {
   useGetProfilePostsByIdQuery,
 } from "../../../features/posts/postsSlice";
 import { useSelector } from "react-redux";
+import LoadingCard from "../../../components/LoadingCard";
 
 const ProfilePosts = ({ uid }: any) => {
   const { data, isLoading, isSuccess, isError, error, refetch } =
@@ -14,7 +15,7 @@ const ProfilePosts = ({ uid }: any) => {
 
   let content;
   if (isLoading) {
-    content = <p>"Loading..."</p>;
+    content = <LoadingCard>Loading posts...</LoadingCard>;
   } else if (isSuccess) {
     content = data.ids.map((id: any) => (
       <PostProfile

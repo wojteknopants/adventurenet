@@ -16,6 +16,8 @@ import {
   selectItineraries,
   getItineraries,
   selectActivities,
+  selectActivitiesStatus,
+  selectGenerateStatus,
 } from "../../features/explore/exploreSlice";
 import { AppDispatch } from "../../store";
 import Search from "../../components/Search";
@@ -26,6 +28,7 @@ import Card from "../../components/Card";
 import PostHeader from "../../components/PostHeader";
 import { useGetProfileQuery } from "../../features/profile/profileSlice";
 import Itinerary from "../../components/Itinerary";
+import LoadingCard from "../../components/LoadingCard";
 
 const activityPlaceHolder = [
   { name: "Activity One", stars: 4, price: "$$" },
@@ -63,6 +66,7 @@ const Explore = () => {
   );
   const itineraries = useSelector(selectItineraries);
   const activities = useSelector(selectActivities);
+  const generateStatus = useSelector(selectGenerateStatus);
 
   const handleOnToursCityClick = (city: any) => {
     console.log(city);
@@ -188,6 +192,11 @@ const Explore = () => {
         searched={suggestionForItineraries}
         handleOnSearchChange={handleOnCityForItinerariesSearchChange}
       />
+      {generateStatus == "fulfilled" && (
+        <LoadingCard>
+          Generating itinerary, it can takes more then 30 second...
+        </LoadingCard>
+      )}
       {listOfItineraries}
     </>
   );
