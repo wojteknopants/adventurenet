@@ -1,9 +1,10 @@
 from djoser.serializers import UserCreateSerializer
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from .models import UserProfile, Post, Comment, PostLike, CommentLike, Image, Tag, Itinerary, SavedItem, Adventure
+from .models import UserProfile, Post, Comment, PostLike, CommentLike, Image, Tag, Itinerary, SavedItem, Adventure, AdventureJoinRequest
 from django.contrib.contenttypes.models import ContentType
 from datetime import date
+from django.core.exceptions import ObjectDoesNotExist
 
 User = get_user_model()
 
@@ -240,6 +241,27 @@ class SavedItemSerializer(serializers.ModelSerializer):
         )
 
         return 
+
+    def delete_saved_item(self, content_type, object_id, user):
+        """
+        Custom method to delete a saved item based on content_type, object_id, and user.
+        """
+        try:
+            # Fetch the ContentType instance
+            content_type_instance = ContentType.objects.get(model=content_type)
+
+            # Delete the SavedItem instance
+            saved_item = SavedItem.objects.get(
+                content_type=content_type_instance, 
+                object_id=object_id, 
+                user=user
+            )
+            saved_item.delete()
+            return {'status': 'deleted'}
+        except ObjectDoesNotExist:
+            raise serializers.ValidationError('Saved item not found or already deleted.')
+        except Exception as e:
+            raise serializers.ValidationError(f'Error deleting saved item: {e}')
     
 class AdventureSerializer(serializers.ModelSerializer):
     # Use UserProfileSerializer to represent each participant
@@ -294,3 +316,17 @@ class AdventureSerializer(serializers.ModelSerializer):
 
         # Update the instance with the remaining validated data
         return super().update(instance, validated_data)
+    
+
+class AdventureJoinRequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AdventureJoinRequest
+        fields = ['id', 'user', 'adventure', 'status']
+        read_only_fields = ['id','user','status']  # Status is managed internally, not by users
+
+    def create(self, validated_data):
+        # Ensure a user can't send multiple requests to the same adventure
+        if AdventureJoinRequest.objects.filter(user=validated_data['user'], adventure=validated_data['adventure']).exists():
+            raise serializers.ValidationError("You have already sent a join request for this adventure.")
+
+        return AdventureJoinRequest.objects.create(**validated_data)

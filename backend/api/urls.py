@@ -7,7 +7,8 @@ from .views import (LogoutView, LogoutAllView,
                     PostLikeView, CommentLikeView, PostLikesListView, CommentLikesListView,
                     UserImagesListView, FlightCultureDataAPIView, FlightSearchSuggestAPIView, FlightOffersAPIView, CitySearchAPIView, POISearchAPIView, ToursActivitiesSearchAPIView, GenerateItineraryView,
                     MapboxSuggestView, MapboxRetrieveView, ItineraryListCreateView, ItineraryRetrieveUpdateDestroyView, UserItinerariesListView,
-                    SavedItemCreateView, SavedItemDestroyView, UserSavedItemListView, AdventureCreateView, AdventureRetrieveUpdateDestroyView )
+                    SavedItemCreateView,SavedItemCreateDeleteView, SavedItemDestroyView, UserSavedItemListView, AdventureListCreateView, AdventureRetrieveUpdateDestroyView, SpecificUserAdventureListView,
+                    AdventureJoinRequestCreateView, IncomingAdventureJoinRequestsListView, AdventureJoinRequestUpdateDestroyView, ThisAdventureJoinRequestsListView)
 
 urlpatterns = [
     #logout - blacklist JWT refresh token
@@ -63,13 +64,20 @@ urlpatterns = [
 
     #saved items (bookmarks) 
     path('profiles/<str:user__pk>/saved-items/', UserSavedItemListView.as_view(), name='saved-item-list'),
-    path('saved-items/', SavedItemCreateView.as_view(), name='saved-item-create'),
+    path('saved-items/', SavedItemCreateDeleteView.as_view(), name='saved-item-create-destroy'),
     path('saved-items/<int:pk>/', SavedItemDestroyView.as_view(), name='saved-item-destroy'),
 
     #adventures (LFG trip offer objects)
-    path('adventures/', AdventureCreateView.as_view(), name='adventure-create'),
+    path('adventures/', AdventureListCreateView.as_view(), name='adventure-list-create'),
     path('adventures/<int:pk>/', AdventureRetrieveUpdateDestroyView.as_view(), name='adventure_retrieve_update_delete'),
+    path('profiles/<str:user__pk>/adventures/', SpecificUserAdventureListView.as_view(), name='specific-user-adventure-list'),
 
 
+
+    #adventure join requests
+    path('adventure-join-requests/create/', AdventureJoinRequestCreateView.as_view(), name='adventure-join-request-create'),
+    path('adventure-join-requests/incoming/', IncomingAdventureJoinRequestsListView.as_view(), name='incoming-adventure-join-requests'),
+    path('adventure-join-requests/<int:pk>/', AdventureJoinRequestUpdateDestroyView.as_view(), name='adventure-join-request-update-destroy'),
+    path('adventures/<int:pk>/join-requests/', ThisAdventureJoinRequestsListView.as_view(), name='this-adventure-join-requests'),
 
 ]

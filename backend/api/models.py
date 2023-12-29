@@ -168,3 +168,12 @@ class Adventure(models.Model):
 
     def __str__(self):
         return self.title
+
+class AdventureJoinRequest(models.Model):
+    user = models.ForeignKey(UserAccount, on_delete=models.CASCADE, related_name='join_requests')
+    adventure = models.ForeignKey(Adventure, on_delete=models.CASCADE, related_name='join_requests')
+    status = models.CharField(max_length=20, choices=[('pending', 'PENDING'), ('accepted', 'ACCEPTED'), ('rejected', 'REJECTED')], default='pending')
+
+    def __str__(self):
+        return f"User ID {self.user.pk} request to join - Adventure ID {self.adventure.pk} - {self.status}"
+    

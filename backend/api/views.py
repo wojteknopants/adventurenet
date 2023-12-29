@@ -1,9 +1,11 @@
-from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateAPIView, RetrieveUpdateDestroyAPIView, DestroyAPIView, CreateAPIView
+from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateAPIView, RetrieveUpdateDestroyAPIView, DestroyAPIView, CreateAPIView, UpdateAPIView
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from djoser.permissions import CurrentUserOrAdminOrReadOnly
 from .permissions import OwnerOrAdmin, OwnerOrAdminOrReadOnly
-from .models import UserProfile, Post, Comment, PostLike, CommentLike, Image, Itinerary, SavedItem, Adventure
-from .serializers import UserProfileSerializer, PostSerializer, CommentSerializer, PostLikeSerializer, CommentLikeSerializer, ImageSerializer, GenerateItinerarySerializer, ItinerarySerializer, SavedItemSerializer, AdventureSerializer
+from rest_framework.exceptions import PermissionDenied, ValidationError
+
+from .models import UserProfile, Post, Comment, PostLike, CommentLike, Image, Itinerary, SavedItem, Adventure, AdventureJoinRequest
+from .serializers import UserProfileSerializer, PostSerializer, CommentSerializer, PostLikeSerializer, CommentLikeSerializer, ImageSerializer, GenerateItinerarySerializer, ItinerarySerializer, SavedItemSerializer, AdventureSerializer, AdventureJoinRequestSerializer
 
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -526,7 +528,9 @@ class MapboxRetrieveView(APIView):
 #ITINERARIES CRUD
         
 class ItineraryListCreateView(ListCreateAPIView):
-    """POST body: content: string,
+    """
+    List All -> GET
+    Create -> POST body: content: string,
     thats all"""
     queryset = Itinerary.objects.all()
     serializer_class = ItinerarySerializer
@@ -597,27 +601,204 @@ class SavedItemCreateView(CreateAPIView):
 
         return super().perform_create(serializer)
 
-class SavedItemDestroyView(DestroyAPIView):
-    queryset = SavedItem.objects.all()
-    serializer_class = SavedItemSerializer
-    permission_classes = [IsAuthenticated, OwnerOrAdmin]
-    lookup_field = 'pk'
 
-    def get_queryset(self):
-        # The user can delete their own saved items
-        return SavedItem.objects.filter(user=self.request.user)
+class SavedItemDestroyView(APIView):
+    permission_classes = [IsAuthenticated, OwnerOrAdminOrReadOnly]
 
-class AdventureCreateView(CreateAPIView):
+    def delete(self, request, *args, **kwargs):
+        content_type = request.data.get('content_type')
+        object_id = request.data.get('object_id')
+        user = request.user
+
+        serializer = SavedItemSerializer()
+        result = serializer.delete_saved_item(content_type, object_id, user)
+        return Response(result)
+    
+class SavedItemCreateDeleteView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        serializer = SavedItemSerializer(data=request.data, context={'request': request})
+        if serializer.is_valid():
+            saved_item = serializer.save(user=request.user)
+
+            # Check if content_object is Post or Itinerary
+            content_object = saved_item.content_object
+            if isinstance(content_object, Post) or isinstance(content_object, Itinerary):
+                # Prepare the response data
+                response_data = serializer.data
+                # Manually set the is_saved flag in the response data
+                response_data['content_object']['is_saved'] = True
+                return Response(response_data)
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, *args, **kwargs):
+        content_type = request.data.get('content_type')
+        object_id = request.data.get('object_id')
+        user = request.user
+
+        serializer = SavedItemSerializer()
+        result = serializer.delete_saved_item(content_type, object_id, user)
+        return Response(result)
+    
+#Adventures
+
+
+
+class AdventureListCreateView(ListCreateAPIView):
     queryset = Adventure.objects.all()
     serializer_class = AdventureSerializer
     permission_classes = [IsAuthenticated]
 
+    def get_queryset(self):
+        """
+        This method returns a list of all the adventures that match the tags
+        provided in the request's query parameters, if any.
+        """
+        queryset = super().get_queryset()
+        tags = self.request.query_params.get('tags')
+
+        if tags:
+            tags_list = tags.split(",")
+            queryset = queryset.filter(tags__name__in=tags_list).distinct()
+
+        return queryset
+
     def perform_create(self, serializer):
-        # Assuming the 'user' field is meant to automatically refer to the request user
+        """
+        This method is called when a new adventure is created. It sets the user
+        field to the current request user.
+        """
         serializer.save(user=self.request.user)
-        
+
 class AdventureRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = Adventure.objects.all()
     serializer_class = AdventureSerializer
     permission_classes = [IsAuthenticated, OwnerOrAdminOrReadOnly]
     lookup_field = 'pk'
+
+class SpecificUserAdventureListView(ListAPIView):
+    serializer_class = AdventureSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        # Returns join requests for adventures owned by the current user
+        return Adventure.objects.filter(user=self.request.user)
+
+    def get_queryset(self):
+        user_pk = self.kwargs.get('user__pk')
+        if self.kwargs['user__pk'] == 'me':
+            user = self.request.user
+            user_pk = user.pk
+
+        if self.request.user.pk == user_pk:
+        # The user is viewing their own adventures
+
+            return Adventure.objects.filter(user=self.request.user)
+        else:
+        # Viewing another user's adventures
+        # Logic is split in case we want to implement separate permissions for privacy
+            
+            return Adventure.objects.filter(user__pk=user_pk)
+        
+#Adventure join requests
+    
+class AdventureJoinRequestCreateView(CreateAPIView):
+    serializer_class = AdventureJoinRequestSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+    
+class IncomingAdventureJoinRequestsListView(ListAPIView):
+    serializer_class = AdventureJoinRequestSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        # Returns join requests for adventures owned by the current user
+        return AdventureJoinRequest.objects.filter(adventure__user=self.request.user)
+
+class AdventureJoinRequestUpdateDestroyView(UpdateAPIView, DestroyAPIView):
+    serializer_class = AdventureJoinRequestSerializer
+    permission_classes = [IsAuthenticated]
+    lookup_field = 'pk'
+
+    def get_queryset(self):
+        return AdventureJoinRequest.objects.all()
+
+    def perform_update(self, serializer):
+        join_request = self.get_object()
+        user = self.request.user
+        request_status = self.request.data.get('status')
+
+        if join_request.adventure.user == user:  # Adventure owner
+            if request_status == 'accepted':
+                join_request.adventure.participants.add(join_request.user)
+                join_request.status = request_status
+                join_request.save()
+            elif request_status == 'rejected':
+                join_request.status = request_status
+                join_request.save()
+            else:
+                raise ValidationError("Invalid status requested. As owner of Adventure you can make it join request either 'accepted' or 'rejected'.")
+        elif join_request.user == user:  # Join request owner
+            if request_status == 'cancelled':
+                join_request.delete()
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            else:
+                raise ValidationError("As sender of this join request, you can only make it 'cancelled'.")
+        else:
+            raise PermissionDenied("You do not have permission to modify this join request.")
+
+    def delete(self, request, *args, **kwargs):
+        """
+        Allow the request owner to cancel the join request.
+        """
+        join_request = self.get_object()
+        user = request.user
+
+        if join_request.user != user:
+            raise PermissionDenied("You do not have permission to cancel this join request.")
+
+        return self.destroy(request, *args, **kwargs)
+
+
+class ThisAdventureJoinRequestsListView(ListAPIView):
+    serializer_class = AdventureJoinRequestSerializer
+    permission_classes = [IsAuthenticated]
+    lookup_field = 'pk'
+
+    def get_queryset(self):
+        adventure_id = self.kwargs.get('adventure_id')
+        adventure = Adventure.objects.filter(id=adventure_id).first()
+
+        if not adventure:
+            raise PermissionDenied("Adventure not found.")
+
+        if adventure.user == self.request.user:
+            # Owner of the adventure: show all pending requests
+            return AdventureJoinRequest.objects.filter(adventure=adventure, status='pending')
+        else:
+            # Non-owner: show only their own request, if pending or rejected (displayed as pending)
+            return AdventureJoinRequest.objects.filter(adventure=adventure, user=self.request.user, status__in=['pending', 'rejected'])
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+
+        # Proceed with normal processing if the queryset is not empty
+        if queryset:
+            if queryset.first().adventure.user != request.user:
+            # Alter response for non-owners with rejected requests
+                for request_data in serializer.data:
+                    if request_data['status'] == 'rejected':
+                        request_data['status'] = 'pending'
+
+            return Response(serializer.data)
+
+        # Return an empty response if there are no join requests
+        return Response([])
+
