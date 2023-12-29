@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import PageTitle from "../../components/PageTitle";
 import Card from "../../components/Card";
 import LoadingCard from "../../components/LoadingCard";
+import FeedPost from "../../components/FeedPost";
 
 const Feed = () => {
   const { isLoading, isSuccess, isError, error, refetch } =
@@ -21,11 +22,8 @@ const Feed = () => {
   } else if (isSuccess) {
     if (Array.isArray(orderedPostIds)) {
       content = orderedPostIds.map((postId) => (
-        <Post key={postId} postId={postId} refetch={refetch} />
+        <FeedPost key={postId} postId={postId} refetch={refetch} />
       ));
-      // console.log(content);
-    } else {
-      content = <p>"Loading..."</p>;
     }
   } else if (isError) {
     content = <p>{"Refresh the page! It should help :)"}</p>;
@@ -34,7 +32,6 @@ const Feed = () => {
   return (
     <>
       <PageTitle title="Feed" />
-
       <AddPostForm />
       {content}
     </>

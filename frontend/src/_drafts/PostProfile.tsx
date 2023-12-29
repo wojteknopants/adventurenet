@@ -1,4 +1,4 @@
-import Card from "../../../components/Card";
+import Card from "../components/Card";
 import { useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { parseISO } from "date-fns";
@@ -7,21 +7,21 @@ import {
   useAddPostLikeMutation,
   useDeletePostLikeMutation,
   useDeletePostMutation,
-} from "../../../features/posts/postsSlice";
-import { postsPlaceholder } from "../../../assets";
-import PostHeader from "../../../components/PostHeader";
-import PostContent from "../../../components/PostContent";
-import PostFooter from "../../../components/PostFooter";
-import AddCommentForm from "../../../components/AddCommentForm";
-import { AppDispatch } from "../../../store";
+} from "../features/posts/postsSlice";
+import { postsPlaceholder } from "../assets";
+import PostHeader from "../components/PostHeader";
+import PostContent from "../components/PostContent";
+import PostFooter from "../components/PostFooter";
+import AddCommentForm from "../components/AddCommentForm";
+import { AppDispatch } from "../store";
 import {
   addComment,
   fetchComments,
   selectComments,
-} from "../../../features/posts/commentsSlice";
-import CommentsList from "../../../components/CommentsList";
-import { useGetProfileQuery } from "../../../features/profile/profileSlice";
-import Tags from "../../../components/Tags";
+} from "../features/posts/commentsSlice";
+import CommentsList from "../components/CommentsList";
+import { useGetProfileQuery } from "../features/profile/profileSlice";
+import Tags from "../components/Tags";
 import { EntityId } from "@reduxjs/toolkit";
 import { QueryActionCreatorResult } from "@reduxjs/toolkit/dist/query/core/buildInitiate";
 import {
@@ -47,7 +47,7 @@ interface PostProps {
 
 const PostProfile = ({ postData, postId, refetch }: PostProps) => {
   const post = postData;
-  const { data } = useGetProfileQuery(post.user);
+  const { data: profile } = useGetProfileQuery(post.user);
 
   const [deletePost] = useDeletePostMutation();
   const dispatch: AppDispatch = useDispatch();
@@ -116,7 +116,7 @@ const PostProfile = ({ postData, postId, refetch }: PostProps) => {
           content: post.content,
           tags: post.tags,
         }}
-        user_pfp={data?.profile_picture}
+        user_pfp={profile?.profile_picture}
         user={post.user}
         created_at={post.created_at}
         onDeletePostClicked={onDeletePostClicked}

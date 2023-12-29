@@ -1,30 +1,30 @@
 import React from "react";
-import PostProfile from "./PostProfile";
+import PostProfile from "../_drafts/PostProfile";
 import {
   selectProfilePostIds,
   useGetProfilePostsByIdQuery,
-} from "../../../features/posts/postsSlice";
+} from "../features/posts/postsSlice";
 import { useSelector } from "react-redux";
-import LoadingCard from "../../../components/LoadingCard";
+import LoadingCard from "./LoadingCard";
+import ProfilePost from "./ProfilePost";
 
 const ProfilePosts = ({ uid }: any) => {
   const { data, isLoading, isSuccess, isError, error, refetch } =
     useGetProfilePostsByIdQuery(uid);
-
-  const orderedPostIds = useSelector(selectProfilePostIds);
-
   let content;
   if (isLoading) {
     content = <LoadingCard>Loading posts...</LoadingCard>;
   } else if (isSuccess) {
-    content = data.ids.map((id: any) => (
-      <PostProfile
-        key={id}
-        postId={id}
-        postData={data.entities[id]}
-        refetch={refetch}
-      />
-    ));
+    content = data.ids.map((id: any) => {
+      return (
+        <ProfilePost
+          key={id}
+          postId={id}
+          postData={data.entities[id]}
+          refetch={refetch}
+        />
+      );
+    });
   } else if (isError) {
     content = <p>Something went wrong, reload the page!</p>;
   }

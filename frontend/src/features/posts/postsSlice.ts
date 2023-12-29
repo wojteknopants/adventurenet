@@ -7,13 +7,13 @@ const postsAdapter = createEntityAdapter({
   sortComparer: (a: any, b: any) => b.created_at.localeCompare(a.created_at),
 });
 
-interface PostParams {
+export interface PostParams {
   id: number;
   user: number;
   title: string;
   content: string;
   user_pfp: any;
-  images?: [{ image: any }];
+  images?: [{ image: string }];
   new_images?: any;
   comments_count: number;
   likes_count: number;

@@ -33,6 +33,7 @@ import { useGetProfileQuery } from "../features/profile/profileSlice";
 import Tags from "./Tags";
 
 interface PostProps {
+  postData: any;
   postId: EntityId;
   refetch: () => QueryActionCreatorResult<
     QueryDefinition<
@@ -45,8 +46,9 @@ interface PostProps {
   >;
 }
 
-const Post = ({ postId, refetch }: PostProps) => {
-  const post = useSelector((state: any) => selectPostById(state, postId));
+const Post = ({ postData, postId, refetch }: PostProps) => {
+  const post = postData;
+  console.log(postData);
   const { data: profile } = useGetProfileQuery(post.user);
 
   const [deletePost] = useDeletePostMutation();

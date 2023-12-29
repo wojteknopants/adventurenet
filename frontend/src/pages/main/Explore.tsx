@@ -29,6 +29,8 @@ import PostHeader from "../../components/PostHeader";
 import { useGetProfileQuery } from "../../features/profile/profileSlice";
 import Itinerary from "../../components/Itinerary";
 import LoadingCard from "../../components/LoadingCard";
+import { getRandomElements } from "../../lib/getRandomElements";
+import { postsPlaceholder } from "../../assets";
 
 const activityPlaceHolder = [
   { name: "Activity One", stars: 4, price: "$$" },
@@ -154,20 +156,35 @@ const Explore = () => {
   const activitiesForSlider = activities.slice(0, 20).map((activity: any) => (
     <div
       key={activity.id}
-      className="flex  flex-col gap-2 snap-start mr-4 min-w-[300px] max-h-[350px] h-fit rounded-xl bg-white overflow-hidden"
+      className="flex flex-col gap-2 snap-start mr-4 min-w-[300px] max-h-[350px] h-fit rounded-xl bg-white overflow-hidden"
       ref={cardRef}
     >
       <img
         className="h-1/3 aspect-video w-full"
-        src={activity.pictures[0] || ""}
+        src={activity.pictures[0] || postsPlaceholder}
+        alt={"Image activity"}
+        loading="lazy"
       />
       <div className="p-4 flex flex-col gap-2 text-mainGray ">
         <div className="truncate text-lg">{activity.name}</div>
         <div className="truncate text-sm">
-          Price: {activity.price.amount} {activity.price.currencyCode}
+          Minimum duration: {activity.minimumDuration}
+        </div>
+        <div className="truncate text-sm flex justify-between">
+          <div className="flex gap-1">
+            <div className="">Price:</div>
+            <div className="text-mainBlue">
+              {activity.price.amount} {activity.price.currencyCode}
+            </div>
+          </div>
+          {activity.rating && (
+            <div className="truncate text-sm flex gap-1">
+              Rating: <div className="text-mainBlue">{activity.rating}</div>
+            </div>
+          )}
         </div>
 
-        <button className="shadow-md mx-auto w-1/2 shadow-blue-400/50 text-white bg-blue-400 hover:bg-blue-400/90 rounded-md">
+        <button className="shadow-md py-1 shadow-blue-400/50 text-white bg-blue-400 hover:bg-blue-400/90 rounded-md">
           <a href={activity.bookingLink}>More details</a>
         </button>
       </div>

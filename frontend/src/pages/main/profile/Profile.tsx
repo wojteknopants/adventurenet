@@ -8,7 +8,7 @@ import {
   useUpdateProfileMutation,
 } from "../../../features/profile/profileSlice";
 import { useDispatch, useSelector } from "react-redux";
-import ProfilePosts from "./ProfilePosts";
+import ProfilePosts from "../../../components/ProfilePosts";
 import { useParams } from "react-router-dom";
 import PageTitle from "../../../components/PageTitle";
 import ProfileHeader from "./ProfileHeader";

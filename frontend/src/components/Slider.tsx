@@ -30,7 +30,7 @@ const Slider = ({ content }: SliderProps) => {
       />
       <div
         ref={sliderRef}
-        className="flex overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide
+        className="flex overflow-x-scroll  whitespace-nowrap scroll-smooth scrollbar-hide
           snap-x"
       >
         {content}

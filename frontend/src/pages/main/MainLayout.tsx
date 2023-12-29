@@ -4,20 +4,24 @@ import Navbar from "../../components/Navbar";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../store";
-import {
-  checkIsAuthenticated,
-  getIsAuthenticated,
-} from "../../features/auth/authSlice";
+import { getIsAuthenticated } from "../../features/auth/authSlice";
+import { getActivities } from "../../features/explore/exploreSlice";
 
 const MainLayout = () => {
   const isAuthenticated = useSelector(getIsAuthenticated);
   const navigate = useNavigate();
+
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     if (!isAuthenticated) {
       navigate("/auth/login");
     }
   }, [isAuthenticated]);
+
+  useEffect(() => {
+    dispatch(getActivities({ latitude: "51.50853", longitude: "-0.12574" }));
+  }, []);
 
   return (
     <div className="flex">
