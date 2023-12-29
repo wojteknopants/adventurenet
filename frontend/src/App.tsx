@@ -19,6 +19,10 @@ import Bookmarks from "./pages/main/Bookmarks";
 import { getIsAuthenticated } from "./features/auth/authSlice";
 import Flights from "./pages/main/Flights";
 
+import Message from "./features/chat/Message";
+import MessageDetail from "./features/chat/MessageDetail";
+import SearchUsers from "./features/chat/SearchUsers";
+
 // store.dispatch(postsApiSlice.endpoints.getPosts.initiate(undefined));
 
 const App = () => {
@@ -32,6 +36,11 @@ const App = () => {
             <Route path="/" element={<MainLayout />}>
               <Route path="/feed" element={<Feed />} />
               <Route path="/messages" element={<Messages />} />
+
+              {/* <Route path="/inbox" element={<Message />} />
+              <Route path="/inbox/:id" element={<MessageDetail />} />
+              <Route path="/search/:username" element={<SearchUsers />} /> */}
+
               <Route path="/settings" element={<Settings />} />
               <Route path="/profile/:uid" element={<Profile />} />
               <Route path="/explore" element={<Explore />} />

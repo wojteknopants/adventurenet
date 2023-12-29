@@ -1,8 +1,10 @@
-import {React, useState, useEffect} from "react";
+import { useState, useEffect} from "react";
 import './style/Message.css'
-import useAxios from "../utils/useAxios";
-import jwtDecode from "jwt-decode";
-import moment from 'moment';
+// import useAxios from "./utils/useAxios";
+import axios from "axios";
+
+// import jwtDecode from "jwt-decode";
+// import moment from 'moment';
 import { Link } from "react-router-dom/";
 
 function Message() {
@@ -12,24 +14,73 @@ function Message() {
     // Create new states
     const [messages, setMessage] = useState([])
 
-    const axios = useAxios()
+    // const axios = useAxios()
 
     // get token
-    const token = localStorage.getItem("authTokens")
-    const decoded = jwtDecode(token)
-    const user_id = decoded.user_id
+    // const token = localStorage.getItem("authTokens")
+    // const decoded = jwtDecode(token)
+    // const user_id = decoded.user_id
+    
+
+    // useEffect(() => {
+    //     try {
+    //         axios.get(baseURL + '/my-messages/' + user_id + '/').then((res) => {
+                
+    //             setMessage(res.data)
+    //         })
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }, [])
+    // console.log(messages);
+
+    // const fetchMessages = async () => {
+    //     try {
+    //         const config = {
+    //             headers: {
+    //               "Content-Type": "application/json",
+    //               Authorization: `JWT ${localStorage.getItem("access")}`,
+    //               Accept: "application/json",
+    //             },
+    //           };
+
+    //         const response = await axios.get(
+    //             `${baseURL}/my-messages/me/`,
+    //             config
+    //         );
+    //         setMessage(response.data);
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
+
+    // useEffect(() => {
+    //     fetchMessages();
+    // }, []);
 
     useEffect(() => {
-        try {
-            axios.get(baseURL + '/my-messages/' + user_id + '/').then((res) => {
-                
-                setMessage(res.data)
-            })
-        } catch (error) {
-            console.log(error);
-        }
-    }, [])
-    console.log(messages);
+        const fetchMessages = async () => {
+            try {
+                const config = {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `JWT ${localStorage.getItem("access")}`,
+                        Accept: "application/json",
+                    },
+                };
+
+                const response = await axios.get(
+                    `${baseURL}/my-messages/me/`,
+                    config
+                );
+                setMessage(response.data);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+    
+        fetchMessages();
+    }, []);
 
     return (
         <div>

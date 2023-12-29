@@ -1,107 +1,267 @@
-import {React, useState, useEffect} from "react";
+import {useState, useEffect} from "react";
 import './style/Message.css'
-import useAxios from "../utils/useAxios";
-import jwtDecode from "jwt-decode";
-import moment from 'moment';
-import { useParams, Link, useHistory } from "react-router-dom/";
+// import useAxios from "./utils/useAxios";
+import axios from "axios";
+
+// import jwtDecode from "jwt-decode";
+// import moment from 'moment';
+import { useParams, Link, useHistory } from "react-router-dom";
 
 function MessageDetail() {
-    const baseURL = 'http://127.0.0.1:8000/api'
-    const [message, setMessage] = useState([])
-    const [messages, setMessages] = useState([])
 
-    let [newMessage, setNewMessage] = useState({message: ""})
-    let [newSearch, setNewSearch] = useState({search: ""})
+    // const baseURL = 'http://127.0.0.1:8000/api'
+    // const [message, setMessage] = useState([])
+    // const [messages, setMessages] = useState([])
+
+    // let [newMessage, setNewMessage] = useState({message: ""})
+    // let [newSearch, setNewSearch] = useState({search: ""})
     
-    const id = useParams()
-    const axios = useAxios()
-    const token = localStorage.getItem("authTokens")
-    const decoded = jwtDecode(token)
-    const user_id = decoded.user_id
+    // const id = useParams()
 
-    const history = useHistory()
+    // // const axios = useAxios()
+    // // const token = localStorage.getItem("authTokens")
+    // // const decoded = jwtDecode(token)
+    // // const user_id = decoded.user_id
+
+    // // const config = {
+    // //     headers: {
+    // //       "Content-Type": "application/json",
+    // //       Authorization: `JWT ${localStorage.getItem("access")}`,
+    // //       Accept: "application/json",
+    // //     },
+    // // }
+
+    // const history = useHistory()
 
 
-    useEffect(() => {
-        try {
-            axios.get(baseURL + '/my-messages/' + user_id + '/').then((res) => {
+    // useEffect(() => {
+    //     try {
+    //         axios.get(baseURL + '/my-messages/' + user_id + '/').then((res) => {
                 
-                setMessages(res.data)
-            })
-        } catch (error) {
-            console.log(error);
-        }
-    }, [])
+    //             setMessages(res.data)
+    //         })
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }, [])
+
+    // useEffect(() => {
+    //     let interval = setInterval(() => {
+    //         try {
+    //             axios.get(baseURL + '/get-messages/' + user_id + '/' + id.id + '/').then((res) => {
+    //                 setMessage(res.data)
+    //             })
+    //         } catch (error) {
+    //             console.log(error);
+    //         }
+    //     }, 1000)
+    //     return () => {
+    //         clearInterval(interval)
+    //     }
+    // }, [history, id.id])
+
+    // // Capture changes made by the user in those fields and update the component's state accordingly
+    // const handleChange = (event) => {
+    //     setNewMessage({
+    //         ...newMessage,
+    //         [event.target.name]: event.target.value
+    //     })
+    // }
+
+
+    // const SendMessage = () => {
+    //     const formdata = new FormData()
+    //     formdata.append("user", user_id)
+    //     formdata.append("sender", user_id)
+    //     formdata.append("receiver", id.id)
+    //     formdata.append("message", newMessage.message)
+    //     formdata.append("is_read", false)
+
+    //     try {
+    //         axios.post(baseURL + '/send-messages/', formdata).then((res) => {
+    //             document.getElementById("text-input").value = ""
+    //             setNewMessage(newMessage = "")
+    //         })
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }
+
+    // const handleSearchChange = (event) => {
+    //     setNewSearch({
+    //         ...newSearch,
+    //         [event.target.name]: event.target.value
+    //     })
+    // }
+
+    // console.log(newSearch.username);
+
+    // const SearchUser = () => {
+    //     try {
+    //         axios(baseURL + '/search/' + newSearch.username + '/')
+    //         .then((res) => {
+    //             if (res.status === 404) {
+    //                 console.log(res.details);
+    //                 // alert("User does not exist")
+    //             } else {
+    //                 history.push("/search/" + newSearch.username)
+    //             }
+    //         })
+    //         .catch((error) => {
+    //             console.log("No users found");
+    //         })
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }
+
+    const baseURL = 'http://127.0.0.1:8000/api';
+
+    const [messages, setMessages] = useState([]);
+    const [message, setMessage] = useState([]);
+
+    let [newMessage, setNewMessage] = useState({ message: '' });
+    let [newSearch, setNewSearch] = useState({ search: '' });
+
+    const { id: userId } = useParams();
+    const history = useHistory();
 
     useEffect(() => {
-        let interval = setInterval(() => {
+        const fetchMessages = async () => {
             try {
-                axios.get(baseURL + '/get-messages/' + user_id + '/' + id.id + '/').then((res) => {
-                    setMessage(res.data)
-                })
+                const config = {
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: `JWT ${localStorage.getItem("access")}`,
+                      Accept: "application/json",
+                    },
+                  };
+
+                const response = await axios.get(
+                    `${baseURL}/my-messages/me/`,
+                    config
+                );
+                setMessages(response.data);
             } catch (error) {
                 console.log(error);
             }
-        }, 1000)
-        return () => {
-            clearInterval(interval)
-        }
-    }, [history, id.id])
+        };
+    
+        fetchMessages();
+    }, []);
 
-    // Capture changes made by the user in those fields and update the component's state accordingly
+//   useEffect(() => {
+//     const interval = setInterval(() => {
+//       try {
+//         const res = await axios.get(`${baseURL}/get-messages/${userId}/${id.id}/`);
+//         setMessage(res.data);
+//       } catch (error) {
+//         console.log(error);
+//       }
+//     }, 1000);
+
+//     return () => clearInterval(interval);
+//   }, [history, userId, id.id]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const config = {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `JWT ${localStorage.getItem("access")}`,
+                        Accept: "application/json",
+                    },
+                };
+
+                const res = await axios.get(
+                    `${baseURL}/get-messages/${user_id}/${id.id}/`,
+                    config    
+                );
+                setMessage(res.data);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+  
+        const interval = setInterval(fetchData, 1000);
+  
+        return () => clearInterval(interval);
+    }, [history, id.id]);
+
+
     const handleChange = (event) => {
         setNewMessage({
             ...newMessage,
-            [event.target.name]: event.target.value
-        })
-    }
+            [event.target.name]: event.target.value,
+        });
+    };
 
 
-    const SendMessage = () => {
-        const formdata = new FormData()
-        formdata.append("user", user_id)
-        formdata.append("sender", user_id)
-        formdata.append("receiver", id.id)
-        formdata.append("message", newMessage.message)
-        formdata.append("is_read", false)
+    const SendMessage = async () => {
+        const formData = new FormData();
+        formData.append('user', userId);
+        formData.append('sender', userId);
+        formData.append('receiver', id.id);
+        formData.append('message', newMessage.message);
+        formData.append('is_read', false);
 
         try {
-            axios.post(baseURL + '/send-messages/', formdata).then((res) => {
-                document.getElementById("text-input").value = ""
-                setNewMessage(newMessage = "")
-            })
-        } catch (error) {
-            console.log(error);
-        }
-    }
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `JWT ${localStorage.getItem("access")}`,
+                    Accept: "application/json",
+                },
+            };
+
+            const res = await axios.post(
+                `${baseURL}/send-messages/`, formData,
+                config
+            );
+            document.getElementById('text-input').value = '';
+            setNewMessage({ message: '' });
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
 
     const handleSearchChange = (event) => {
         setNewSearch({
             ...newSearch,
-            [event.target.name]: event.target.value
-        })
-    }
+            [event.target.name]: event.target.value,
+        });
+    };
+
 
     console.log(newSearch.username);
 
-    const SearchUser = () => {
+
+    const SearchUser = async () => {
         try {
-            axios(baseURL + '/search/' + newSearch.username + '/')
-            .then((res) => {
-                if (res.status === 404) {
-                    console.log(res.details);
-                    alert("User does not exist")
-                } else {
-                    history.push("/search/" + newSearch.username)
-                }
-            })
-            .catch((error) => {
-                console.log("No users found");
-            })
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `JWT ${localStorage.getItem("access")}`,
+                    Accept: "application/json",
+                },
+            };
+
+            const res = await axios(
+                `${baseURL}/search/${newSearch.username}/`,
+                config
+            );
+            if (res.status === 404) {
+                console.log(res.details);
+                // alert("User does not exist")
+            } else {
+                history.push(`/search/${newSearch.username}`);
+            }
         } catch (error) {
-            console.log(error);
+            console.log('No users found');
         }
-    }
+    };
 
 
     return (
