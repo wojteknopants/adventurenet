@@ -569,7 +569,7 @@ class MyInboxView(ListAPIView):
     serializer_class = ChatMessageSerializer
     
     def get_queryset(self):
-        user_id = self.kwargs('user_id')
+        user_id = self.kwargs['user_id']
 
         messages = ChatMessage.objects.filter(
             id__in = Subquery(
