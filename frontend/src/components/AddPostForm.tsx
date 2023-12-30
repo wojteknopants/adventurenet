@@ -4,12 +4,20 @@ import { useAddNewPostMutation } from "../features/posts/postsSlice";
 import { useEffect, useState } from "react";
 import AddPostPopup from "./AddPostPopup";
 import { iconAddPost } from "../assets";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Profile from "../pages/main/profile/Profile";
 import { useGetProfileQuery } from "../features/profile/profileSlice";
-import { selectTagSuggestions } from "../features/posts/tagsSlice";
+import {
+  fetchTags,
+  selectTag,
+  selectTagSuggestions,
+} from "../features/posts/tagsSlice";
+import { AppDispatch } from "../store";
 
 const AddPostForm = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  let timeout: NodeJS.Timeout;
+
   const [addNewPost, { isLoading }] = useAddNewPostMutation();
   const { data, isSuccess, isError } = useGetProfileQuery("me");
   const [content, setContent] = useState("");
@@ -43,6 +51,7 @@ const AddPostForm = () => {
     if (!selectedTags.some((selectedTag) => selectedTag === tag)) {
       const newSelectedTags = [...selectedTags, tag];
       setSelectedTags(newSelectedTags);
+      dispatch(selectTag({ tag }));
     }
 
     console.log(selectedTags);
@@ -75,6 +84,16 @@ const AddPostForm = () => {
         console.error("Failed to save the post", err);
       }
     }
+  };
+
+  const handleOnTagSearchChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    clearTimeout(timeout);
+
+    timeout = setTimeout(() => {
+      dispatch(fetchTags({ query: event.target.value }));
+    }, 300);
   };
 
   useEffect(() => {
@@ -116,6 +135,7 @@ const AddPostForm = () => {
             text={content}
             tagsSuggestions={tagsSuggestions}
             selectedTags={selectedTags}
+            handleOnTagSearchChange={handleOnTagSearchChange}
             handlePopup={handlePopup}
             handleAddImage={handleImageUpload}
             handleAddText={onContentChanged}

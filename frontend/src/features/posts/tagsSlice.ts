@@ -33,6 +33,7 @@ export const fetchTags = createAsyncThunk(
 );
 
 interface initialStateParams {
+  selectedTag: any;
   tagsSuggestions: any;
   status: any;
 }
@@ -40,10 +41,16 @@ interface initialStateParams {
 const tagsSlice = createSlice({
   name: "tags",
   initialState: {
+    selectedTag: null,
     tagsSuggestions: null,
     status: "succeeded",
   } as initialStateParams,
-  reducers: {},
+  reducers: {
+    selectTag(state, action) {
+      state.selectedTag = action.payload;
+      state.tagsSuggestions = null;
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(fetchTags.fulfilled, (state, action) => {
@@ -55,6 +62,9 @@ const tagsSlice = createSlice({
       });
   },
 });
+
+export const { selectTag } = tagsSlice.actions;
+
 export const selectTagSuggestions = (state: RootState) => {
   if (state.tags && state.tags.tagsSuggestions) {
     return state.tags.tagsSuggestions;

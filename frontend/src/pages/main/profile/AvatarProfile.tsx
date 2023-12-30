@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useRef } from "react";
 import { iconPhoto } from "../../../assets";
 import React from "react";
 import { profilePlaceholder } from "../../../assets";
@@ -15,9 +15,9 @@ const AvatarProfile = ({ size, photo, handleChangePhoto }: Props) => {
     width = "w-36";
   }
 
-  const hiddenFileInput = React.useRef(null);
+  const hiddenFileInput = useRef<HTMLInputElement | null>(null);
   const handleClick = (event: any) => {
-    hiddenFileInput.current.click();
+    hiddenFileInput.current?.click();
   };
 
   const handleFileSelect = (event: any) => {

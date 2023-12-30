@@ -22,7 +22,7 @@ const Slider = ({ content }: SliderProps) => {
     }
   };
   return (
-    <div className="relative items-center mt-6">
+    <div className="relative items-center">
       <MdChevronLeft
         onClick={slideLeft}
         size={40}
@@ -30,7 +30,7 @@ const Slider = ({ content }: SliderProps) => {
       />
       <div
         ref={sliderRef}
-        className="flex overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide
+        className="flex overflow-x-scroll  whitespace-nowrap scroll-smooth scrollbar-hide
           snap-x"
       >
         {content}

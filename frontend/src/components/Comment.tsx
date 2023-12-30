@@ -8,13 +8,14 @@ import {
   deleteCommentLike,
 } from "../features/posts/commentsSlice";
 import { AppDispatch } from "../store";
+import { formatRelativeTime } from "../lib/formatRelativeTime";
 
 interface CommentProps {
   comment: any;
-  formatRelativeTime: (arg: any) => any;
+  // formatRelativeTime: (arg: any) => any;
 }
 
-const Comment = ({ comment, formatRelativeTime }: CommentProps) => {
+const Comment = ({ comment }: CommentProps) => {
   const dispatch: AppDispatch = useDispatch();
 
   const handleLikeClick = (e: any) => {

@@ -4,7 +4,7 @@ interface PageTitleProps {
 
 const PageTitle = ({ title }: PageTitleProps) => {
   return (
-    <div className="flex justify-between my-8 font-bold">
+    <div className="flex justify-between mt-8 font-bold">
       <h2 className="text-2xl text-mainGray">{title}</h2>
     </div>
   );

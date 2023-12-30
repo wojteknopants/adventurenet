@@ -7,14 +7,15 @@ import { BsThreeDots } from "react-icons/bs";
 import AddPostPopup from "./AddPostPopup";
 import AddPostForm from "./AddPostForm";
 import EditPostForm from "./EditPostForm";
+import { formatRelativeTime } from "../lib/formatRelativeTime";
 
 interface PostHeaderProps {
   user: any;
   created_at: any;
   user_pfp: any;
-  editData: { postId: any; image: any; content: any; tags: any };
+  editData?: { postId: any; image: any; content: any; tags: any };
   onDeletePostClicked: () => void;
-  formatRelativeTime: (timestamp: string) => string;
+  // formatRelativeTime: (timestamp: string) => string;
 }
 
 const PostHeader = ({
@@ -23,7 +24,6 @@ const PostHeader = ({
   user_pfp,
   editData,
   onDeletePostClicked,
-  formatRelativeTime,
 }: PostHeaderProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isEdited, setIsEdited] = useState(false);
@@ -32,9 +32,7 @@ const PostHeader = ({
 
   return (
     <div className="flex gap-3">
-      <div>
-        <Avatar size={""} user_pfp={user_pfp} />
-      </div>
+      <Avatar size={""} user_pfp={user_pfp} />
       <div className="grow">
         <p>
           <Link to={`/profile/${user}`}>
@@ -45,36 +43,36 @@ const PostHeader = ({
           {formatRelativeTime(created_at)}
         </p>
       </div>
-
-      {isOpen ? (
-        <div className="flex gap-4 text-sm">
+      {editData &&
+        (isOpen ? (
+          <div className="flex gap-4 text-sm">
+            <button
+              onClick={() => setIsEdited((prev) => !prev)}
+              className="text-mainGray rounded-lg  px-2 border-mainGray"
+            >
+              Edit
+            </button>
+            {isEdited && (
+              <EditPostForm
+                editData={editData}
+                handleOnClick={handleOnEditClick}
+              />
+            )}
+            <button
+              className="text-red-400 rounded-lg  px-2 border-red-400"
+              onClick={onDeletePostClicked}
+            >
+              Delete
+            </button>
+          </div>
+        ) : (
           <button
-            onClick={() => setIsEdited((prev) => !prev)}
-            className="text-mainGray rounded-lg  px-2 border-mainGray"
+            className=" text-mainGray"
+            onClick={() => setIsOpen((prev) => !prev)}
           >
-            Edit
+            <BsThreeDots />
           </button>
-          {isEdited && (
-            <EditPostForm
-              editData={editData}
-              handleOnClick={handleOnEditClick}
-            />
-          )}
-          <button
-            className="text-red-400 rounded-lg  px-2 border-red-400"
-            onClick={onDeletePostClicked}
-          >
-            Delete
-          </button>
-        </div>
-      ) : (
-        <button
-          className=" text-mainGray"
-          onClick={() => setIsOpen((prev) => !prev)}
-        >
-          <BsThreeDots />
-        </button>
-      )}
+        ))}
     </div>
   );
 };

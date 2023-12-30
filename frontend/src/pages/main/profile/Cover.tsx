@@ -7,9 +7,9 @@ interface Props {
 }
 
 const Cover = ({ cover, handleChangeCover }: Props) => {
-  const hiddenFileInput = React.useRef(null);
+  const hiddenFileInput = React.useRef<HTMLInputElement | null>(null);
   const handleClick = (event: any) => {
-    hiddenFileInput.current.click();
+    hiddenFileInput.current && hiddenFileInput.current.click();
   };
   const handleFileSelect = (event: any) => {
     event.target.files[0] && handleChangeCover(event.target.files[0]);

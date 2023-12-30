@@ -13,6 +13,9 @@ export default {
         mainBlack: "#202020",
         mainDarkGray: "#6B7280",
       },
+      boxShadow: {
+        md: "0px 4px 10px -1px rgba(0, 0, 0, 0.05)",
+      },
       fontFamily: {
         poppins: ["Poppins", "serif"],
         inter: ["Inter", "serif"],

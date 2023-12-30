@@ -7,8 +7,7 @@ const Card = ({
   children: ReactNode;
   noPadding: ReactNode;
 }) => {
-  let classes =
-    "bg-white shadow-md shadow-gray-300 rounded-xl mb-5 overflow-hidden ";
+  let classes = "bg-white flex flex-col shadow-md rounded-xl overflow-hidden ";
   if (!noPadding) {
     classes += " py-3 px-6";
   }
