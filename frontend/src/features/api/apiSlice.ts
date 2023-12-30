@@ -25,6 +25,6 @@ const dynamicBaseQuery: BaseQueryFn<
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: dynamicBaseQuery,
-  tagTypes: ["Post", "ProfilePost", "Profile", "Comments"],
+  tagTypes: ["Post", "ProfilePost", "Profile", "Comments", "Bookmark"],
   endpoints: (builder) => ({}),
 });

@@ -76,25 +76,33 @@ const Flights = () => {
       );
     }
   );
-  const flightOffers = Object.keys(countriesOffers).map((country) => (
-    <div
-      key={country}
-      className="p-4 flex flex-col text-lg bg-white text-mainGray transition-all hover:bg-mainLightGray hover:text-mainBlue rounded-lg shadow-md cursor-pointer gap-2 justify-between"
-      onClick={() => handleOnCardClick(countriesOffers[country], country)}
-    >
-      <div className="">{country}</div>
-      <div className="text-sm text-mainGray/50 ">
-        <div>
-          Cheapest price : {countriesOffers[country].cheapest}{" "}
-          {cultureData.currency}
+  console.log(countriesOffers);
+  const flightOffers =
+    countriesOffers.length !== 0 ? (
+      Object.keys(countriesOffers).map((country) => (
+        <div
+          key={country}
+          className="p-4 flex flex-col text-lg bg-white text-mainGray transition-all hover:bg-mainLightGray hover:text-mainBlue rounded-lg shadow-md cursor-pointer gap-2 justify-between"
+          onClick={() => handleOnCardClick(countriesOffers[country], country)}
+        >
+          <div className="">{country}</div>
+          <div className="text-sm text-mainGray/50 ">
+            <div>
+              Cheapest price : {countriesOffers[country].cheapest}{" "}
+              {cultureData.currency}
+            </div>
+            <div>
+              Has direct flights :{" "}
+              {countriesOffers[country].has_direct ? "YES" : "NO"}
+            </div>
+          </div>
         </div>
-        <div>
-          Has direct flights :{" "}
-          {countriesOffers[country].has_direct ? "YES" : "NO"}
-        </div>
+      ))
+    ) : (
+      <div className="flex absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-mainGray/50 text-xl font-bold m-auto">
+        No flights
       </div>
-    </div>
-  ));
+    );
 
   const handleClosePopup = () => {
     setShowFlights(false);

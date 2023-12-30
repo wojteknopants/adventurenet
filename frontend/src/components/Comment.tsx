@@ -9,6 +9,7 @@ import {
 } from "../features/posts/commentsSlice";
 import { AppDispatch } from "../store";
 import { formatRelativeTime } from "../lib/formatRelativeTime";
+import { useGetProfileQuery } from "../features/profile/profileSlice";
 
 interface CommentProps {
   comment: any;
@@ -17,6 +18,8 @@ interface CommentProps {
 
 const Comment = ({ comment }: CommentProps) => {
   const dispatch: AppDispatch = useDispatch();
+
+  const { data: profile } = useGetProfileQuery(comment.user);
 
   const handleLikeClick = (e: any) => {
     e.preventDefault();
@@ -30,7 +33,7 @@ const Comment = ({ comment }: CommentProps) => {
   return (
     <div className="flex gap-3 py-4">
       <div>
-        <Avatar size={""} />
+        <Avatar size={""} user_pfp={profile.profile_picture} />
       </div>
       <div className="flex flex-1 flex-col">
         <div className="flex gap-3">

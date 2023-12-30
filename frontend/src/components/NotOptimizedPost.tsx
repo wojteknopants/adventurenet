@@ -5,7 +5,7 @@ import PostProfile from "../_drafts/PostProfile";
 import { useSelector } from "react-redux";
 import { selectPostById } from "../features/posts/postsSlice";
 
-const ProfilePost = (props: any) => {
+const NotOptimizedPost = (props: any) => {
   return (
     <Post
       postData={props.postData}
@@ -15,4 +15,4 @@ const ProfilePost = (props: any) => {
   );
 };
 
-export default ProfilePost;
+export default NotOptimizedPost;

@@ -1,15 +1,21 @@
 import React from "react";
 
-const PostBookmark = () => {
+const PostBookmark = ({
+  is_saved,
+  handleSaveClick,
+}: {
+  is_saved: boolean;
+  handleSaveClick: () => void;
+}) => {
   return (
     <div className="grow text-right">
-      <button className="items-center">
+      <button onClick={handleSaveClick} className="items-center">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          fill="none"
+          fill={is_saved ? "#6893E5" : "none"}
           viewBox="0 0 24 24"
           strokeWidth={1.5}
-          stroke="#BDBDBD"
+          stroke={is_saved ? "#6893E5" : "#BDBDBD"}
           className="w-6 h-6"
         >
           <path

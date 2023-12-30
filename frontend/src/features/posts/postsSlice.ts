@@ -68,21 +68,6 @@ export const postsApiSlice = apiSlice.injectEndpoints({
             ]
           : [{ type: "Post" }],
     }),
-    getCommentsByPostId: builder.query({
-      query: (post_id: number) => `/posts/${post_id}/comments/`,
-
-      providesTags: (
-        result: any,
-        error: FetchBaseQueryError | undefined,
-        arg: any
-      ) =>
-        result
-          ? [
-              { type: "Comments", id: "LIST" },
-              ...result.ids.map((id: number) => ({ type: "Comments", id })),
-            ]
-          : [{ type: "Comments" }],
-    }),
     getProfile: builder.query({
       query: (uid: number | "me") => `/profiles/${uid}/`,
       providesTags: (result, error, arg) =>
@@ -97,6 +82,7 @@ export const postsApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: [
         { type: "Post", id: "LIST" },
         { type: "ProfilePost", id: "LIST" },
+        { type: "Bookmark", id: "LIST" },
       ],
     }),
     updatePost: builder.mutation({
@@ -108,6 +94,7 @@ export const postsApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: (result, error, arg) => [
         { type: "Post", id: arg.id },
         { type: "ProfilePost", id: arg.id },
+        { type: "Bookmark", id: "LIST" },
       ],
     }),
     deletePost: builder.mutation({
@@ -118,6 +105,8 @@ export const postsApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: (result, error, arg) => [
         { type: "Post", id: arg.id },
         { type: "ProfilePost", id: arg.id },
+
+        { type: "Bookmark", id: "LIST" },
       ],
     }),
     addPostLike: builder.mutation({
@@ -128,6 +117,8 @@ export const postsApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: (result, error, arg) => [
         { type: "Post", id: arg.id },
         { type: "ProfilePost", id: arg.id },
+
+        { type: "Bookmark", id: "LIST" },
       ],
     }),
     deletePostLike: builder.mutation({
@@ -135,10 +126,14 @@ export const postsApiSlice = apiSlice.injectEndpoints({
         url: `/posts/${id}/like/`,
         method: "DELETE",
       }),
-      invalidatesTags: (result, error, arg) => [
-        { type: "Post", id: arg.id },
-        { type: "ProfilePost", id: arg.id },
-      ],
+      invalidatesTags: (result, error, arg) => {
+        console.log(result);
+        return [
+          { type: "Post", id: arg.id },
+          { type: "ProfilePost", id: arg.id },
+          { type: "Bookmark", id: "LIST" },
+        ];
+      },
     }),
   }),
 });
@@ -151,7 +146,6 @@ export const {
   useAddPostLikeMutation,
   useDeletePostLikeMutation,
   useUpdatePostMutation,
-  useGetCommentsByPostIdQuery,
 } = postsApiSlice;
 
 export const selectPostsResult =

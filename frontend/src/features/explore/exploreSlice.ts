@@ -132,6 +132,36 @@ export const generateItineraries = createAsyncThunk(
   }
 );
 
+export const saveItinerary = createAsyncThunk(
+  "explore/saveItinerary",
+  async (_, { getState }) => {
+    try {
+      const url = `/itineraries/`;
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `JWT ${localStorage.getItem("access")}`,
+          Accept: "application/json",
+        },
+      };
+
+      const body = {
+        content: { ...(getState() as RootState).explore.generatedItinerary },
+      };
+
+      const res = await axios.post(
+        `${import.meta.env.VITE_REACT_APP_API_URL}${url}`,
+        body,
+        config
+      );
+      console.log(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 export const getItineraries = createAsyncThunk(
   "explore/getItineraries",
   async () => {
@@ -239,6 +269,13 @@ const exploreSlice = createSlice({
       state.itineraries = action.payload;
     });
     builder.addCase(getItineraries.rejected, (state, action) => {
+      state.status = "rejected";
+    });
+    builder.addCase(saveItinerary.fulfilled, (state, action) => {
+      state.status = "fulfilled";
+      // state.itineraries = action.payload;
+    });
+    builder.addCase(saveItinerary.rejected, (state, action) => {
       state.status = "rejected";
     });
   },

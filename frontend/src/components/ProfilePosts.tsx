@@ -6,7 +6,8 @@ import {
 } from "../features/posts/postsSlice";
 import { useSelector } from "react-redux";
 import LoadingCard from "./LoadingCard";
-import ProfilePost from "./ProfilePost";
+import ProfilePost from "./NotOptimizedPost";
+import NotOptimizedPost from "./NotOptimizedPost";
 
 const ProfilePosts = ({ uid }: any) => {
   const { data, isLoading, isSuccess, isError, error, refetch } =
@@ -17,7 +18,7 @@ const ProfilePosts = ({ uid }: any) => {
   } else if (isSuccess) {
     content = data.ids.map((id: any) => {
       return (
-        <ProfilePost
+        <NotOptimizedPost
           key={id}
           postId={id}
           postData={data.entities[id]}

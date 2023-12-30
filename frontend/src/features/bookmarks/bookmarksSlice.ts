@@ -26,60 +26,57 @@ export const bookmarksApiSlice = apiSlice.injectEndpoints({
       ) =>
         result
           ? [
-              { type: "Bookmarks", id: "LIST" },
+              { type: "Bookmark", id: "LIST" },
               ...result.ids.map((id: number) => ({ type: "Bookmark", id })),
             ]
-          : [{ type: "Bookmarks" }],
+          : [{ type: "Bookmark" }],
     }),
-    // updatePost: builder.mutation({
-    //   query: (initialPost) => ({
-    //     url: `/posts/${initialPost.id}/`,
-    //     method: "PATCH",
-    //     body: initialPost.formData,
-    //   }),
-    //   invalidatesTags: (result, error, arg) => [
-    //     { type: "Post", id: arg.id },
-    //     { type: "ProfilePost", id: arg.id },
-    //   ],
-    // }),
-    // deletePost: builder.mutation({
-    //   query: ({ id }) => ({
-    //     url: `/posts/${id}/`,
-    //     method: "DELETE",
-    //   }),
-    //   invalidatesTags: (result, error, arg) => [
-    //     { type: "Post", id: arg.id },
-    //     { type: "ProfilePost", id: arg.id },
-    //   ],
-    // }),
+    addBookmark: builder.mutation({
+      query: (data) => ({
+        url: `/saved-items/`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: "Post", id: "LIST" },
+        { type: "ProfilePost", id: "LIST" },
+        { type: "Bookmark", id: arg.id },
+      ],
+    }),
+    deleteBookmark: builder.mutation({
+      query: ({ id }) => ({
+        url: `/saved-items/${id}/`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, arg) => {
+        return [
+          { type: "Post", id: "LIST" },
+          { type: "ProfilePost", id: "LIST" },
+          { type: "Bookmark", id: arg.id },
+        ];
+      },
+    }),
   }),
 });
 
 export const {
   useGetBookmarksQuery,
-  //   useGetProfilePostsByIdQuery,
-  //   useAddNewPostMutation,
-  //   useDeletePostMutation,
-  //   useAddPostLikeMutation,
-  //   useDeletePostLikeMutation,
-  //   useUpdatePostMutation,
-  //   useGetCommentsByPostIdQuery,
+  useAddBookmarkMutation,
+  useDeleteBookmarkMutation,
 } = bookmarksApiSlice;
 
-export const selectPostsResult =
+export const selectBookmarksResult =
   bookmarksApiSlice.endpoints.getBookmarks.select(undefined);
 
 const selectBookmarksData = createSelector(
-  selectPostsResult,
-  (postsResult) => postsResult.data
+  selectBookmarksResult,
+  (bookmarksResult) => bookmarksResult.data
 );
 
-//getSelectors creates these selectors and we rename them with aliases using destructuring
 export const {
   selectAll: selectAllBookmarks,
   selectById: selectBookmarksById,
   selectIds: selectBookmarksIds,
-  // Pass in a selector that returns the posts slice of state
 } = bookmarksAdapter.getSelectors(
   (state: RootState) => selectBookmarksData(state) ?? initialState
 );

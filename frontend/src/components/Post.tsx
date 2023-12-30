@@ -31,6 +31,10 @@ import {
 import { EntityId } from "@reduxjs/toolkit";
 import { useGetProfileQuery } from "../features/profile/profileSlice";
 import Tags from "./Tags";
+import {
+  useAddBookmarkMutation,
+  useDeleteBookmarkMutation,
+} from "../features/bookmarks/bookmarksSlice";
 
 interface PostProps {
   postData: any;
@@ -48,16 +52,19 @@ interface PostProps {
 
 const Post = ({ postData, postId, refetch }: PostProps) => {
   const post = postData;
-  console.log(postData);
   const { data: profile } = useGetProfileQuery(post.user);
-
-  const [deletePost] = useDeletePostMutation();
   const dispatch: AppDispatch = useDispatch();
   const comments = useSelector(selectComments);
   const [isCommentsOpen, setIsCommentsOpen] = useState<boolean>(false);
+
+  const [deletePost] = useDeletePostMutation();
   const [addPostLike] = useAddPostLikeMutation();
   const [deletePostLike] = useDeletePostLikeMutation();
+  const [addBookmark] = useAddBookmarkMutation();
+  const [deleteBookmark] = useDeleteBookmarkMutation();
+
   const [isLiked, setIsLiked] = useState<boolean>(false);
+  const [IsSaved, setIsSaved] = useState<boolean>(false);
   const [addCommentInput, setAddCommentInput] = useState<string>("");
 
   const onDeletePostClicked = async () => {
@@ -88,6 +95,30 @@ const Post = ({ postData, postId, refetch }: PostProps) => {
     );
 
     setAddCommentInput("");
+  };
+
+  const handleSaveClick = async () => {
+    if (!post.is_saved) {
+      try {
+        await addBookmark({
+          object_id: post.id,
+          content_type: "post",
+        }).unwrap();
+      } catch (err) {
+        console.error("Failed to save the item", err);
+      }
+    } else {
+      try {
+        await deleteBookmark({ id: post.id }).unwrap();
+      } catch (err) {
+        console.error("Failed to delete the item", err);
+      }
+    }
+
+    setIsSaved((prev) => {
+      // console.log(!prev);
+      return !prev;
+    });
   };
 
   const handleLikeClick = async () => {
@@ -135,7 +166,9 @@ const Post = ({ postData, postId, refetch }: PostProps) => {
         likes_count={post.likes_count}
         onClickShowComments={onClickShowComments}
         handleLikeClick={handleLikeClick}
+        handleSaveClick={handleSaveClick}
         is_liked={post.is_liked}
+        is_saved={post.is_saved}
       />
       {isCommentsOpen && <CommentsList postId={postId} comments={comments} />}
       <AddCommentForm

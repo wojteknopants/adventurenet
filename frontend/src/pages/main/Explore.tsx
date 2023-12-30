@@ -31,6 +31,7 @@ import Itinerary from "../../components/Itinerary";
 import LoadingCard from "../../components/LoadingCard";
 import { getRandomElements } from "../../lib/getRandomElements";
 import { postsPlaceholder } from "../../assets";
+import Itineraries from "../../components/Itineraries";
 
 const activityPlaceHolder = [
   { name: "Activity One", stars: 4, price: "$$" },
@@ -149,9 +150,6 @@ const Explore = () => {
       );
     }
   );
-  const listOfItineraries = itineraries?.map((itinerary: any) => (
-    <Itinerary itinerary={itinerary} />
-  ));
 
   const activitiesForSlider = activities.slice(0, 20).map((activity: any) => (
     <div
@@ -183,7 +181,6 @@ const Explore = () => {
             </div>
           )}
         </div>
-
         <button className="shadow-md py-1 shadow-blue-400/50 text-white bg-blue-400 hover:bg-blue-400/90 rounded-md">
           <a href={activity.bookingLink}>More details</a>
         </button>
@@ -214,7 +211,7 @@ const Explore = () => {
           Generating itinerary, it can takes more then 30 second...
         </LoadingCard>
       )}
-      {listOfItineraries}
+      <Itineraries itineraries={itineraries} />
     </>
   );
 };
