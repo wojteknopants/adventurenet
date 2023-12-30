@@ -107,6 +107,7 @@ def preprocess_data(response):
 
         # Extract names using place IDs
         origin_name = places_data.get(origin_id, {}).get("name", "Unknown")
+        origin_iata = places_data.get(origin_id, {}).get("iata", None)
         destination_name = places_data.get(
             destination_id, {}).get("name", "Unknown")
 
@@ -127,6 +128,7 @@ def preprocess_data(response):
                 is_direct = quote_info['isDirect']
                 destination_city_id = quote_info['outboundLeg']['destinationPlaceId']
                 destination_city_name = places_data.get(destination_city_id, {}).get("name", "Unknown")
+                destination_iata = places_data.get(destination_city_id, {}).get("iata", None)
                 year = quote_info['outboundLeg']['departureDateTime']['year']
                 month = quote_info['outboundLeg']['departureDateTime']['month']
                 day = quote_info['outboundLeg']['departureDateTime']['day']
@@ -144,8 +146,10 @@ def preprocess_data(response):
                 country_group['flights'].append({
                     'origin': origin_name,
                     'origin_id': origin_id,
+                    'origin_iata': origin_iata,
                     'destination': destination_city_name,
                     'destination_id': destination_id,
+                    'destination_iata': destination_iata,
                     'price': price,
                     'is_direct': is_direct,
                     'date': {

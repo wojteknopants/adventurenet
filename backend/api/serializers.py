@@ -1,8 +1,11 @@
 from djoser.serializers import UserCreateSerializer
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from .models import UserProfile, Post, Comment, PostLike, CommentLike, Image, Tag, Itinerary, SavedItem
+from .models import UserProfile, Post, Comment, PostLike, CommentLike, Image, Tag, Itinerary, SavedItem, Adventure, AdventureJoinRequest
 from django.contrib.contenttypes.models import ContentType
+from datetime import date
+from django.core.exceptions import ObjectDoesNotExist
+
 User = get_user_model()
 
 # class UserAccountSerializer(serializers.ModelSerializer):
@@ -237,4 +240,93 @@ class SavedItemSerializer(serializers.ModelSerializer):
             
         )
 
-        return saved_item
+        return 
+
+    def delete_saved_item(self, content_type, object_id, user):
+        """
+        Custom method to delete a saved item based on content_type, object_id, and user.
+        """
+        try:
+            # Fetch the ContentType instance
+            content_type_instance = ContentType.objects.get(model=content_type)
+
+            # Delete the SavedItem instance
+            saved_item = SavedItem.objects.get(
+                content_type=content_type_instance, 
+                object_id=object_id, 
+                user=user
+            )
+            saved_item.delete()
+            return {'status': 'deleted'}
+        except ObjectDoesNotExist:
+            raise serializers.ValidationError('Saved item not found or already deleted.')
+        except Exception as e:
+            raise serializers.ValidationError(f'Error deleting saved item: {e}')
+    
+class AdventureSerializer(serializers.ModelSerializer):
+    # Use UserProfileSerializer to represent each participant
+    itinerary = ItinerarySerializer(read_only=True)
+    participants = serializers.SerializerMethodField()  # Use a method field to customize representation
+    new_tags = serializers.ListField(child=serializers.CharField(), write_only=True, max_length=10, required=False)
+    tags = serializers.SlugRelatedField(many=True, queryset=Tag.objects.all(), slug_field='name', required=False)
+    desired_year_month = serializers.DateField(format="%Y-%m", input_formats=["%Y-%m"])
+    itinerary_input_id = serializers.IntegerField(write_only=True)
+
+
+    class Meta:
+        model = Adventure
+        fields = ('id', 'user', 'participants', 'tags', 'new_tags', 'title', 'description', 'itinerary', 'itinerary_input_id', 'desired_year_month', 'desired_participants')
+        read_only_fields = ('id', 'user', 'participants', 'tags', 'itinerary', 'desired_year_month')
+        write_only_fields = ('new_tags', 'itinerary_input_id')
+
+    def validate_desired_year_month(self, value):
+        # Set to the first of the month
+        if value:
+            return date(value.year, value.month, 1)
+        return value
+    
+    def get_participants(self, obj):
+        # Retrieve the user profiles of all participants
+        user_profiles = UserProfile.objects.filter(user__in=obj.participants.all())
+        return UserProfileSerializer(user_profiles, many=True).data
+    
+    def create(self, validated_data):
+        tags_data = validated_data.pop('new_tags', [])
+        
+        itinerary_id = validated_data.pop('itinerary_input_id', None)
+        itinerary = Itinerary.objects.filter(id=itinerary_id).first() if itinerary_id else None
+        adventure = Adventure.objects.create(itinerary=itinerary, **validated_data)
+        adventure.participants.add(self.context['request'].user)
+
+        if tags_data:
+            for tag_name in tags_data:
+                tag, _ = Tag.objects.get_or_create(name=tag_name)
+                adventure.tags.add(tag)
+
+        return adventure
+
+    def update(self, instance, validated_data):
+        # Handle the updating of tags
+        if 'new_tags' in validated_data:
+            tags_data = validated_data.pop('new_tags', [])
+            instance.tags.clear()
+            for tag_name in tags_data:
+                tag, _ = Tag.objects.get_or_create(name=tag_name)
+                instance.tags.add(tag)
+
+        # Update the instance with the remaining validated data
+        return super().update(instance, validated_data)
+    
+
+class AdventureJoinRequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AdventureJoinRequest
+        fields = ['id', 'user', 'adventure', 'status']
+        read_only_fields = ['id','user','status']  # Status is managed internally, not by users
+
+    def create(self, validated_data):
+        # Ensure a user can't send multiple requests to the same adventure
+        if AdventureJoinRequest.objects.filter(user=validated_data['user'], adventure=validated_data['adventure']).exists():
+            raise serializers.ValidationError("You have already sent a join request for this adventure.")
+
+        return AdventureJoinRequest.objects.create(**validated_data)
