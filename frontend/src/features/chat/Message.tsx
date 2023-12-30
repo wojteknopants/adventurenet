@@ -7,10 +7,13 @@ import axios from "axios";
 // import moment from 'moment';
 import { Link } from "react-router-dom/";
 
-function Message() {
+const Message = () => {
 
     // Define base api url
     const baseURL = 'http://127.0.0.1:8000/api'
+
+    // const baseURL = `${import.meta.env.VITE_REACT_APP_API_URL}/`
+
     // Create new states
     const [messages, setMessage] = useState([])
 

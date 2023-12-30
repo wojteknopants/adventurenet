@@ -12,7 +12,9 @@ function SearchUsers() {
 
     // const axios = useAxios()
 
-    const baseURL = 'http://127.0.0.1:8000/api'
+    // const baseURL = 'http://127.0.0.1:8000/api'
+
+    const baseURL = `${import.meta.env.VITE_REACT_APP_API_URL}/`
 
     let [newSearch, setNewSearch] = useState({search: ""})
     let [user, setUser] = useState([])
