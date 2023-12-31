@@ -1,4 +1,3 @@
-import Blur from "./Blur";
 import Popup from "./Popup";
 
 interface AddPostPopupProps {

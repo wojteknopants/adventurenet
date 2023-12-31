@@ -1,5 +1,3 @@
-import React from "react";
-
 interface PostLikeCounterProps {
   likes_count: number;
   is_liked: boolean;

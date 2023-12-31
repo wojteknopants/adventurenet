@@ -1,4 +1,3 @@
-import React from "react";
 import Card from "./Card";
 import MDEditor from "@uiw/react-md-editor";
 import { useGetProfileQuery } from "../features/profile/profileSlice";
@@ -8,19 +7,20 @@ import {
   useAddBookmarkMutation,
   useDeleteBookmarkMutation,
 } from "../features/bookmarks/bookmarksSlice";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../store";
+import { getItineraries } from "../features/explore/exploreSlice";
 
 interface ItineraryProps {
   itinerary: any;
 }
 
 const Itinerary = ({ itinerary }: ItineraryProps) => {
-  console.log(itinerary);
+  const dispatch = useDispatch<AppDispatch>();
   const { data: profile } = useGetProfileQuery(itinerary.user);
   const content = itinerary.content.substring(4);
-
   const [addBookmark] = useAddBookmarkMutation();
   const [deleteBookmark] = useDeleteBookmarkMutation();
-
   const handleSaveClick = async () => {
     if (!itinerary.is_saved) {
       try {
@@ -28,12 +28,18 @@ const Itinerary = ({ itinerary }: ItineraryProps) => {
           object_id: itinerary.id,
           content_type: "itinerary",
         }).unwrap();
+        await dispatch(getItineraries());
       } catch (err) {
         console.error("Failed to save the item", err);
+        await dispatch(getItineraries());
       }
     } else {
       try {
-        await deleteBookmark({ id: itinerary.id }).unwrap();
+        await deleteBookmark({
+          object_id: itinerary.id,
+          content_type: "itinerary",
+        }).unwrap();
+        await dispatch(getItineraries());
       } catch (err) {
         console.error("Failed to delete the item", err);
       }

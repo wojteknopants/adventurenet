@@ -1,4 +1,4 @@
-import { loginBackground, logoBlack } from "../../assets";
+import { logoBlack } from "../../assets";
 import { Outlet } from "react-router-dom";
 import Blur from "../../components/Blur";
 
@@ -8,7 +8,6 @@ const AuthLayout = () => {
       <div
         className="relative flex-col px-16 py-10 w-full h-screen"
         style={{
-          //background: `url(${loginBackground})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}

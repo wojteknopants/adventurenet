@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import AddPostPopup from "./AddPostPopup";
 import { iconAddPost } from "../assets";
 import { useDispatch, useSelector } from "react-redux";
-import Profile from "../pages/main/profile/Profile";
 import { useGetProfileQuery } from "../features/profile/profileSlice";
 import {
   fetchTags,

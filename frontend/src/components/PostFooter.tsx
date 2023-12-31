@@ -1,4 +1,3 @@
-import React from "react";
 import PostLikesCounter from "./PostLikesCounter";
 import PostCommentsCounter from "./PostCommentsCounter";
 import PostShareCounter from "./PostShareCounter";

@@ -5,7 +5,6 @@ import flightsReducer from "./explore/flightsSlice";
 import exploreReducer from "./explore/exploreSlice";
 import { apiSlice } from "./api/apiSlice";
 import tagsReducer from "./posts/tagsSlice";
-//import profileReducer from "./profile/profileSlice";
 
 const rootReducer = combineReducers({
   auth: authReducer,

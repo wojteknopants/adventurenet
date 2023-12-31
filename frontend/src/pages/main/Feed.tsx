@@ -1,4 +1,3 @@
-import Post from "../../components/Post";
 import AddPostForm from "../../components/AddPostForm";
 import {
   useGetPostsQuery,
@@ -6,7 +5,6 @@ import {
 } from "../../features/posts/postsSlice";
 import { useSelector } from "react-redux";
 import PageTitle from "../../components/PageTitle";
-import Card from "../../components/Card";
 import LoadingCard from "../../components/LoadingCard";
 import FeedPost from "../../components/FeedPost";
 

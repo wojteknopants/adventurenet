@@ -1,6 +1,4 @@
-import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import { BsImage } from "react-icons/bs";
 import Slider from "../../components/Slider";
 import PageTitle from "../../components/PageTitle";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,22 +14,15 @@ import {
   selectItineraries,
   getItineraries,
   selectActivities,
-  selectActivitiesStatus,
   selectGenerateStatus,
+  selectGeneratedItinerary,
 } from "../../features/explore/exploreSlice";
 import { AppDispatch } from "../../store";
 import Search from "../../components/Search";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import MDEditor from "@uiw/react-md-editor";
-import Card from "../../components/Card";
-import PostHeader from "../../components/PostHeader";
-import { useGetProfileQuery } from "../../features/profile/profileSlice";
-import Itinerary from "../../components/Itinerary";
 import LoadingCard from "../../components/LoadingCard";
-import { getRandomElements } from "../../lib/getRandomElements";
 import { postsPlaceholder } from "../../assets";
 import Itineraries from "../../components/Itineraries";
+import EditItineraryPopup from "../../components/EditItineraryPopup";
 
 const activityPlaceHolder = [
   { name: "Activity One", stars: 4, price: "$$" },
@@ -61,6 +52,7 @@ const Explore = () => {
 
   const dispatch = useDispatch<AppDispatch>();
   const [selectedCity, setSelectedCity] = useState();
+  const [isOpenPopup, setIsOpenPopup] = useState(false);
   let timeout: NodeJS.Timeout;
 
   const suggestionsForTours = useSelector(selectSuggestionsForTours);
@@ -68,6 +60,7 @@ const Explore = () => {
     selectSuggestionsForItineraries
   );
   const itineraries = useSelector(selectItineraries);
+  const generatedItinerary = useSelector(selectGeneratedItinerary);
   const activities = useSelector(selectActivities);
   const generateStatus = useSelector(selectGenerateStatus);
 
@@ -95,6 +88,7 @@ const Explore = () => {
         longitude: city.geoCode.longitude,
       })
     );
+    setIsOpenPopup(true);
   };
 
   const handleOnCityForTourSearchChange = (
@@ -188,10 +182,14 @@ const Explore = () => {
     </div>
   ));
 
+  const handlePopup = () => {
+    setIsOpenPopup(false);
+  };
+
   useEffect(() => {
     dispatch(getItineraries());
   }, []);
-
+  console.log(generatedItinerary);
   return (
     <>
       <PageTitle title="Explore" />
@@ -206,7 +204,15 @@ const Explore = () => {
         searched={suggestionForItineraries}
         handleOnSearchChange={handleOnCityForItinerariesSearchChange}
       />
-      {generateStatus == "fulfilled" && (
+      {generateStatus == "fulfilled" ? (
+        generatedItinerary !== null &&
+        isOpenPopup && (
+          <EditItineraryPopup
+            handlePopup={handlePopup}
+            itinerary={generatedItinerary}
+          />
+        )
+      ) : (
         <LoadingCard>
           Generating itinerary, it can takes more then 30 second...
         </LoadingCard>

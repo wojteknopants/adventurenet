@@ -1,13 +1,9 @@
 import { useEffect, useState } from "react";
 import AddPostForm from "../../../components/AddPostForm";
-import AvatarProfile from "./AvatarProfile";
-import Card from "../../../components/Card";
-import Cover from "./Cover";
 import {
   useGetProfileQuery,
   useUpdateProfileMutation,
 } from "../../../features/profile/profileSlice";
-import { useDispatch, useSelector } from "react-redux";
 import ProfilePosts from "../../../components/ProfilePosts";
 import { useParams } from "react-router-dom";
 import PageTitle from "../../../components/PageTitle";

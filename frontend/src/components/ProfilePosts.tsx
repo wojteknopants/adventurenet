@@ -1,12 +1,5 @@
-import React from "react";
-import PostProfile from "../_drafts/PostProfile";
-import {
-  selectProfilePostIds,
-  useGetProfilePostsByIdQuery,
-} from "../features/posts/postsSlice";
-import { useSelector } from "react-redux";
+import { useGetProfilePostsByIdQuery } from "../features/posts/postsSlice";
 import LoadingCard from "./LoadingCard";
-import ProfilePost from "./NotOptimizedPost";
 import NotOptimizedPost from "./NotOptimizedPost";
 
 const ProfilePosts = ({ uid }: any) => {

@@ -38,20 +38,27 @@ export const bookmarksApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
       invalidatesTags: (result, error, arg) => [
-        { type: "Post", id: "LIST" },
-        { type: "ProfilePost", id: "LIST" },
+        { type: "Post", id: arg.content_type === "post" ? arg.id : "LIST" },
+        {
+          type: "ProfilePost",
+          id: arg.content_type === "post" ? arg.id : "LIST",
+        },
         { type: "Bookmark", id: arg.id },
       ],
     }),
     deleteBookmark: builder.mutation({
-      query: ({ id }) => ({
-        url: `/saved-items/${id}/`,
+      query: (data) => ({
+        url: `/saved-items/`,
         method: "DELETE",
+        body: data,
       }),
       invalidatesTags: (result, error, arg) => {
         return [
-          { type: "Post", id: "LIST" },
-          { type: "ProfilePost", id: "LIST" },
+          { type: "Post", id: arg.content_type === "post" ? arg.id : "LIST" },
+          {
+            type: "ProfilePost",
+            id: arg.content_type === "post" ? arg.id : "LIST",
+          },
           { type: "Bookmark", id: arg.id },
         ];
       },

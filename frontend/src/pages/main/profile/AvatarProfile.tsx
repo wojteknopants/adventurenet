@@ -1,6 +1,5 @@
 import { ReactNode, useRef } from "react";
 import { iconPhoto } from "../../../assets";
-import React from "react";
 import { profilePlaceholder } from "../../../assets";
 
 interface Props {
@@ -16,7 +15,7 @@ const AvatarProfile = ({ size, photo, handleChangePhoto }: Props) => {
   }
 
   const hiddenFileInput = useRef<HTMLInputElement | null>(null);
-  const handleClick = (event: any) => {
+  const handleClick = () => {
     hiddenFileInput.current?.click();
   };
 

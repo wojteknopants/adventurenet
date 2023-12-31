@@ -1,6 +1,4 @@
-import React from "react";
 import Avatar from "./Avatar";
-import { IoIosHeartEmpty } from "react-icons/io";
 import PostLikeCounter from "./PostLikesCounter";
 import { useDispatch } from "react-redux";
 import {

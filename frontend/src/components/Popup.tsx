@@ -1,4 +1,3 @@
-import React from "react";
 import Blur from "./Blur";
 
 const Popup = ({ children }: any) => {

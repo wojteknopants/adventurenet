@@ -1,11 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Avatar from "./Avatar";
 import { Link } from "react-router-dom";
-import { FiEdit } from "react-icons/fi";
-import { IoMdClose } from "react-icons/io";
 import { BsThreeDots } from "react-icons/bs";
-import AddPostPopup from "./AddPostPopup";
-import AddPostForm from "./AddPostForm";
 import EditPostForm from "./EditPostForm";
 import { formatRelativeTime } from "../lib/formatRelativeTime";
 

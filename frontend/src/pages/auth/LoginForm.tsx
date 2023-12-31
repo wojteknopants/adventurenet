@@ -6,7 +6,6 @@ import {
   getStatus,
   checkIsAuthenticated,
   login,
-  loadUser,
 } from "../../features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../store";

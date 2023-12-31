@@ -1,10 +1,4 @@
-import React from "react";
-import {
-  selectBookmarksIds,
-  useGetBookmarksQuery,
-} from "../features/bookmarks/bookmarksSlice";
-import FeedPost from "./FeedPost";
-import { useSelector } from "react-redux";
+import { useGetBookmarksQuery } from "../features/bookmarks/bookmarksSlice";
 import LoadingCard from "./LoadingCard";
 import NotOptimizedPost from "./NotOptimizedPost";
 import Itinerary from "./Itinerary";

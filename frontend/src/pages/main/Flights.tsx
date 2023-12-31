@@ -12,7 +12,6 @@ import {
   searchedCitiesForFlights,
   selectCity,
 } from "../../features/explore/flightsSlice";
-import Card from "../../components/Card";
 import FlightsPopup from "../../components/FlightsPopup";
 
 interface FlightCountry {

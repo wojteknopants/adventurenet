@@ -1,10 +1,7 @@
 import Card from "./Card";
 import React, { useState } from "react";
-import { formatDistanceToNow } from "date-fns";
-import { parseISO } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  selectPostById,
   useAddPostLikeMutation,
   useDeletePostLikeMutation,
   useDeletePostMutation,
@@ -109,7 +106,10 @@ const Post = ({ postData, postId, refetch }: PostProps) => {
       }
     } else {
       try {
-        await deleteBookmark({ id: post.id }).unwrap();
+        await deleteBookmark({
+          object_id: post.id,
+          content_type: "post",
+        }).unwrap();
       } catch (err) {
         console.error("Failed to delete the item", err);
       }

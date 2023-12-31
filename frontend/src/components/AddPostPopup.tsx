@@ -1,9 +1,5 @@
 import React, { useRef, useState } from "react";
-import Blur from "./Blur";
 import Avatar from "./Avatar";
-import { fetchTags, selectTagSuggestions } from "../features/posts/tagsSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "../store";
 import Search from "./Search";
 import Tags from "./Tags";
 import Popup from "./Popup";

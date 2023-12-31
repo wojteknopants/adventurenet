@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import { profilePlaceholder } from "../assets";
 
 const Avatar = ({ size, user_pfp }: any) => {

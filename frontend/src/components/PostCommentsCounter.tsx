@@ -1,5 +1,3 @@
-import React from "react";
-
 interface PostFooterProps {
   comments_count: number;
   onClickShowComments: () => void;

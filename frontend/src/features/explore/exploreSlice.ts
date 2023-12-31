@@ -134,8 +134,9 @@ export const generateItineraries = createAsyncThunk(
 
 export const saveItinerary = createAsyncThunk(
   "explore/saveItinerary",
-  async (_, { getState }) => {
+  async ({ itinerary }: { itinerary: string }, { getState, dispatch }) => {
     try {
+      console.log("Save itineraries!");
       const url = `/itineraries/`;
 
       const config = {
@@ -147,7 +148,7 @@ export const saveItinerary = createAsyncThunk(
       };
 
       const body = {
-        content: { ...(getState() as RootState).explore.generatedItinerary },
+        content: itinerary,
       };
 
       const res = await axios.post(
@@ -155,6 +156,8 @@ export const saveItinerary = createAsyncThunk(
         body,
         config
       );
+
+      dispatch(getItineraries);
       console.log(res.data);
     } catch (error) {
       console.log(error);
@@ -166,6 +169,7 @@ export const getItineraries = createAsyncThunk(
   "explore/getItineraries",
   async () => {
     try {
+      console.log("Get itineraries!");
       const url = `/itineraries/`;
 
       const config = {
@@ -183,7 +187,9 @@ export const getItineraries = createAsyncThunk(
 
       console.log(res.data);
       if (res.data) {
-        return res.data;
+        const reversRes = res.data.slice().reverse();
+        console.log("REVERSED", reversRes);
+        return reversRes;
       }
     } catch (error) {
       console.log(error);
@@ -273,7 +279,7 @@ const exploreSlice = createSlice({
     });
     builder.addCase(saveItinerary.fulfilled, (state, action) => {
       state.status = "fulfilled";
-      // state.itineraries = action.payload;
+      state.generatedItinerary = null;
     });
     builder.addCase(saveItinerary.rejected, (state, action) => {
       state.status = "rejected";
@@ -303,6 +309,13 @@ export const selectItineraries = (state: RootState) => {
     return state.explore.itineraries;
   }
   return [];
+};
+
+export const selectGeneratedItinerary = (state: RootState) => {
+  if (state.explore && state.explore.generatedItinerary) {
+    return state.explore.generatedItinerary;
+  }
+  return null;
 };
 
 export const selectGenerateStatus = (state: RootState) => {
