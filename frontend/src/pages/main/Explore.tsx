@@ -23,28 +23,12 @@ import LoadingCard from "../../components/LoadingCard";
 import { postsPlaceholder } from "../../assets";
 import Itineraries from "../../components/Itineraries";
 import EditItineraryPopup from "../../components/EditItineraryPopup";
+import DropdownMenu from "../../components/DropdownMenu";
 
 const activityPlaceHolder = [
-  { name: "Activity One", stars: 4, price: "$$" },
-  { name: "Activity Two", stars: 3, price: "$$$" },
-  { name: "Activity Three", stars: 2, price: "$$$" },
-  { name: "Activity Four", stars: 5, price: "$" },
-  { name: "Activity Five", stars: 3, price: "$$" },
-  { name: "Activity One", stars: 4, price: "$$" },
-  { name: "Activity Two", stars: 3, price: "$$$" },
-  { name: "Activity Three", stars: 2, price: "$$$" },
-  { name: "Activity Four", stars: 5, price: "$" },
-  { name: "Activity Five", stars: 3, price: "$$" },
-  { name: "Activity One", stars: 4, price: "$$" },
-  { name: "Activity Two", stars: 3, price: "$$$" },
-  { name: "Activity Three", stars: 2, price: "$$$" },
-  { name: "Activity Four", stars: 5, price: "$" },
-  { name: "Activity Five", stars: 3, price: "$$" },
-  { name: "Activity One", stars: 4, price: "$$" },
-  { name: "Activity Two", stars: 3, price: "$$$" },
-  { name: "Activity Three", stars: 2, price: "$$$" },
-  { name: "Activity Four", stars: 5, price: "$" },
-  { name: "Activity Five", stars: 3, price: "$$" },
+  { name: "Nothing found" },
+  { name: "Nothing found" },
+  { name: "Nothing found" },
 ];
 
 const Explore = () => {
@@ -52,7 +36,12 @@ const Explore = () => {
 
   const dispatch = useDispatch<AppDispatch>();
   const [selectedCity, setSelectedCity] = useState();
+  const [intensiveness, setIntensiveness] = useState();
+  const [amountOfDays, setAmountOfDays] = useState();
   const [isOpenPopup, setIsOpenPopup] = useState(false);
+  const [isIntensivenessDropdownOpen, setIsIntensivenessDropdownOpen] =
+    useState(false);
+  const [isAmountOfDaysOpen, setIsAmountOfDaysOpen] = useState(false);
   let timeout: NodeJS.Timeout;
 
   const suggestionsForTours = useSelector(selectSuggestionsForTours);
@@ -86,6 +75,8 @@ const Explore = () => {
       generateItineraries({
         latitude: city.geoCode.latitude,
         longitude: city.geoCode.longitude,
+        amountOfDays: amountOfDays || null,
+        intensiveness: intensiveness || null,
       })
     );
     setIsOpenPopup(true);
@@ -145,42 +136,54 @@ const Explore = () => {
     }
   );
 
-  const activitiesForSlider = activities.slice(0, 20).map((activity: any) => (
-    <div
-      key={activity.id}
-      className="flex flex-col gap-2 snap-start mr-4 min-w-[300px] max-h-[350px] h-fit rounded-xl bg-white overflow-hidden"
-      ref={cardRef}
-    >
-      <img
-        className="h-1/3 aspect-video w-full"
-        src={activity.pictures[0] || postsPlaceholder}
-        alt={"Image activity"}
-        loading="lazy"
-      />
-      <div className="p-4 flex flex-col gap-2 text-mainGray ">
-        <div className="truncate text-lg">{activity.name}</div>
-        <div className="truncate text-sm">
-          Minimum duration: {activity.minimumDuration}
-        </div>
-        <div className="truncate text-sm flex justify-between">
-          <div className="flex gap-1">
-            <div className="">Price:</div>
-            <div className="text-mainBlue">
-              {activity.price.amount} {activity.price.currencyCode}
+  const activitiesForSlider =
+    activities?.length !== 0
+      ? activities.slice(0, 20).map((activity: any) => (
+          <div
+            key={activity.id}
+            className="flex flex-col gap-2 snap-start mr-4 min-w-[300px] max-h-[350px] h-fit rounded-xl bg-white overflow-hidden"
+            ref={cardRef}
+          >
+            <img
+              className="h-1/3 aspect-video w-full"
+              src={activity.pictures[0] || postsPlaceholder}
+              alt={"Image activity"}
+              loading="lazy"
+            />
+            <div className="p-4 flex flex-col gap-2 text-mainGray ">
+              <div className="truncate text-lg">{activity.name}</div>
+              <div className="truncate text-sm">
+                Minimum duration: {activity.minimumDuration}
+              </div>
+              <div className="truncate text-sm flex justify-between">
+                <div className="flex gap-1">
+                  <div className="">Price:</div>
+                  <div className="text-mainBlue">
+                    {activity.price.amount} {activity.price.currencyCode}
+                  </div>
+                </div>
+                {activity.rating && (
+                  <div className="truncate text-sm flex gap-1">
+                    Rating:{" "}
+                    <div className="text-mainBlue">{activity.rating}</div>
+                  </div>
+                )}
+              </div>
+              <button className="shadow-md py-1 shadow-blue-400/50 text-white bg-blue-400 hover:bg-blue-400/90 rounded-md">
+                <a href={activity.bookingLink}>More details</a>
+              </button>
             </div>
           </div>
-          {activity.rating && (
-            <div className="truncate text-sm flex gap-1">
-              Rating: <div className="text-mainBlue">{activity.rating}</div>
-            </div>
-          )}
-        </div>
-        <button className="shadow-md py-1 shadow-blue-400/50 text-white bg-blue-400 hover:bg-blue-400/90 rounded-md">
-          <a href={activity.bookingLink}>More details</a>
-        </button>
-      </div>
-    </div>
-  ));
+        ))
+      : activityPlaceHolder.map((activity: any, index: number) => (
+          <div
+            key={index}
+            ref={cardRef}
+            className="text-mainGray items-center justify-center flex flex-col gap-2 snap-start mr-4 min-w-[300px] min-h-[350px] rounded-xl bg-white overflow-hidden"
+          >
+            {activity.name}
+          </div>
+        ));
 
   const handlePopup = () => {
     setIsOpenPopup(false);
@@ -190,6 +193,7 @@ const Explore = () => {
     dispatch(getItineraries());
   }, []);
   console.log(generatedItinerary);
+
   return (
     <>
       <PageTitle title="Explore" />
@@ -199,11 +203,27 @@ const Explore = () => {
         handleOnSearchChange={handleOnCityForTourSearchChange}
       />
       <Slider content={activitiesForSlider} />
-      <Search
-        placeholder={"Type city you want to generate itineraries..."}
-        searched={suggestionForItineraries}
-        handleOnSearchChange={handleOnCityForItinerariesSearchChange}
-      />
+      <div className="flex gap-2">
+        <Search
+          placeholder={"Type city you want to generate itineraries..."}
+          searched={suggestionForItineraries}
+          handleOnSearchChange={handleOnCityForItinerariesSearchChange}
+        />
+        <DropdownMenu
+          handleDropdown={() => setIsAmountOfDaysOpen((prev) => !prev)}
+          isOpen={isAmountOfDaysOpen}
+          placeHolder={amountOfDays || "Days"}
+          setValue={setAmountOfDays}
+          dropDownContent={[1, 2, 3, 4]}
+        />
+        <DropdownMenu
+          handleDropdown={() => setIsIntensivenessDropdownOpen((prev) => !prev)}
+          isOpen={isIntensivenessDropdownOpen}
+          placeHolder={intensiveness || "Intens"}
+          setValue={setIntensiveness}
+          dropDownContent={["Easy", "Hard"]}
+        />
+      </div>
       {generateStatus == "fulfilled" ? (
         generatedItinerary !== null &&
         isOpenPopup && (

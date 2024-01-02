@@ -83,15 +83,25 @@ export const getFlightsSearchSuggestions = createAsyncThunk(
 
 export const getFlights = createAsyncThunk(
   "flights/getFlights",
-  async ({ entityId }: { entityId: string }, { getState }) => {
+  async (
+    {
+      entityId,
+      year,
+      month,
+    }: { entityId: string; year?: number | null; month?: number | null },
+    { getState }
+  ) => {
     try {
       const flightCultureData = {
         ...(getState() as RootState).flights.flightCultureData,
       };
       console.log(flightCultureData);
+
+      const currentDate = new Date();
+
       const originPlace = entityId;
-      const year = 2023; // hardcoded for now
-      const month = 12; // hardcoded for now
+      const currentYear = currentDate.getFullYear();
+      const currentMonth = currentDate.getMonth() + 1;
 
       const url = `/flight-offers/`;
 
@@ -103,8 +113,8 @@ export const getFlights = createAsyncThunk(
         },
         params: {
           originPlace,
-          year,
-          month,
+          year: year || currentYear,
+          month: month || currentMonth,
           locale: flightCultureData.locale, // From the Culture API
           market: flightCultureData.market,
           currency: flightCultureData.currency,
@@ -186,7 +196,7 @@ export const countriesToFlight = (state: RootState) => {
   if (state.flights && state.flights.countriesToFlight) {
     return state.flights.countriesToFlight;
   }
-  return [];
+  return null;
 };
 
 export const getCultureData = (state: RootState) => {

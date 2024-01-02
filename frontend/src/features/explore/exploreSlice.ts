@@ -95,7 +95,17 @@ export const getActivities = createAsyncThunk(
 
 export const generateItineraries = createAsyncThunk(
   "explore/generateItineraries",
-  async ({ latitude, longitude }: { latitude: string; longitude: string }) => {
+  async ({
+    latitude,
+    longitude,
+    amountOfDays,
+    intensiveness,
+  }: {
+    latitude: string;
+    longitude: string;
+    amountOfDays: number | null;
+    intensiveness: "hard" | "easy" | null;
+  }) => {
     try {
       const url = `/generate-itinerary/`;
 
@@ -105,15 +115,13 @@ export const generateItineraries = createAsyncThunk(
           Authorization: `JWT ${localStorage.getItem("access")}`,
           Accept: "application/json",
         },
-
-        params: {},
       };
 
       const body = {
         latitude: `${latitude}`,
         longitude: `${longitude}`,
-        number_of_days: 1,
-        intensiveness: "easy",
+        number_of_days: amountOfDays || 1,
+        intensiveness: intensiveness?.toLowerCase() || "easy",
       };
 
       const res = await axios.post(

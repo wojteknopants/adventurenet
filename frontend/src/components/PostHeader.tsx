@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { BsThreeDots } from "react-icons/bs";
 import EditPostForm from "./EditPostForm";
 import { formatRelativeTime } from "../lib/formatRelativeTime";
+import { useGetProfileQuery } from "../features/profile/profileSlice";
 
 interface PostHeaderProps {
   user: any;
@@ -11,7 +12,6 @@ interface PostHeaderProps {
   user_pfp: any;
   editData?: { postId: any; image: any; content: any; tags: any };
   onDeletePostClicked: () => void;
-  // formatRelativeTime: (timestamp: string) => string;
 }
 
 const PostHeader = ({
@@ -25,6 +25,8 @@ const PostHeader = ({
   const [isEdited, setIsEdited] = useState(false);
 
   const handleOnEditClick = () => setIsEdited((prev) => !prev);
+
+  const { data: profile } = useGetProfileQuery("me");
 
   return (
     <div className="flex gap-3">
@@ -40,6 +42,7 @@ const PostHeader = ({
         </p>
       </div>
       {editData &&
+        profile.user === user &&
         (isOpen ? (
           <div className="flex gap-4 text-sm">
             <button

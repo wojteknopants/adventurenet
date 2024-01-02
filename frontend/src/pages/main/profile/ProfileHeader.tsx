@@ -1,4 +1,3 @@
-import React from "react";
 import Card from "../../../components/Card";
 import Cover from "./Cover";
 import AvatarProfile from "./AvatarProfile";
@@ -50,7 +49,7 @@ const ProfileHeader = ({ ...props }: ProfileHeaderProps) => {
               </button>
             </div>
             <div>
-              <button className="flex gap-1 px-4 py-1 items-center">
+              {/* <button className="flex gap-1 px-4 py-1 items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -66,7 +65,7 @@ const ProfileHeader = ({ ...props }: ProfileHeaderProps) => {
                   />
                 </svg>
                 About me
-              </button>
+              </button> */}
             </div>
           </div>
         </div>

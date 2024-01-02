@@ -17,7 +17,7 @@ export default function Search({
     <div className="flex flex-col grow gap-3">
       <div
         className={`
-          ${offShadows ? "shadow-sm" : "shadow-md"} grow rounded-xl relative`}
+          ${offShadows ? "shadow-sm" : "shadow-md"}  rounded-xl relative`}
       >
         <input
           onChange={handleOnSearchChange}

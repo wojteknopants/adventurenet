@@ -9,17 +9,14 @@ import AuthLayout from "./pages/auth/AuthLayout";
 import LoginForm from "./pages/auth/LoginForm";
 import RegistrationForm from "./pages/auth/RegistrationForm";
 import ActivateUser from "./pages/auth/ActivateForm";
-import NotFound from "./pages/NotFound";
 
-import { Provider, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Layout from "./pages/_hocs/Layout";
 import Logout from "./pages/main/Logout";
 import Notifications from "./pages/main/Notifications";
 import Bookmarks from "./pages/main/Bookmarks";
 import { getIsAuthenticated } from "./features/auth/authSlice";
 import Flights from "./pages/main/Flights";
-
-// store.dispatch(postsApiSlice.endpoints.getPosts.initiate(undefined));
 
 const App = () => {
   const isAuthenticated = useSelector(getIsAuthenticated);

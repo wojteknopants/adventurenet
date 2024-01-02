@@ -31,6 +31,7 @@ const Profile = () => {
 
   const { data, isLoading, isSuccess, isError, error, refetch } =
     useGetProfileQuery(uid);
+  const { data: myProfile } = useGetProfileQuery("me");
   if (uid !== undefined) {
     localStorage.setItem("uid", uid);
   }
@@ -86,16 +87,15 @@ const Profile = () => {
 
     console.log(profile);
   }, [isLoading, data]);
-
   return (
     <>
-      <PageTitle title="My profile" />
+      <PageTitle title="Profile" />
       <ProfileHeader
         profile={profile}
         handleChangeAvatar={handleChangeAvatar}
         handleChangeCover={handleChangeCover}
       />
-      <AddPostForm />
+      {myProfile?.user === data?.user && <AddPostForm />}
       <ProfilePosts uid={uid} />
     </>
   );

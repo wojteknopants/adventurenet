@@ -1,6 +1,5 @@
 import PostLikesCounter from "./PostLikesCounter";
 import PostCommentsCounter from "./PostCommentsCounter";
-import PostShareCounter from "./PostShareCounter";
 import PostBookmark from "./PostBookmark";
 
 interface PostFooterProps {
@@ -39,7 +38,7 @@ const PostFooter = ({
           comments_count={comments_count}
         />
       )}
-      <PostShareCounter share_count={10} />
+      {/* <PostShareCounter share_count={10} /> */}
       <PostBookmark is_saved={is_saved} handleSaveClick={handleSaveClick} />
     </div>
   );

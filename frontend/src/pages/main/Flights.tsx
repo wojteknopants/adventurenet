@@ -13,6 +13,7 @@ import {
   selectCity,
 } from "../../features/explore/flightsSlice";
 import FlightsPopup from "../../components/FlightsPopup";
+import DropdownMenu from "../../components/DropdownMenu";
 
 interface FlightCountry {
   country: any;
@@ -25,6 +26,10 @@ const Flights = () => {
   const [selectedFlightCountry, setSelectedFlightCountry] =
     useState<FlightCountry>();
   const [showFlights, setShowFlights] = useState(false);
+  const [isMonthDropDownOpen, setIsMonthDropDownOpen] = useState(false);
+  const [isYearDropDownOpen, setIsYearDropDownOpen] = useState(false);
+  const [year, setYear] = useState(null);
+  const [month, setMonth] = useState(null);
   let timeout: NodeJS.Timeout;
 
   const citiesForFlights = useSelector(searchedCitiesForFlights);
@@ -36,7 +41,7 @@ const Flights = () => {
     setSelectedCity(city);
     dispatch(selectCity(city));
 
-    dispatch(getFlights({ entityId: city.entityId }));
+    dispatch(getFlights({ entityId: city.entityId, month: month, year: year }));
   };
 
   const handleOnCardClick = (offers: any, country: any) => {
@@ -77,7 +82,7 @@ const Flights = () => {
   );
   console.log(countriesOffers);
   const flightOffers =
-    countriesOffers.length !== 0 ? (
+    countriesOffers && Object.keys(countriesOffers).length !== 0 ? (
       Object.keys(countriesOffers).map((country) => (
         <div
           key={country}
@@ -99,23 +104,50 @@ const Flights = () => {
       ))
     ) : (
       <div className="flex absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-mainGray/50 text-xl font-bold m-auto">
-        No flights
+        Not found
       </div>
     );
 
   const handleClosePopup = () => {
     setShowFlights(false);
   };
+
+  const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
+  const currentYear = new Date().getFullYear();
+
+  const years = [currentYear, currentYear + 1];
+
   return (
     <>
       <PageTitle title="Flights" />
-      <Search
-        placeholder={"Type from where you what to flight ..."}
-        searched={searchedFlightsCities}
-        handleOnSearchChange={handleOnFlightsSearchChange}
-      />
+      <div className="flex shadow-none gap-2">
+        <Search
+          placeholder={"Type from where you what to flight ..."}
+          searched={searchedFlightsCities}
+          handleOnSearchChange={handleOnFlightsSearchChange}
+        />
+        <DropdownMenu
+          handleDropdown={() => setIsMonthDropDownOpen((prev) => !prev)}
+          isOpen={isMonthDropDownOpen}
+          placeHolder={month || "MM"}
+          setValue={setMonth}
+          dropDownContent={months}
+        />
+        <DropdownMenu
+          handleDropdown={() => setIsYearDropDownOpen((prev) => !prev)}
+          isOpen={isYearDropDownOpen}
+          placeHolder={year || "YY"}
+          setValue={setYear}
+          dropDownContent={years}
+        />
+      </div>
       <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3 lg:gap-5">
-        {flightOffers}
+        {flightOffers || (
+          <div className="flex absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-mainGray/50 text-xl font-bold m-auto">
+            No flights
+          </div>
+        )}
         {showFlights && (
           <FlightsPopup
             selectedFlightCountry={selectedFlightCountry}

@@ -61,7 +61,7 @@ const Post = ({ postData, postId, refetch }: PostProps) => {
   const [deleteBookmark] = useDeleteBookmarkMutation();
 
   const [isLiked, setIsLiked] = useState<boolean>(false);
-  const [IsSaved, setIsSaved] = useState<boolean>(false);
+  const [isSaved, setIsSaved] = useState<boolean>(false);
   const [addCommentInput, setAddCommentInput] = useState<string>("");
 
   const onDeletePostClicked = async () => {
