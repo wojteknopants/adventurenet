@@ -5,17 +5,20 @@ import axios from "axios";
 
 // import jwtDecode from "jwt-decode";
 // import moment from 'moment';
-import { Link } from "react-router-dom/";
+import { Link, useParams } from "react-router-dom/";
+
 
 const Message = () => {
 
     // Define base api url
-    const baseURL = 'http://127.0.0.1:8000/api'
+    const baseURL = 'http://localhost:8000/api'
 
     // const baseURL = `${import.meta.env.VITE_REACT_APP_API_URL}/`
 
     // Create new states
     const [messages, setMessage] = useState([])
+
+    const { userId } = useParams();
 
     // const axios = useAxios()
 
@@ -107,22 +110,23 @@ const Message = () => {
                     {messages.map((message) =>
                         <Link to={'/inbox/' + message.sender} className="list-group-item list-group-item-action border-0">
                             <div className="badge bg-success float-right text-white">
-                                {moment.utc(message.date).local().startOf('seconds').fromNow()}
+                                {/* {moment.utc(message.date).local().startOf('seconds').fromNow()} */}
+                                12:53
                             </div>
                             <div className="d-flex align-items-start">
-                                {message.sender.id !== user_id &&
-                                    <img src={message.receiver_profile.image} className="rounded-circle mr-1" style={{objectFit:"cover"}} alt="Vanessa Tucker" width={40} height={40}/>
+                                {message.sender.id !== userId &&
+                                    <img src={message.reciever_profile.profile_picture} className="rounded-circle mr-1" style={{objectFit:"cover"}} alt="Vanessa Tucker" width={40} height={40}/>
                                 }
-                                {message.sender.id === user_id &&
-                                    <img src={message.sender_profile.image} className="rounded-circle mr-1" style={{objectFit:"cover"}} alt="Vanessa Tucker" width={40} height={40}/>
+                                {message.sender.id === userId &&
+                                    <img src={message.sender_profile.profile_picture} className="rounded-circle mr-1" style={{objectFit:"cover"}} alt="Vanessa Tucker" width={40} height={40}/>
                                 }
 
                             <div className="flex-grow-1 ml-3">
-                                {message.sender.id !== user_id &&
-                                    (message.receiver_profile.full_name)
+                                {message.sender.id !== userId &&
+                                    (message.reciever_profile.name)
                                 }
-                                {message.sender.id === user_id &&
-                                    (message.sender_profile.full_name)
+                                {message.sender.id === userId &&
+                                    (message.sender_profile.name)
                                 }
                                 <div className="small">
                                     {message.message}
@@ -208,7 +212,7 @@ const Message = () => {
                     </div>
                     <div className="position-relative">
                         <div className="chat-messages p-4">
-                        <div className="chat-message-right pb-4">
+                        {/* <div className="chat-message-right pb-4">
                             <div>
                             <img
                                 src="https://bootdey.com/img/Content/avatar/avatar1.png"
@@ -436,8 +440,8 @@ const Message = () => {
                             <div className="font-weight-bold mb-1">Sharon Lessman</div>
                             Sit meis deleniti eu, pri vidit meliore docendi ut, an eum
                             erat animal commodo.
-                            </div>
-                        </div>
+                            </div> */}
+                        {/* </div> */}
                         </div>
                     </div>
                     <div className="flex-grow-0 py-3 px-4 border-top">

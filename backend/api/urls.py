@@ -62,7 +62,7 @@ urlpatterns = [
     path('profiles/<str:user__pk>/itineraries/', UserItinerariesListView.as_view(), name='user_itineraries_list'),
 
     #chat
-    path('my-messages/<user_id>/',MyInboxView.as_view()),
+    path('my-messages/<str:user__pk>/',MyInboxView.as_view()),
     path('get-messages/<sender_id>/<reciever_id>/',GetMessagesView.as_view()),
     path('send-messages/',SendMessageView.as_view()),
     

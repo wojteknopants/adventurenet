@@ -40,9 +40,7 @@ const Messages = () => {
                     /> 
                 </div>
 
-                {/* END OF SEARCH BOX SECTION */}
-
-                {/* USER 1*/}
+                
                 <div className="relative rounded-lg px-2 py-2 flex items-center space-x-3 hover:border-gray-400 focus-within:ring-2 mb-3 hover:bg-gray-200">
                   <div className="flex-shrink-0">
                     <img
@@ -72,7 +70,7 @@ const Messages = () => {
                   </div>
                 </div>
 
-                {/* USER 2*/}
+                
                 <div className="relative rounded-lg px-2 py-2 flex items-center space-x-3 hover:border-gray-400 focus-within:ring-2 mb-3 hover:bg-gray-200">
                   <div className="flex-shrink-0">
                     <img
@@ -105,7 +103,7 @@ const Messages = () => {
             </div>
           </div>
         </div>
-        {/* MIDDLE SECTION START */}
+        
 
         <div className="flex-1 p:2 sm:pb-6 justify-between flex flex-col h-screen hidden xl:flex">
           <div className="flex sm:items-center justify-between py-3 border-b border-gray-200 p-3">
@@ -126,11 +124,11 @@ const Messages = () => {
 
           </div>
 
-          {/* MESSAGES SECTION START*/}
+          
 
           <div id="messages" className="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
             
-            {/* FIRST MESSAGE */}
+            
 
             <div className="chat-message">
               <div className="flex items-end">
@@ -148,7 +146,7 @@ const Messages = () => {
               </div>
             </div>
 
-            {/* SECOND MESSAGE */}
+            
 
             <div className="chat-message">
               <div className="flex items-end justify-end">
@@ -166,7 +164,7 @@ const Messages = () => {
               </div>
             </div>
 
-            {/* THIRD MESSAGE */}
+            
 
             <div className="chat-message">
               <div className="flex items-end">
@@ -184,7 +182,7 @@ const Messages = () => {
               </div>
             </div>
 
-            {/* FOURTH MESSAGE */}
+            
 
             <div className="chat-message">
               <div className="flex items-end">
@@ -202,7 +200,7 @@ const Messages = () => {
               </div>
             </div>
 
-            {/* FIFTH MESSAGE */}
+            
 
             <div className="chat-message">
               <div className="flex items-end">
@@ -223,7 +221,7 @@ const Messages = () => {
 
           </div>
 
-          {/* MESSAGES SECTION END*/}
+          
 
           <div className="border-t-2 border-gray-200 px-4 pt-4 mb-2 mb-16">
             <div className="relative flex">

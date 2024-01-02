@@ -8,13 +8,13 @@ import axios from "axios";
 import { useParams, Link, useHistory } from "react-router-dom/";
 // import Swal from "sweetalert2";
 
-function SearchUsers() {
+const SearchUsers = () => {
 
     // const axios = useAxios()
 
-    // const baseURL = 'http://127.0.0.1:8000/api'
+    const baseURL = 'http://localhost:8000/api'
 
-    const baseURL = `${import.meta.env.VITE_REACT_APP_API_URL}/`
+    // const baseURL = `${import.meta.env.VITE_REACT_APP_API_URL}/`
 
     let [newSearch, setNewSearch] = useState({search: ""})
     let [user, setUser] = useState([])
@@ -169,7 +169,7 @@ function SearchUsers() {
 
                                     <small><div className="badge bg-success float-right text-white"></div></small>
                                     <div className="d-flex align-items-start">
-                                    <img src={user.image} className="rounded-circle mr-1" alt="1" width={40} height={40}/>
+                                    <img src={user.profile_picture} className="rounded-circle mr-1" alt="1" width={40} height={40}/>
                                     
                                     <div className="flex-grow-1 ml-3">
                                         {user.full_name}  

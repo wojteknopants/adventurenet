@@ -7,7 +7,7 @@ import axios from "axios";
 // import moment from 'moment';
 import { useParams, Link, useHistory } from "react-router-dom";
 
-function MessageDetail() {
+const MessageDetail = () => {
 
     // const baseURL = 'http://127.0.0.1:8000/api'
     // const [message, setMessage] = useState([])
@@ -115,18 +115,20 @@ function MessageDetail() {
     //     }
     // }
 
-    // const baseURL = 'http://127.0.0.1:8000/api';
+    const baseURL = 'http://localhost:8000/api';
 
-    const baseURL = `${import.meta.env.VITE_REACT_APP_API_URL}/`
+    // const baseURL = `${import.meta.env.VITE_REACT_APP_API_URL}/`
 
-    const [messages, setMessages] = useState([]);
-    const [message, setMessage] = useState([]);
+    const [messages, setMessages] = useState<any[]>([]);
+    const [message, setMessage] = useState<any[]>([]);
 
     let [newMessage, setNewMessage] = useState({ message: '' });
     let [newSearch, setNewSearch] = useState({ search: '' });
 
-    const { id: userId } = useParams();
+    const { id } = useParams();
     const history = useHistory();
+
+    const { userId } = useParams();
 
     useEffect(() => {
         const fetchMessages = async () => {
@@ -177,7 +179,7 @@ function MessageDetail() {
                 };
 
                 const res = await axios.get(
-                    `${baseURL}/get-messages/${user_id}/${id.id}/`,
+                    `${baseURL}/get-messages/me/${id.id}/`,
                     config    
                 );
                 setMessage(res.data);
@@ -204,7 +206,7 @@ function MessageDetail() {
         const formData = new FormData();
         formData.append('user', userId);
         formData.append('sender', userId);
-        formData.append('receiver', id.id);
+        formData.append('reciever', id.id);
         formData.append('message', newMessage.message);
         formData.append('is_read', false);
 
@@ -290,24 +292,24 @@ function MessageDetail() {
                     </div>
                     {messages.map((message) =>
                         <Link 
-                            to={'/inbox/' + (message.sender === user_id ? message.receiver : message.sender)} className="list-group-item list-group-item-action border-0">
+                            to={'/inbox/' + (message.sender === userId ? message.reciever : message.sender)} className="list-group-item list-group-item-action border-0">
                             <div className="badge bg-success float-right text-white">
-                                {moment.utc(message.date).local().startOf('seconds').fromNow()}
+                                15:55{/* {moment.utc(message.date).local().startOf('seconds').fromNow()} */}
                             </div>
                             <div className="d-flex align-items-start">
-                                {message.sender.id !== user_id &&
-                                    <img src={message.receiver_profile.image} className="rounded-circle mr-1" style={{objectFit:"cover"}} alt="Vanessa Tucker" width={40} height={40}/>
+                                {message.sender.id !== userId &&
+                                    <img src={message.reciever_profile.profile_picture} className="rounded-circle mr-1" style={{objectFit:"cover"}} alt="Vanessa Tucker" width={40} height={40}/>
                                 }
-                                {message.sender.id === user_id &&
-                                    <img src={message.sender_profile.image} className="rounded-circle mr-1" style={{objectFit:"cover"}} alt="Vanessa Tucker" width={40} height={40}/>
+                                {message.sender.id === userId &&
+                                    <img src={message.sender_profile.profile_picture} className="rounded-circle mr-1" style={{objectFit:"cover"}} alt="Vanessa Tucker" width={40} height={40}/>
                                 }
 
                             <div className="flex-grow-1 ml-3">
-                                {message.sender.id !== user_id &&
-                                    (message.receiver_profile.full_name)
+                                {message.sender.id !== userId &&
+                                    (message.reciever_profile.name)
                                 }
-                                {message.sender.id === user_id &&
-                                    (message.sender_profile.full_name)
+                                {message.sender.id === userId &&
+                                    (message.sender_profile.name)
                                 }
                                 <div className="small">
                                     {message.message}
@@ -395,35 +397,36 @@ function MessageDetail() {
                         <div className="chat-messages p-4">
                             {message.map((message, index) =>
                                 <>
-                                {message.sender === user_id &&
+                                {message.sender === userId &&
                                     <div className="chat-message-right pb-4">
                                         <div>
                                         <img
-                                            src={message.sender_profile.image}
+                                            src={message.sender_profile.profile_picture}
                                             className="rounded-circle mr-1"
                                             alt="Chris Wood"
                                             width={40}
                                             height={40}
                                         />
                                         <div className="text-muted small text-nowrap mt-2">
-                                        {moment.utc(message.date).local().startOf('seconds').fromNow()}
+                                        {/* {moment.utc(message.date).local().startOf('seconds').fromNow()} */}
+                                        14:34
                                         </div>
                                         </div>
                                         <div className="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
-                                        <div className="font-weight-bold mb-1">{message.sender_profile.full_name}</div>
+                                        <div className="font-weight-bold mb-1">{message.sender_profile.name}</div>
                                         {message.message}
                                         </div>
                                     </div>
                                 }
 
-                                {message.sender !== user_id &&
+                                {message.sender !== userId &&
                                     <div className="chat-message-left pb-4">
                                         <div>
-                                            <img src={message.sender_profile.image} className="rounded-circle mr-1" alt="Sharon Lessman" width={40} height={40} />
-                                            <div className="text-muted small text-nowrap mt-2">{moment.utc(message.date).local().startOf('seconds').fromNow()}</div>
+                                            <img src={message.sender_profile.profile_picture} className="rounded-circle mr-1" alt="Sharon Lessman" width={40} height={40} />
+                                            <div className="text-muted small text-nowrap mt-2">18:33{/* {moment.utc(message.date).local().startOf('seconds').fromNow()} */}</div>
                                         </div>
                                         <div className="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
-                                            <div className="font-weight-bold mb-1">{message.sender_profile.full_name}</div>
+                                            <div className="font-weight-bold mb-1">{message.sender_profile.name}</div>
                                             {message.message}
                                         </div>
                                     </div>

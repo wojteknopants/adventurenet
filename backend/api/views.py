@@ -567,9 +567,14 @@ class UserItinerariesListView(ListAPIView):
 class MyInboxView(ListAPIView):
     
     serializer_class = ChatMessageSerializer
+    permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
-        user_id = self.kwargs['user_id']
+        user_id = self.kwargs['user__pk']
+
+        if self.kwargs['user__pk'] == 'me':
+            user = self.request.user
+            user_id = user.pk
 
         messages = ChatMessage.objects.filter(
             id__in = Subquery(
@@ -577,7 +582,7 @@ class MyInboxView(ListAPIView):
                     Q(sender__reciever=user_id)|
                     Q(reciever__sender=user_id)
                 ).distinct().annotate(
-                    last_message = Subquery(
+                    last_msg = Subquery(
                         ChatMessage.objects.filter(
                             Q(sender=OuterRef('id'),reciever=user_id)|
                             Q(reciever=OuterRef('id'),sender = user_id)
@@ -592,6 +597,7 @@ class MyInboxView(ListAPIView):
     
 class GetMessagesView(ListAPIView):
     serializer_class = ChatMessageSerializer
+    permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
         sender_id = self.kwargs['sender_id']
@@ -605,6 +611,7 @@ class GetMessagesView(ListAPIView):
     
 class SendMessageView(CreateAPIView):
     serializer_class = ChatMessageSerializer
+    # permission_classes = [IsAuthenticated]
     
 class ProfileDetailsView(RetrieveUpdateAPIView):
     serializer_class = UserProfileSerializer
@@ -614,7 +621,7 @@ class ProfileDetailsView(RetrieveUpdateAPIView):
 class SearchUserView(ListAPIView):
     serializer_class = UserProfileSerializer
     queryset = UserProfile.objects.all()
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     
     def list(self, request, *args, **kwargs):
         username = self.kwargs['username']

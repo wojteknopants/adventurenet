@@ -31,11 +31,11 @@ export const navLinks = [
     title: "Notifications",
     icon: iconNotifications,
   },
-  {
-    id: "messages",
-    title: "Messages",
-    icon: iconMessages,
-  },
+  // {
+  //   id: "messages",
+  //   title: "Messages",
+  //   icon: iconMessages,
+  // },
   {
     id: "bookmarks",
     title: "Bookmarks",
@@ -56,4 +56,9 @@ export const navLinks = [
     title: "Logout",
     icon: iconLogout,
   },
+  // {
+  //   id: "inbox",
+  //   title: "Inbox",
+  //   icon: iconMessages,
+  // },
 ];
