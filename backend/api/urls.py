@@ -7,8 +7,8 @@ from .views import (LogoutView, LogoutAllView,
                     PostLikeView, CommentLikeView, PostLikesListView, CommentLikesListView,
                     UserImagesListView, FlightCultureDataAPIView, FlightSearchSuggestAPIView, FlightOffersAPIView, CitySearchAPIView, POISearchAPIView, ToursActivitiesSearchAPIView, GenerateItineraryView,
                     MapboxSuggestView, MapboxRetrieveView, ItineraryListCreateView, ItineraryRetrieveUpdateDestroyView, UserItinerariesListView,
-                    SavedItemCreateView,SavedItemCreateDeleteView, SavedItemDestroyView, UserSavedItemListView, AdventureListCreateView, AdventureRetrieveUpdateDestroyView, SpecificUserAdventureListView,
-                    AdventureJoinRequestCreateView, IncomingAdventureJoinRequestsListView, AdventureJoinRequestUpdateDestroyView, ThisAdventureJoinRequestsListView)
+                    SavedItemCreateView, SavedItemCreateDeleteView, SavedItemDestroyView, UserSavedItemListView, AdventureListCreateView, AdventureRetrieveUpdateDestroyView, SpecificUserAdventureListView,
+                    AdventureJoinRequestCreateView, IncomingAdventureJoinRequestsListView, AdventureJoinRequestUpdateDestroyView, ThisAdventureJoinRequestsListView, MyInboxView, GetMessagesView, SendMessageView, ProfileDetailsView, SearchUserView)
 
 urlpatterns = [
     #logout - blacklist JWT refresh token
@@ -61,6 +61,14 @@ urlpatterns = [
     path('itineraries/<int:pk>/', ItineraryRetrieveUpdateDestroyView.as_view(), name='itinerary_retrieve_update_delete'),
     path('itineraries/', ItineraryListCreateView.as_view(), name='itineraries_list_create'), 
     path('profiles/<str:user__pk>/itineraries/', UserItinerariesListView.as_view(), name='user_itineraries_list'),
+
+    #chat
+    path('my-messages/<str:user__pk>/',MyInboxView.as_view()),
+    path('get-messages/<sender_id>/<reciever_id>/',GetMessagesView.as_view()),
+    path('send-messages/',SendMessageView.as_view()),
+    
+    path('profile/<int:pk>/',ProfileDetailsView.as_view()),
+    path('search/<username>/',SearchUserView.as_view()),
 
     #saved items (bookmarks) 
     path('profiles/<str:user__pk>/saved-items/', UserSavedItemListView.as_view(), name='saved-item-list'),

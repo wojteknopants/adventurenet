@@ -1,7 +1,7 @@
 from djoser.serializers import UserCreateSerializer
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from .models import UserProfile, Post, Comment, PostLike, CommentLike, Image, Tag, Itinerary, SavedItem, Adventure, AdventureJoinRequest
+from .models import UserProfile, Post, Comment, PostLike, CommentLike, Image, Tag, Itinerary, SavedItem, Adventure, AdventureJoinRequest, ChatMessage
 from django.contrib.contenttypes.models import ContentType
 from datetime import date
 from django.core.exceptions import ObjectDoesNotExist
@@ -215,8 +215,7 @@ class SavedItemSerializer(serializers.ModelSerializer):
         elif isinstance(obj.content_object, Itinerary):
             return ItinerarySerializer(obj.content_object, context=self.context).data
         return None
-
-
+    
     def create(self, validated_data):
         user = self.context['request'].user
         content_type = validated_data.pop('content_type')
@@ -330,3 +329,14 @@ class AdventureJoinRequestSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("You have already sent a join request for this adventure.")
 
         return AdventureJoinRequest.objects.create(**validated_data)
+    
+#CHAT SERIALIZERS
+
+class ChatMessageSerializer(serializers.ModelSerializer):
+    
+    reciever_profile = UserProfileSerializer(read_only=True)
+    sender_profile = UserProfileSerializer(read_only=True)
+    
+    class Meta:
+        model = ChatMessage
+        fields = ['id','user','sender','sender_profile','reciever','reciever_profile','message','is_read','date']
