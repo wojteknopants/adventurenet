@@ -9,7 +9,7 @@ interface AddPostPopupProps {
   handleAddImage: (event: any) => void;
   handleAddText: (event: any) => void;
   handleOnSaveClick: () => void;
-  image: File | "";
+  image: File | null;
   text: string;
   tagsSuggestions: any;
   selectedTags: any;

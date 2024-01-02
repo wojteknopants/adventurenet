@@ -128,7 +128,7 @@ const AddPostForm = () => {
         {isOpen ? (
           <AddPostPopup
             user_pfp={data.profile_picture}
-            image={image}
+            image={image || null}
             text={content}
             tagsSuggestions={tagsSuggestions}
             selectedTags={selectedTags}
