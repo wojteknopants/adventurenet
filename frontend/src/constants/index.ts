@@ -26,11 +26,11 @@ export const navLinks = [
     title: "Flights",
     icon: iconFlights,
   },
-  {
-    id: "notifications",
-    title: "Notifications",
-    icon: iconNotifications,
-  },
+  // {
+  //   id: "notifications",
+  //   title: "Notifications",
+  //   icon: iconNotifications,
+  // },
   {
     id: "messages",
     title: "Messages",

@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../store";
 import { getIsAuthenticated } from "../../features/auth/authSlice";
 import { getActivities } from "../../features/explore/exploreSlice";
+import MobileNavbar from "../../components/MobileNavbar";
 
 const MainLayout = () => {
   const isAuthenticated = useSelector(getIsAuthenticated);
@@ -27,6 +28,9 @@ const MainLayout = () => {
     <div className="flex ">
       <div className="xs:inline hidden lg:w-1/4 min-w-[78px]">
         <Navbar currentPageId={"feed"} />
+      </div>
+      <div className="z-10 xs:hidden absolute">
+        <MobileNavbar currentPageId={"feed"} />
       </div>
       <div className=" min-w-[320px] lg:w-1/2 w-full min-h-[200vh] h-full shadow-inner bg-mainLightGray">
         <div className="flex flex-col gap-5 lg:mx-5 mx-3">

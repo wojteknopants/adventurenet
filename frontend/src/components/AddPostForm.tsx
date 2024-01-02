@@ -98,8 +98,6 @@ const AddPostForm = () => {
   useEffect(() => {
     if (isSuccess) {
       setPicture(data.profile_picture);
-      // setCover(updatedProfile.background_image);
-      // setUserPhoto(updatedProfile.profile_picture);
     } else if (isError) {
       console.error("ERROR");
     }
