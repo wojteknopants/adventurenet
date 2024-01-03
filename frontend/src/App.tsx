@@ -10,12 +10,15 @@ import LoginForm from "./pages/auth/LoginForm";
 import RegistrationForm from "./pages/auth/RegistrationForm";
 import ActivateUser from "./pages/auth/ActivateForm";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Layout from "./pages/_hocs/Layout";
 import Logout from "./pages/main/Logout";
 import Notifications from "./pages/main/Notifications";
 import Bookmarks from "./pages/main/Bookmarks";
-import { getIsAuthenticated } from "./features/auth/authSlice";
+import {
+  checkIsAuthenticated,
+  getIsAuthenticated,
+} from "./features/auth/authSlice";
 import Flights from "./pages/main/Flights";
 
 import Message from "./features/chat/Message";

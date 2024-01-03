@@ -2,6 +2,7 @@ import React from "react";
 import { iconPhoto } from "../../../assets";
 
 interface Props {
+  user: any;
   cover: any;
   handleChangeCover: (file: File) => void;
 }

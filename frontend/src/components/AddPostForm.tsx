@@ -127,7 +127,7 @@ const AddPostForm = () => {
         </div>
         {isOpen ? (
           <AddPostPopup
-            user_pfp={data.profile_picture}
+            user_pfp={data?.profile_picture}
             image={image || null}
             text={content}
             tagsSuggestions={tagsSuggestions}
