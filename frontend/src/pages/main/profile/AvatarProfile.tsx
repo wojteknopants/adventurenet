@@ -31,11 +31,11 @@ const AvatarProfile = ({ user, size, photo, handleChangePhoto }: Props) => {
       <div className=" aspect-square rounded-full overflow-hidden">
         <img src={photo ? photo : profilePlaceholder} alt="" />
       </div>
-      <button
-        onClick={handleClick}
-        className="absolute bottom-0 right-0 shadow-md shadow-gray-500 p-2 bg-mainLightGray rounded-full"
-      >
-        {profile?.user === user && (
+      {profile?.user === user && (
+        <button
+          onClick={handleClick}
+          className="absolute bottom-0 right-0 shadow-md shadow-gray-500 p-2 bg-mainLightGray rounded-full"
+        >
           <input
             src={iconPhoto}
             type="file"
@@ -44,9 +44,10 @@ const AvatarProfile = ({ user, size, photo, handleChangePhoto }: Props) => {
             onChange={handleFileSelect}
             style={{ display: "none" }}
           />
-        )}
-        <img src={iconPhoto} />
-      </button>
+
+          <img src={iconPhoto} />
+        </button>
+      )}
     </div>
   );
 };
