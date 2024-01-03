@@ -1,6 +1,7 @@
 import { ReactNode, useRef } from "react";
 import { iconPhoto } from "../../../assets";
 import { profilePlaceholder } from "../../../assets";
+import { useGetProfileQuery } from "../../../features/profile/profileSlice";
 
 interface Props {
   user?: any;
@@ -9,11 +10,13 @@ interface Props {
   handleChangePhoto: (file: File) => void;
 }
 
-const AvatarProfile = ({ size, photo, handleChangePhoto }: Props) => {
+const AvatarProfile = ({ user, size, photo, handleChangePhoto }: Props) => {
   let width = "w-12";
   if (size === "lg") {
     width = "w-36";
   }
+
+  const { data: profile } = useGetProfileQuery("me");
 
   const hiddenFileInput = useRef<HTMLInputElement | null>(null);
   const handleClick = () => {
