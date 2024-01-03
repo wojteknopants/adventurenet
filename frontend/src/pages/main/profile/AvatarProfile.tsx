@@ -35,14 +35,16 @@ const AvatarProfile = ({ user, size, photo, handleChangePhoto }: Props) => {
         onClick={handleClick}
         className="absolute bottom-0 right-0 shadow-md shadow-gray-500 p-2 bg-mainLightGray rounded-full"
       >
-        <input
-          src={iconPhoto}
-          type="file"
-          name="myImage"
-          ref={hiddenFileInput}
-          onChange={handleFileSelect}
-          style={{ display: "none" }}
-        />
+        {profile?.user === user && (
+          <input
+            src={iconPhoto}
+            type="file"
+            name="myImage"
+            ref={hiddenFileInput}
+            onChange={handleFileSelect}
+            style={{ display: "none" }}
+          />
+        )}
         <img src={iconPhoto} />
       </button>
     </div>

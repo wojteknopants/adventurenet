@@ -13,12 +13,13 @@ const ProfileHeader = ({ ...props }: ProfileHeaderProps) => {
     <Card noPadding={true}>
       <div className="relative">
         <Cover
+          user={props.profile?.user}
           handleChangeCover={props.handleChangeCover}
           cover={props.profile?.background_image}
         />
         <div className="absolute top-24 left-4">
           <AvatarProfile
-            user={props.profile.user}
+            user={props.profile?.user}
             photo={props.profile?.profile_picture}
             handleChangePhoto={props.handleChangeAvatar}
             size={"lg"}
