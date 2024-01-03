@@ -3,6 +3,7 @@ import { iconPhoto } from "../../../assets";
 import { profilePlaceholder } from "../../../assets";
 
 interface Props {
+  user: any;
   size: ReactNode;
   photo: any;
   handleChangePhoto: (file: File) => void;

@@ -42,7 +42,7 @@ const PostHeader = ({
         </p>
       </div>
       {editData &&
-        profile.user === user &&
+        profile?.user === user &&
         (isOpen ? (
           <div className="flex gap-4 text-sm">
             <button

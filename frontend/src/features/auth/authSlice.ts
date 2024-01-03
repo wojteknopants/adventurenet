@@ -18,15 +18,6 @@ interface RegisterParams {
   re_password: string;
 }
 
-interface AuthParams {
-  access: string | null;
-  refresh: string | null;
-  isAuthenticated: boolean;
-  user: object;
-  status: "idle" | "succeeded" | "failed";
-  error: string | undefined;
-}
-
 export const login = createAsyncThunk(
   "auth/login",
   async ({ email, password }: LoginParams, { dispatch }) => {
@@ -87,7 +78,7 @@ export const register = createAsyncThunk(
 
 export const checkIsAuthenticated = createAsyncThunk(
   "auth/checkIsAuthenticated",
-  async () => {
+  async (_, { dispatch }) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -105,10 +96,11 @@ export const checkIsAuthenticated = createAsyncThunk(
 
     if (res.data.code !== "token_not_valid") {
       // console.log(localStorage.getItem("access"));
-      // console.log(res);
+      await dispatch(loadUser());
+      console.log(true);
       return true;
     } else {
-      // console.log(res);
+      console.log(false);
       return false;
     }
   }
@@ -156,12 +148,21 @@ export const loadUser = createAsyncThunk(
   }
 );
 
+interface AuthParams {
+  access: string | null;
+  refresh: string | null;
+  isAuthenticated: boolean;
+  user: object;
+  status: "idle" | "succeeded" | "failed";
+  error: string | undefined;
+}
+
 const authSlice = createSlice({
   name: "auth",
   initialState: {
     access: localStorage.getItem("access"),
     refresh: localStorage.getItem("refresh"),
-    isAuthenticated: false,
+    isAuthenticated: true,
     user: {},
     status: "idle",
     error: "",

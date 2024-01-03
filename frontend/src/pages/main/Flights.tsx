@@ -123,7 +123,7 @@ const Flights = () => {
       <PageTitle title="Flights" />
       <div className="flex shadow-none gap-2">
         <Search
-          placeholder={"Type from where you what to flight ..."}
+          placeholder={"Type from where you want to fly..."}
           searched={searchedFlightsCities}
           handleOnSearchChange={handleOnFlightsSearchChange}
         />

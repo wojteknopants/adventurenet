@@ -87,8 +87,9 @@ export const getActivities = createAsyncThunk(
       if (res.data.data) {
         return res.data.data;
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      throw new Error(error);
     }
   }
 );

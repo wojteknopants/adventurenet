@@ -30,3 +30,7 @@ input:focus {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+button {
+  user-select: none;
+}
