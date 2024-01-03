@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../../store";
+import toast from "react-hot-toast";
 
 interface LoginParams {
   email: string;
@@ -66,11 +67,11 @@ export const register = createAsyncThunk(
         body,
         config
       );
-      console.log(alert("Email with activation link has been sent!"));
+      toast.success("Activation link has been send!");
       return res.data;
     } catch (error: any) {
       const firstError = <any>Object.values(error.response.data)[0];
-      console.log(alert(firstError[0]));
+      toast.error(firstError[0]);
       return rejectWithValue(firstError[0]);
     }
   }
@@ -186,12 +187,13 @@ const authSlice = createSlice({
         state.refresh = action.payload.refresh;
         state.isAuthenticated = true;
         state.error = "";
+        toast.success("Successful login!");
       })
       .addCase(login.rejected, (state, action) => {
         state.status = "failed";
         state.isAuthenticated = false;
         state.error = action.error.message;
-        alert("Wrong email or password!");
+        toast.error("Wrong email or password!");
         localStorage.removeItem("access");
         localStorage.removeItem("refresh");
       })

@@ -5,6 +5,7 @@ import { register } from "../../features/auth/authSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store";
 import AuthForm from "../../components/AuthForm";
+import toast from "react-hot-toast";
 
 const RegistrationForm = () => {
   const [email, setEmail] = useState<string>("");
@@ -36,7 +37,7 @@ const RegistrationForm = () => {
       console.log("Password Match!");
       dispatch(register({ email, password, re_password }));
     } else {
-      alert("Password Does't Match!");
+      toast.error("Password doesn't match!");
       console.log("Password Does't Match!");
     }
   };

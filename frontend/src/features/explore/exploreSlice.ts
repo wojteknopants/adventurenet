@@ -1,6 +1,7 @@
 import axios from "axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
+import toast from "react-hot-toast";
 
 export const getSuggestionsForTours = createAsyncThunk(
   "explore/getSuggestionsForTours",
@@ -133,10 +134,13 @@ export const generateItineraries = createAsyncThunk(
 
       console.log(res.data);
       if (res.data) {
+        toast.success("Itinerary generated!");
         return res.data;
       }
+      toast.error("Probably this city is not supported now!");
     } catch (error) {
       console.log(error);
+      toast.error("Probably this city is not supported now!");
     }
   }
 );
@@ -167,8 +171,10 @@ export const saveItinerary = createAsyncThunk(
       );
 
       dispatch(getItineraries);
+      toast.success("Itinerary saved!");
       console.log(res.data);
     } catch (error) {
+      toast.error("Something went wrong!");
       console.log(error);
     }
   }
