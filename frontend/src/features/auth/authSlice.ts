@@ -148,6 +148,37 @@ export const loadUser = createAsyncThunk(
     }
   }
 );
+export const deleteUser = createAsyncThunk(
+  "auth/deleteUser",
+  async ({ current_password }: { current_password?: string }) => {
+    try {
+      const url = "/auth/users/me/";
+
+      const data = { current_password };
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `JWT ${localStorage.getItem("access")}`,
+          Accept: "application/json",
+        },
+
+        data,
+      };
+
+      const res = await axios.delete(
+        `${import.meta.env.VITE_REACT_APP_API_URL}${url}`,
+        config
+      );
+      toast.success("Account deleted!");
+      console.log(res.data);
+      return res.data;
+    } catch (error: any) {
+      console.log(error);
+      toast.error("Something went wrong!");
+    }
+  }
+);
 
 interface AuthParams {
   access: string | null;
