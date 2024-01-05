@@ -5,7 +5,7 @@ import axios from "axios";
 
 // import jwtDecode from "jwt-decode";
 // import moment from 'moment';
-import { useParams, Link, useHistory } from "react-router-dom/";
+import { useParams, Link, useNavigate } from "react-router-dom/";
 // import Swal from "sweetalert2";
 
 const SearchUsers = () => {
@@ -20,7 +20,7 @@ const SearchUsers = () => {
     let [user, setUser] = useState([])
 
     const username = useParams()
-    const history = useHistory()
+    const navigate = useNavigate()
 
     // useEffect(() => {
     //     axios.get(baseURL + '/search/' + username.username + '/')
@@ -90,12 +90,12 @@ const SearchUsers = () => {
                 console.log(response.data);
             } catch (error) {
                 // Handle error or show a message (e.g., using Swal)
-                console.error(error);
+                console.error(error.response.data);
             }
         };
       
         fetchUserData();
-    }, [history, newSearch.username]);
+    }, [navigate, newSearch.username]);
 
 
 
@@ -128,7 +128,7 @@ const SearchUsers = () => {
                 console.log(res.details);
                 // alert("User does not exist")
             } else {
-                history.push(`/search/${newSearch.username}`);
+                navigate(`/search/${newSearch.username}`);
             }
         } catch (error) {
             console.log('No users found');

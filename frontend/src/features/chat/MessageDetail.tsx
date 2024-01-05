@@ -5,7 +5,7 @@ import axios from "axios";
 
 // import jwtDecode from "jwt-decode";
 // import moment from 'moment';
-import { useParams, Link, useHistory } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 
 const MessageDetail = () => {
 
@@ -126,7 +126,7 @@ const MessageDetail = () => {
     let [newSearch, setNewSearch] = useState({ search: '' });
 
     const { id } = useParams();
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const { userId } = useParams();
 
@@ -142,12 +142,12 @@ const MessageDetail = () => {
                   };
 
                 const response = await axios.get(
-                    `${baseURL}/my-messages/me/`,
+                    `${baseURL}/my-messages/${userId}/`,
                     config
                 );
                 setMessages(response.data);
             } catch (error) {
-                console.log(error);
+                console.log(error.response.data);
             }
         };
     
@@ -179,19 +179,19 @@ const MessageDetail = () => {
                 };
 
                 const res = await axios.get(
-                    `${baseURL}/get-messages/me/${id.id}/`,
+                    `${baseURL}/get-messages/${userId}/${id.id}/`,
                     config    
                 );
                 setMessage(res.data);
             } catch (error) {
-                console.log(error);
+                console.log(error.response.data);
             }
         };
   
         const interval = setInterval(fetchData, 1000);
   
         return () => clearInterval(interval);
-    }, [history, id.id]);
+    }, [navigate, id.id]);
 
 
     const handleChange = (event) => {
@@ -226,7 +226,7 @@ const MessageDetail = () => {
             document.getElementById('text-input').value = '';
             setNewMessage({ message: '' });
             } catch (error) {
-                console.log(error);
+                console.log(error.response.data);
             }
         };
 
@@ -260,7 +260,7 @@ const MessageDetail = () => {
                 console.log(res.details);
                 // alert("User does not exist")
             } else {
-                history.push(`/search/${newSearch.username}`);
+                navigate(`/search/${newSearch.username}`);
             }
         } catch (error) {
             console.log('No users found');

@@ -1,10 +1,12 @@
 import Card from "../../../components/Card";
 import Cover from "./Cover";
 import AvatarProfile from "./AvatarProfile";
+import Username from "./Username";
 
 interface ProfileHeaderProps {
   handleChangeCover: (arg: any) => any;
   handleChangeAvatar: (arg: any) => any;
+  handleChangeUsername: (arg: any) => any;
   profile: any;
 }
 
@@ -27,8 +29,14 @@ const ProfileHeader = ({ ...props }: ProfileHeaderProps) => {
         </div>
         <div className="p-4 pb-0">
           <div className="ml-40">
-            <h1 className="text-3xl font-bold">{props.profile?.user}</h1>
-            <div className="text=gray-500 leading-4">Poznan, Poland</div>
+            <h1 className="text-3xl font-bold">{props.profile?.username ? props.profile?.username : props.profile?.user}</h1>
+            <div className="text=gray-500 leading-4">
+              <Username
+                  user={props.profile?.user}
+                  username={props.profile?.username}
+                  handleChangeUsername={props.handleChangeUsername}
+              />
+            </div>
           </div>
           <div className="mt-10 flex gap-1">
             <div>
