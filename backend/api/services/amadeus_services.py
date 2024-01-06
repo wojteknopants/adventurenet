@@ -12,13 +12,13 @@ def get_amadeus_access_token():
 
     global access_token, token_expiry
 
-    url = "https://test.api.amadeus.com/v1/security/oauth2/token"  # Use the appropriate Amadeus URL
+    url = "https://api.amadeus.com/v1/security/oauth2/token"  # Use the appropriate Amadeus URL
 
 
     payload = {
         'grant_type': 'client_credentials',
-        'client_id': 'AENEg4ztxX9aAB62f2j8FYwTel1InJJq',
-        'client_secret': 'QCm5hSDMD0r77H9z'
+        'client_id': settings.AMADEUS_API_KEY,
+        'client_secret': settings.AMADEUS_API_SECRET
     }
 
     headers = {
@@ -59,7 +59,7 @@ def get_city_search(city_keyword):
     if not is_token_valid():
         get_amadeus_access_token()
 
-    url = f"https://test.api.amadeus.com/v1/reference-data/locations/cities?keyword={city_keyword}&max={max_results}"
+    url = f"https://api.amadeus.com/v1/reference-data/locations/cities?keyword={city_keyword}&max={max_results}"
     headers = {
         'Authorization': f'Bearer {access_token}'
     }
@@ -81,7 +81,7 @@ def get_points_of_interest(latitude, longitude):
     if not is_token_valid():
         get_amadeus_access_token()
 
-    url = "https://test.api.amadeus.com/v1/reference-data/locations/pois"
+    url = "https://api.amadeus.com/v1/reference-data/locations/pois"
     params = {
         'latitude': latitude,
         'longitude': longitude,
@@ -109,7 +109,7 @@ def get_tours_and_activities(latitude, longitude):
     if not is_token_valid():
         get_amadeus_access_token()
 
-    url = "https://test.api.amadeus.com/v1/shopping/activities"
+    url = "https://api.amadeus.com/v1/shopping/activities"
     params = {
         'latitude': latitude,
         'longitude': longitude,
@@ -117,14 +117,17 @@ def get_tours_and_activities(latitude, longitude):
     }
 
     headers = {
-        'Authorization': f'Bearer {access_token}'
+        'Authorization': f'Bearer {access_token}',
+        "accept": "application/vnd.amadeus+json"
     }
 
     try:
         response = requests.get(url, headers=headers, params=params)
+        #print(response)
         response.raise_for_status()
         return response.json()
     except requests.RequestException as e:
+        #print(response)
         print(f"Error calling Amadeus Tours and Activities API: {e}")
         return None
 
@@ -181,10 +184,11 @@ def preprocess_poi_data(poi_response, tour_response, number_of_days, intensivene
             grouped_pois[category].append(poi)
 
     # Clean and prepare tours data
-    cleaned_tours = clean_tours_data(tour_response)["data"]
-    number_of_tours = max(1, number_of_days // 2)
-    tour_days = random.sample(range(1, number_of_days + 1), number_of_tours)
-    tour_parts = random.choices(["morning", "afternoon", "evening"], k=number_of_tours)
+    if tour_response:
+        cleaned_tours = clean_tours_data(tour_response)["data"]
+        number_of_tours = max(1, number_of_days // 2)
+        tour_days = random.sample(range(1, number_of_days + 1), number_of_tours)
+        tour_parts = random.choices(["morning", "afternoon", "evening"], k=number_of_tours)
 
     plan = {'days': []}
     used_pois = {'RESTAURANT': [], 'SIGHTS': []}
@@ -212,7 +216,7 @@ def preprocess_poi_data(poi_response, tour_response, number_of_days, intensivene
             last_poi = restaurant_poi
 
             # Check if this part of the day is designated for a tour
-            if day in tour_days and part == tour_parts[tour_days.index(day)]:
+            if tour_response and day in tour_days and part == tour_parts[tour_days.index(day)]:
                 tour = random.choice(cleaned_tours)
                 day_activities[part]['doing'] = [tour]
                 # Assuming a fixed distance for tours, for simplicity
@@ -252,7 +256,7 @@ def clean_tours_data(response):
     :return: A cleaned response with only complete tours.
     """
     if not response or "data" not in response:
-        return response  # Return the original response if it's not in the expected format
+        return None  # Return the original response if it's not in the expected format
 
     cleaned_tours = []
     for tour in response["data"]:
