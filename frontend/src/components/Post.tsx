@@ -152,6 +152,7 @@ const Post = ({ postData, postId, refetch }: PostProps) => {
         }}
         user_pfp={profile?.profile_picture}
         user={post.user}
+        username={profile?.username ? profile?.username : profile?.user}
         created_at={post.created_at}
         onDeletePostClicked={onDeletePostClicked}
       />

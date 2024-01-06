@@ -26,6 +26,7 @@ const Profile = () => {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [newCover, setNewCover] = useState(null);
   const [newAvatar, setNewAvatar] = useState(null);
+  const [newUsername, setNewUsername] = useState(null);
 
   const { uid } = useParams<{ uid: string }>();
 
@@ -46,6 +47,10 @@ const Profile = () => {
     setNewAvatar(file);
   };
 
+  const handleChangeUsername = (text: any) => {
+    setNewUsername(text);
+  }
+
   const onProfileChange = async () => {
     try {
       const formData = new FormData();
@@ -55,10 +60,14 @@ const Profile = () => {
       if (newAvatar) {
         formData.append("profile_picture", newAvatar);
       }
+      if (newUsername) {
+        formData.append("username", newUsername);
+      }
 
       await updateProfile(formData).unwrap();
       setNewAvatar(null);
       setNewCover(null);
+      setNewUsername(null);
       console.log("Profile updated successfully!");
     } catch (err) {
       console.error("Failed to update the profile", err);
@@ -72,7 +81,10 @@ const Profile = () => {
     if (newAvatar) {
       onProfileChange();
     }
-  }, [newCover, newAvatar]);
+    if (newUsername) {
+      onProfileChange();
+    }
+  }, [newCover, newAvatar, newUsername]);
 
   useEffect(() => {
     if (isLoading) {
@@ -94,6 +106,7 @@ const Profile = () => {
         profile={profile}
         handleChangeAvatar={handleChangeAvatar}
         handleChangeCover={handleChangeCover}
+        handleChangeUsername={handleChangeUsername}
       />
       {myProfile?.user === data?.user && <AddPostForm />}
       <ProfilePosts uid={uid} />

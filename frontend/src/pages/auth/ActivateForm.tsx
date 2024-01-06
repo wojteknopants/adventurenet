@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { activation } from "../../features/auth/authSlice";
 import { AppDispatch } from "../../store";
 import AuthForm from "../../components/AuthForm";
+import { toast } from "react-toastify";
 
 const ActivateUser = () => {
   const [isShowing, setIsShowing] = useState<boolean>(false);
@@ -24,17 +25,16 @@ const ActivateUser = () => {
     if (uid !== undefined && token !== undefined) {
       dispatch(activation({ uid, token }));
       setVerified(true);
-      alert("Activation completed!");
-    }
-    console.log(verified);
-    if (verified) {
-      navigate("/auth/login");
     }
   };
 
   useEffect(() => {
     setIsShowing(true);
   }, []);
+  useEffect(() => {
+    toast.success("Successful Activation!");
+    verified && navigate("/auth/login");
+  });
 
   return (
     <AuthForm handleSubmit={handleOnSubmit}>

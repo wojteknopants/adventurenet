@@ -1,5 +1,5 @@
 interface deleteProps {
-  handleClose?: () => any;
+  handleClose?: () => void;
 }
 const Delete = ({ handleClose }: deleteProps) => {
   return (

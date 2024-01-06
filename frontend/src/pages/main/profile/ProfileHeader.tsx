@@ -1,10 +1,12 @@
 import Card from "../../../components/Card";
 import Cover from "./Cover";
 import AvatarProfile from "./AvatarProfile";
+import Username from "./Username";
 
 interface ProfileHeaderProps {
   handleChangeCover: (arg: any) => any;
   handleChangeAvatar: (arg: any) => any;
+  handleChangeUsername: (arg: any) => any;
   profile: any;
 }
 
@@ -13,11 +15,13 @@ const ProfileHeader = ({ ...props }: ProfileHeaderProps) => {
     <Card noPadding={true}>
       <div className="relative">
         <Cover
+          user={props.profile?.user}
           handleChangeCover={props.handleChangeCover}
           cover={props.profile?.background_image}
         />
         <div className="absolute top-24 left-4">
           <AvatarProfile
+            user={props.profile?.user}
             photo={props.profile?.profile_picture}
             handleChangePhoto={props.handleChangeAvatar}
             size={"lg"}
@@ -25,8 +29,14 @@ const ProfileHeader = ({ ...props }: ProfileHeaderProps) => {
         </div>
         <div className="p-4 pb-0">
           <div className="ml-40">
-            <h1 className="text-3xl font-bold">{props.profile?.user}</h1>
-            <div className="text=gray-500 leading-4">Poznan, Poland</div>
+            <h1 className="text-3xl font-bold">{props.profile?.username ? props.profile?.username : props.profile?.user}</h1>
+            <div className="text=gray-500 leading-4">
+              <Username
+                  user={props.profile?.user}
+                  username={props.profile?.username}
+                  handleChangeUsername={props.handleChangeUsername}
+              />
+            </div>
           </div>
           <div className="mt-10 flex gap-1">
             <div>
@@ -47,25 +57,6 @@ const ProfileHeader = ({ ...props }: ProfileHeaderProps) => {
                 </svg>
                 Posts
               </button>
-            </div>
-            <div>
-              {/* <button className="flex gap-1 px-4 py-1 items-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-6 h-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"
-                  />
-                </svg>
-                About me
-              </button> */}
             </div>
           </div>
         </div>

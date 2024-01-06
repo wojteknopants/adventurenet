@@ -35,7 +35,8 @@ const Comment = ({ comment }: CommentProps) => {
       </div>
       <div className="flex flex-1 flex-col">
         <div className="flex gap-3">
-          {comment.user}
+          {/* {comment.user} */}
+          {profile?.username ? profile?.username : profile?.user}
           <p className=" text-mainDarkGray text-sm">
             {formatRelativeTime(comment.created_at)}
           </p>

@@ -10,6 +10,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../store";
 import AuthForm from "../../components/AuthForm";
+import toast from "react-hot-toast";
 
 const LoginForm = () => {
   const [email, setEmail] = useState<string>("");

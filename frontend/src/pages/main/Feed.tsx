@@ -19,7 +19,7 @@ const Feed = () => {
     content = <LoadingCard>Loading posts...</LoadingCard>;
   } else if (isSuccess) {
     if (Array.isArray(orderedPostIds)) {
-      content = orderedPostIds.map((postId) => (
+      content = orderedPostIds?.map((postId) => (
         <FeedPost key={postId} postId={postId} refetch={refetch} />
       ));
     }

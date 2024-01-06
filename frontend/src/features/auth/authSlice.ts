@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../../store";
+import toast from "react-hot-toast";
 
 interface LoginParams {
   email: string;
@@ -16,15 +17,6 @@ interface RegisterParams {
   email: string;
   password: string;
   re_password: string;
-}
-
-interface AuthParams {
-  access: string | null;
-  refresh: string | null;
-  isAuthenticated: boolean;
-  user: object;
-  status: "idle" | "succeeded" | "failed";
-  error: string | undefined;
 }
 
 export const login = createAsyncThunk(
@@ -75,11 +67,11 @@ export const register = createAsyncThunk(
         body,
         config
       );
-      console.log(alert("Email with activation link has been sent!"));
+      toast.success("Activation link has been send!");
       return res.data;
     } catch (error: any) {
       const firstError = <any>Object.values(error.response.data)[0];
-      console.log(alert(firstError[0]));
+      toast.error(firstError[0]);
       return rejectWithValue(firstError[0]);
     }
   }
@@ -87,7 +79,7 @@ export const register = createAsyncThunk(
 
 export const checkIsAuthenticated = createAsyncThunk(
   "auth/checkIsAuthenticated",
-  async () => {
+  async (_, { dispatch }) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -105,10 +97,11 @@ export const checkIsAuthenticated = createAsyncThunk(
 
     if (res.data.code !== "token_not_valid") {
       // console.log(localStorage.getItem("access"));
-      // console.log(res);
+      await dispatch(loadUser());
+      console.log(true);
       return true;
     } else {
-      // console.log(res);
+      console.log(false);
       return false;
     }
   }
@@ -155,13 +148,53 @@ export const loadUser = createAsyncThunk(
     }
   }
 );
+export const deleteUser = createAsyncThunk(
+  "auth/deleteUser",
+  async ({ current_password }: { current_password?: string }) => {
+    try {
+      const url = "/auth/users/me/";
+
+      const data = { current_password };
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `JWT ${localStorage.getItem("access")}`,
+          Accept: "application/json",
+        },
+
+        data,
+      };
+
+      const res = await axios.delete(
+        `${import.meta.env.VITE_REACT_APP_API_URL}${url}`,
+        config
+      );
+      toast.success("Account deleted!");
+      console.log(res.data);
+      return res.data;
+    } catch (error: any) {
+      console.log(error);
+      toast.error("Something went wrong!");
+    }
+  }
+);
+
+interface AuthParams {
+  access: string | null;
+  refresh: string | null;
+  isAuthenticated: boolean;
+  user: object;
+  status: "idle" | "succeeded" | "failed";
+  error: string | undefined;
+}
 
 const authSlice = createSlice({
   name: "auth",
   initialState: {
     access: localStorage.getItem("access"),
     refresh: localStorage.getItem("refresh"),
-    isAuthenticated: false,
+    isAuthenticated: true,
     user: {},
     status: "idle",
     error: "",
@@ -185,12 +218,13 @@ const authSlice = createSlice({
         state.refresh = action.payload.refresh;
         state.isAuthenticated = true;
         state.error = "";
+        toast.success("Successful login!");
       })
       .addCase(login.rejected, (state, action) => {
         state.status = "failed";
         state.isAuthenticated = false;
         state.error = action.error.message;
-        alert("Wrong email or password!");
+        toast.error("Wrong email or password!");
         localStorage.removeItem("access");
         localStorage.removeItem("refresh");
       })

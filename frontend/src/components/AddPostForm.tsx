@@ -112,7 +112,7 @@ const AddPostForm = () => {
             <Avatar size={""} user_pfp={picture} />
           </div>
           <input
-            className="grow m-auto h-14 ml-3 focus:outline-none"
+            className="grow m-auto min-w-[160px] h-14 ml-3 focus:outline-none"
             placeholder={"Whats on your mind?"}
             onChange={onContentChanged}
           />
@@ -127,8 +127,8 @@ const AddPostForm = () => {
         </div>
         {isOpen ? (
           <AddPostPopup
-            user_pfp={data.profile_picture}
-            image={image}
+            user_pfp={data?.profile_picture}
+            image={image || null}
             text={content}
             tagsSuggestions={tagsSuggestions}
             selectedTags={selectedTags}

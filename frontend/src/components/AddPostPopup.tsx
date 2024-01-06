@@ -9,7 +9,7 @@ interface AddPostPopupProps {
   handleAddImage: (event: any) => void;
   handleAddText: (event: any) => void;
   handleOnSaveClick: () => void;
-  image: File | "";
+  image: File | null;
   text: string;
   tagsSuggestions: any;
   selectedTags: any;
@@ -135,7 +135,7 @@ const AddPostPopup = ({
             placeholder="Type something..."
           />
           <button
-            className="bg-gray-100 hover:bg-gray-200 text-mainBlue font-bold mx-60 my-4 py-2 px-4 rounded-md"
+            className="bg-gray-100 hover:bg-gray-200 text-mainBlue font-bold my-4 py-2 px-4 rounded-md"
             onClick={handleOnSaveClick}
           >
             {typeof image === "string" ? "Update post" : "Add post"}

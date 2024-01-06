@@ -8,6 +8,7 @@ import { useGetProfileQuery } from "../features/profile/profileSlice";
 
 interface PostHeaderProps {
   user: any;
+  username: any;
   created_at: any;
   user_pfp: any;
   editData?: { postId: any; image: any; content: any; tags: any };
@@ -16,6 +17,7 @@ interface PostHeaderProps {
 
 const PostHeader = ({
   user,
+  username,
   created_at,
   user_pfp,
   editData,
@@ -34,7 +36,7 @@ const PostHeader = ({
       <div className="grow">
         <p>
           <Link to={`/profile/${user}`}>
-            <a className="font-semibold text-md text-mainBlue">@{user}</a>
+            <a className="font-semibold text-md text-mainBlue">@{username}</a>
           </Link>
         </p>
         <p className="text-mainGray text-sm">
@@ -42,7 +44,7 @@ const PostHeader = ({
         </p>
       </div>
       {editData &&
-        profile.user === user &&
+        profile?.user === user &&
         (isOpen ? (
           <div className="flex gap-4 text-sm">
             <button
