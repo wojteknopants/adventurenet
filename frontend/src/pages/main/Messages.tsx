@@ -150,10 +150,10 @@ const Messages = () => {
     if (isNil(sender_profile)) {
       return null;
     }
-    if (isNil(sender_profile.name) || isNil(sender_profile.surname)) {
+    if (isNil(sender_profile.username)) {
       return String(sender_profile.email);
     }
-    return sender_profile.name + ' ' + sender_profile.surname;
+    return sender_profile.username;
   }
 
   const isMessageSelected = (message: ChatMessage): boolean => {
@@ -199,128 +199,128 @@ const Messages = () => {
 
   return (
     <div>
-    <PageTitle title="Messages" />
-    <div className="flex-grow w-full w-full mx-auto lg:flex">
-      <div className="flex-1 min-w-0 bg-white xl:flex">
-        <div className="border-b border-gray-200 xl:border-b-0 xl:flex-shrink-0 xl:w-70 xl:border-r xl:border-gray-200 bg-white">
-          <div className="h-full pl-4 pr-2 py-6 sm:pl-6 lg:pl-8 xl:pl-0">
-            <div className="h-full relative">
-              <div className="relative rounded-lg px-2 py-2 flex items-center space-x-3 hover:border-gray-400 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-red-500 mb-4">
-                <div className="flex-shrink-0">
-                  <img 
-                  className="h-12 w-12 rounded-full"
-                  src={loggedUserDetails?.profile_picture || profilePlaceholder}
-                  />
+      <PageTitle title="Messages" />
+      <div className="flex-col w-full mx-auto lg:flex shadow-md rounded-xl overflow-hidden">
+        <div className="flex-1 min-w-0 bg-white xl:flex">
+          <div className="border-b border-gray-200 xl:border-b-0 xl:flex-shrink-0 xl:w-70 xl:border-r xl:border-gray-200 bg-white">
+            <div className="h-full pl-4 pr-2 py-2 sm:pl-4 lg:pl-4 xl:pl-0">
+              <div className="px-2 h-full relative">
+                <div className="relative rounded-lg px-2 py-2 flex items-center space-x-3 hover:border-gray-400 focus-within:ring-2 mb-4">
+                  <div className="flex-shrink-0">
+                    <img 
+                    className="h-12 w-12 rounded-full"
+                    src={loggedUserDetails?.profile_picture || profilePlaceholder}
+                    />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <a href="#" className="focus:outline-none">
+                      <span className="absolute inset-0" />
+                      <p className="text-sm font-bold text-blue-400">
+                        {getSenderName(loggedUserDetails)}
+                      </p>
+                      <p className="text-sm text-gray-500 truncate">
+                        
+                      </p>
+                    </a>
+                  </div>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <a href="#" className="focus:outline-none">
-                    <span className="absolute inset-0" />
-                    <p className="text-sm font-bold text-blue-400">
-                      {getSenderName(loggedUserDetails)}
-                    </p>
-                    <p className="text-sm text-gray-500 truncate">
-                      
-                    </p>
-                  </a>
-                </div>
-              </div>
 
-              <div className="mb-4">
-                <div onClick={() => navigate('/search')} className={`relative rounded-lg px-2 py-2 flex items-center space-x-3 hover:border-gray-400 hover:cursor-pointer focus-within:ring-2 mb-3 hover:bg-gray-200 bg-white`}>
-                  <span className="flex flex-row items-center justify-center w-full">
-                    New Message
-                  </span>
-                </div>
-                    {messages?.length === 0 ? 'No messages' : messages?.map(message => {
-                      return (
-                          <div key={message.id} onClick={() => onInboxMessageClick(message)}
-                               className={`relative rounded-lg px-2 py-2 flex items-center space-x-3 hover:border-gray-400 hover:cursor-pointer focus-within:ring-2 mb-3 hover:bg-gray-200 ${isMessageSelected(message) ? 'bg-mainLightGray' : 'bg-white'}`}>
-                            <div className="flex-shrink-0">
-                              <img className="h-10 w-10 rounded-full" src={determineSender(message)?.profile_picture || profilePlaceholder}/>
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <div className={"w-full"}>
-                                <div className="flex items-center justify-between">
-                                  <p className="text-sm font-bold text-blue-400">
-                                    {determineSenderName(message)}
-                                  </p>
-                                  <div className="text-gray-400 text-xs">
-                                    {isToday(message?.date) ? message.date.toLocaleTimeString() : message.date.toLocaleDateString()}
+                <div className="mb-4">
+                  <div onClick={() => navigate('/search')} className={`relative rounded-lg px-2 py-2 flex items-center space-x-3 hover:border-gray-400 hover:cursor-pointer focus-within:ring-2 mb-3 hover:bg-gray-200 bg-white`}>
+                    <span className="flex flex-row items-center justify-center w-full">
+                      New Message
+                    </span>
+                  </div>
+                      {messages?.length === 0 ? 'No messages' : messages?.map(message => {
+                        return (
+                            <div key={message.id} onClick={() => onInboxMessageClick(message)}
+                                className={`relative rounded-lg px-2 py-2 flex items-center space-x-3 hover:border-gray-400 hover:cursor-pointer focus-within:ring-2 mb-3 hover:bg-gray-200 ${isMessageSelected(message) ? 'bg-mainLightGray' : 'bg-white'}`}>
+                              <div className="flex-shrink-0">
+                                <img className="h-10 w-10 rounded-full" src={determineSender(message)?.profile_picture || profilePlaceholder}/>
+                              </div>
+                              <div className="flex-1 min-w-0 w-32">
+                                <div className={"w-full"}>
+                                  <div className="flex items-center justify-between">
+                                    <p className="text-sm font-bold text-blue-400">
+                                      {determineSenderName(message)}
+                                    </p>
+                                    <div className="text-gray-400 text-xs">
+                                      {isToday(message?.date) ? message.date.toLocaleTimeString() : message.date.toLocaleDateString()}
+                                    </div>
                                   </div>
-                                </div>
-                                <div className="flex items-center justify-between">
-                                  <p className="text-sm text-gray-500 truncate">
-                                    {message.message}
-                                  </p>
-                                  {!message.is_read ? <div className="text-xs bg-blue-400 rounded-full px-1 px-0 text-blue-400">
-                                    1
-                                  </div> : null}
+                                  <div className="flex items-center justify-between">
+                                    <p className="text-sm text-gray-500 truncate">
+                                      {message.message}
+                                    </p>
+                                    {!message.is_read ? <div className="text-xs bg-blue-400 rounded-full px-1 px-0 text-blue-400">
+                                      1
+                                    </div> : null}
 
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                      )})
-                    }
-              </div>
-            </div>
-          </div>
-        </div>
-        
-
-        <div className="flex-1 p:2 sm:pb-6 justify-between flex flex-col h-screen hidden xl:flex">
-          <div className="flex sm:items-center justify-between py-3 border-b border-gray-200 p-3">
-            <div className="flex items-center space-x-4">
-              {!isNil(selectedConversation) ?
-                  <img className="w-10 sm:w-12 h-10 sm:h-12 rounded-full cursor pointer" src={determineSender(selectedConversation)?.profile_picture || profilePlaceholder}/> : null}
-              <div className="flex flex-col leading-tight">
-                <div className="text-1xl mt-1 flex items-center">
-                  <span className="teext-gray-700 mr-3">
-                    {!isNil(selectedConversation) ? determineSenderName(selectedConversation) : 'Choose conversation'}
-                  </span>
-
+                        )})
+                      }
                 </div>
               </div>
             </div>
+          </div>
+          
 
-          </div>
-          <div id="messages" className="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
-            {selectedConversationMessages?.map((message) => {
-              return (
-                  <div className="chat-message" key={message.id}>
-                    <div className={`flex items-end ${!isMessageReceived(message) ? " justify-end" : ""}`}>
-                      <div className={`flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 ${isMessageReceived(message) ? " items-start" : " items-end"}`}>
-                        <div>
-                          <span className={`px-4 py-2 rounded-lg inline-block rounded-bl-none text-gray-600 ${!isMessageReceived(message) ? " bg-blue-400" : " bg-gray-200"}`}>
-                            {message.message}
-                          </span>
-                        </div>
-                      </div>
-                      <img
-                      className="w-6 h-6 rounded-full order-1"
-                      src={isMessageReceived(message) ? (message.sender_profile.background_image || profilePlaceholder) : (loggedUserDetails?.profile_picture || profilePlaceholder)}
-                      />
-                    </div>
-              </div>)
-            })}
-          </div>
-          {!isNil(selectedConversation) ? (
-            <div className="border-t-2 border-gray-200 px-4 pt-4 mb-2 mb-16">
-              <div className="relative flex">
-                <input
-                    value={typedMessage}
-                    onChange={(value) => setTypedMessage(value.target.value)}
-                    onKeyDown={(event) => handleKeyDown(event)}
-                    placeholder="Write something"
-                    className="focus:ring-blue-500 focus:border-blue-500 w-full focus:placeholder-gray-400 text-gray-600 placeholder-gray-300 pl-12 bg-gray-100 rounded-full py-3 border-gray-200"
-                />
+          <div className="flex-1 p:2 sm:pb-4 justify-between flex flex-col xl:flex">
+            <div className="flex sm:items-center justify-between py-3 border-b border-gray-200 p-3">
+              <div className="flex items-center space-x-4">
+                {!isNil(selectedConversation) ?
+                    <img className="w-10 sm:w-12 h-10 sm:h-12 rounded-full cursor pointer" src={determineSender(selectedConversation)?.profile_picture || profilePlaceholder}/> : null}
+                <div className="flex flex-col leading-tight">
+                  <div className="text-1xl mt-1 flex items-center">
+                    <span className="text-gray-700 mr-3">
+                      {!isNil(selectedConversation) ? determineSenderName(selectedConversation) : 'Choose conversation'}
+                    </span>
+
+                  </div>
+                </div>
               </div>
+
+            </div>
+            <div id="messages" className=" h-screen flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
+              {selectedConversationMessages?.map((message) => {
+                return (
+                    <div className="chat-message" key={message.id}>
+                      <div className={`flex items-end ${!isMessageReceived(message) ? " justify-end" : ""}`}>
+                        <div className={`flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 ${isMessageReceived(message) ? " items-start" : " items-end"}`}>
+                          <div>
+                            <span className={`px-2 py-2 rounded-lg inline-block  ${!isMessageReceived(message) ? " bg-blue-400 rounded-br-none text-white" : " bg-mainLightGray rounded-bl-none text-mainBlack"}`}>
+                              {message.message}
+                            </span>
+                          </div>
+                        </div>
+                        <img
+                        className={`w-8 h-8 rounded-full ${!isMessageReceived(message) ? "order-2" : "order-1"}`}
+                        src={isMessageReceived(message) ? (message.sender_profile.background_image || profilePlaceholder) : (loggedUserDetails?.profile_picture || profilePlaceholder)}
+                        />
+                      </div>
+                </div>)
+              })}
+            </div>
+            {!isNil(selectedConversation) ? (
+              <div className="border-t-2 border-gray-200 px-2 pt-4">
+                <div className="relative flex">
+                  <input
+                      value={typedMessage}
+                      onChange={(value) => setTypedMessage(value.target.value)}
+                      onKeyDown={(event) => handleKeyDown(event)}
+                      placeholder="Write something"
+                      className="focus:ring-blue-500 focus:border-blue-500 w-full focus:placeholder-gray-400 text-gray-600 placeholder-gray-300 pl-4 bg-gray-100 rounded-full py-2 border-gray-200"
+                  />
+                </div>
+            </div>
+            ) : null}
           </div>
-          ) : null}
         </div>
       </div>
     </div>
-  </div>
   );
 };
 
