@@ -60,6 +60,10 @@ class UserProfile(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    @property
+    def user_email(self):
+        return self.user.email
+
     def __str__(self):
         return "Profile of " + self.user.email 
 

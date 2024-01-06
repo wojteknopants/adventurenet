@@ -37,11 +37,11 @@ const App = () => {
           <Route path="/" element={<Layout />}>
             <Route path="/" element={<MainLayout />}>
               <Route path="/feed" element={<Feed />} />
-              {/* <Route path="/messages" element={<Messages />} />
+              <Route path="/messages" element={<Messages />} />
 
               <Route path="/inbox" element={<Message />} />
               <Route path="/inbox/:id" element={<MessageDetail />} />
-              <Route path="/search/:username" element={<SearchUsers />} /> */}
+              <Route path="/search" element={<SearchUsers />} />
 
               <Route path="/settings" element={<Settings />} />
               <Route path="/profile/:uid" element={<Profile />} />

@@ -31,11 +31,11 @@ export const navLinks = [
   //   title: "Notifications",
   //   icon: iconNotifications,
   // },
-  // {
-  //   id: "messages",
-  //   title: "Messages",
-  //   icon: iconMessages,
-  // },
+  {
+    id: "messages",
+    title: "Messages",
+    icon: iconMessages,
+  },
   {
     id: "bookmarks",
     title: "Bookmarks",
