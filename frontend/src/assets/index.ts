@@ -20,6 +20,8 @@ import iconAddPost from "./iconAddPost.svg";
 import postsPlaceholder from "./postsPlaceHolder.svg";
 import profilePlaceholder from "./profilePlaceholder.svg";
 //import profilePlaceholder from "./1-crop.jpg";
+import iconLight from "./iconLight.svg";
+import iconDark from "./iconDark.svg";
 
 export {
   profilePlaceholder,
@@ -43,4 +45,6 @@ export {
   iconLogout,
   iconSearch,
   iconPhoto,
+  iconLight,
+  iconDark
 };

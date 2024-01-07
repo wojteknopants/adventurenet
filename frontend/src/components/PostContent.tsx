@@ -16,7 +16,7 @@ const PostContent = ({
           <img src={`${image}`} alt="Error" />
         ) : (
           <img
-            className=" m-auto w-[300px] h-full"
+            className=" m-auto w-[300px] h-full "
             style={{ filter: "invert(90%) grayscale(100%)" }}
             src={postsPlaceholder}
           />

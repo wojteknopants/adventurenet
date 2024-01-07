@@ -15,7 +15,7 @@ const AddCommentForm = ({
   return (
     <form className="flex justify-between py-2">
       <input
-        className="flex flex-1 mr-3"
+        className="flex flex-1 mr-3 dark:bg-darkMainBackground dark:text-darkWhiteText"
         placeholder="Type something..."
         onChange={handleOnChangeAdd}
         value={input}

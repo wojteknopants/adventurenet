@@ -30,9 +30,10 @@ const Username = ({ username, user, handleChangeUsername }: Props) => {
   return (
     <div>
       <div className="flex flex-wrap items-center">
-        <span className="">{editing ? "Username: " : ""}</span>
+        <span className="dark:text-darkWhiteText">{editing ? "Username: " : ""}</span>
         {editing ? (
           <input
+            className="dark:bg-darkMainBackground dark:text-darkWhiteText"
             type="text"
             value={newUsername}
             onChange={(e) => setNewUsername(e.target.value)}

@@ -34,7 +34,7 @@ const Comment = ({ comment }: CommentProps) => {
         <Avatar size={""} user_pfp={profile.profile_picture} />
       </div>
       <div className="flex flex-1 flex-col">
-        <div className="flex gap-3">
+        <div className="flex gap-3 dark:text-darkWhiteText">
           {/* {comment.user} */}
           {profile?.username ? profile?.username : profile?.user}
           <p className=" text-mainDarkGray text-sm">
@@ -48,7 +48,7 @@ const Comment = ({ comment }: CommentProps) => {
             />
           </div>
         </div>
-        <p className="text-sm">{comment.content}</p>
+        <p className="text-sm dark:text-darkWhiteText">{comment.content}</p>
       </div>
     </div>
   );

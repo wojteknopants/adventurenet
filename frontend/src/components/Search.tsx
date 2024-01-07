@@ -21,7 +21,7 @@ export default function Search({
       >
         <input
           onChange={handleOnSearchChange}
-          className="block w-full p-3 px-4 overflow-hidden h-12 rounded-xl"
+          className="block w-full p-3 px-4 overflow-hidden h-12 rounded-xl dark:bg-darkMainBackground dark:text-darkWhiteText"
           placeholder={placeholder}
         />
         <button className="absolute top-3 right-3 text-gray-400">
@@ -32,7 +32,7 @@ export default function Search({
         <ul
           className={`${
             offShadows ? "shadow-sm" : "shadow-md"
-          } flex flex-col mt-14  bg-white/95 rounded-xl absolute z-10 px-2 py-2`}
+          } flex flex-col mt-14  bg-white/95 rounded-xl absolute z-10 px-2 py-2 dark:bg-darkMainBackground`}
         >
           {searched}
         </ul>
