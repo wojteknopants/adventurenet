@@ -61,16 +61,16 @@ const SearchUsers = () => {
                         <div className="row g-0">
                         <div className="col-12 col-lg-5 col-xl-3 border-right">
                         <div className="px-4 ">
-                            <div className="border-t-2 border-gray-200 px-2 pt-4 mb-2">
+                            <div className="border-t-2 border-gray-200 dark:border-darkMainHover px-2 pt-4 mb-2">
                                 <div className="flex flex-col space-y-3 items-center justify-center">
                                     <input
                                         value={newSearch}
                                         onChange={(event) => setNewSearch(event.target.value)}
                                         placeholder="Pass the username"
-                                        className="focus:ring-blue-500 focus:border-blue-500 w-full focus:placeholder-gray-400 text-gray-600 placeholder-gray-300 pl-4 rounded-full py-2 border-gray-200"
+                                        className="dark:bg-darkMainBackground focus:ring-blue-500 focus:border-blue-500 w-full focus:placeholder-gray-400 dark:text-darkWhiteText text-gray-600 placeholder-gray-300 pl-4 rounded-full py-2 border-gray-200 dark:border-darkMainHover"
                                     />
                                     <button disabled={!canPerformSearch()} onClick={() => performSearch()}
-                                            className={`flex flex-row items-center justify-center gap-x-3 btn btn-primary btn-lg mr-1 px-3 w-1/2 ${canPerformSearch() ? 'text-black' : 'text-gray-100'}`}><FaSearch /> Search</button>
+                                            className={`flex flex-row items-center justify-center gap-x-3 btn btn-primary btn-lg mr-1 px-3 w-1/2 ${canPerformSearch() ? 'text-black dark:text-darkWhiteText' : 'text-gray-100 dark:text-darkMainSection'}`}><FaSearch /> Search</button>
                                 </div>
                             </div>
                         </div>
@@ -91,7 +91,7 @@ const SearchUsers = () => {
                                             {getUserFullName(user)}
 
                                             <div className="small">
-                                            <small><i className='fas fa-envelope text-mainBlack'> Send Message</i></small>
+                                            <small><i className='fas fa-envelope text-mainBlack dark:text-darkWhiteText'> Send Message</i></small>
                                             </div>
                                         </div>
                                     </div>

@@ -10,6 +10,7 @@ import {
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store";
 import { getItineraries } from "../features/explore/exploreSlice";
+import DarkMode from "./DarkMode";
 
 interface ItineraryProps {
   itinerary: any;

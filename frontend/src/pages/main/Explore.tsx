@@ -141,7 +141,7 @@ const Explore = () => {
       ? activities.slice(0, 20).map((activity: any) => (
           <div
             key={activity.id}
-            className="flex flex-col gap-2 snap-start mr-4 min-w-[300px] max-h-[350px] h-fit rounded-xl bg-white overflow-hidden"
+            className="flex flex-col gap-2 snap-start mr-4 min-w-[300px] max-h-[350px] h-fit rounded-xl bg-white dark:bg-darkMainBackground overflow-hidden"
             ref={cardRef}
           >
             <img
@@ -179,7 +179,7 @@ const Explore = () => {
           <div
             key={index}
             ref={cardRef}
-            className="text-mainGray items-center justify-center flex flex-col gap-2 snap-start mr-4 min-w-[300px] min-h-[350px] rounded-xl bg-white overflow-hidden"
+            className="text-mainGray items-center justify-center flex flex-col gap-2 snap-start mr-4 min-w-[300px] min-h-[350px] rounded-xl bg-white dark:bg-darkMainBackground overflow-hidden"
           >
             {activity.name}
           </div>

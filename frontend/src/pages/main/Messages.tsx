@@ -201,8 +201,8 @@ const Messages = () => {
     <div>
       <PageTitle title="Messages" />
       <div className="flex-col w-full mx-auto lg:flex shadow-md rounded-xl overflow-hidden">
-        <div className="flex-1 min-w-0 bg-white xl:flex">
-          <div className="border-b border-gray-200 xl:border-b-0 xl:flex-shrink-0 xl:w-70 xl:border-r xl:border-gray-200 bg-white">
+        <div className="flex-1 min-w-0 bg-white dark:bg-darkMainBackground xl:flex">
+          <div className="border-b border-gray-200 dark:border-darkMainSection xl:border-b-0 xl:flex-shrink-0 xl:w-70 xl:border-r xl:border-gray-200 dark:xl:border-darkMainSection bg-white dark:bg-darkMainBackground">
             <div className="h-full pl-2 pr-2 py-2 sm:pl-2 sm:pr-2 lg:pl-2 lg:pr-2 xl:pl-0 xl:pr-0">
               <div className="px-2 h-full relative">
                 <div className="relative rounded-lg px-2 py-2 flex items-center space-x-3 hover:border-gray-400 focus-within:ring-2 mb-4">
@@ -226,15 +226,15 @@ const Messages = () => {
                 </div>
 
                 <div className="mb-4">
-                  <div onClick={() => navigate('/search')} className={`relative rounded-lg px-2 py-2 flex items-center space-x-3 hover:border-gray-400 hover:cursor-pointer focus-within:ring-2 mb-3 hover:bg-gray-200 bg-white`}>
-                    <span className="flex flex-row items-center justify-center w-full">
+                  <div onClick={() => navigate('/search')} className={`relative rounded-lg px-2 py-2 flex items-center space-x-3 hover:border-gray-400 hover:cursor-pointer focus-within:ring-2 mb-3 hover:bg-gray-200 dark:hover:bg-darkMainHover bg-white dark:bg-darkMainBackground`}>
+                    <span className="flex flex-row items-center justify-center w-full dark:text-darkWhiteText">
                       New Message
                     </span>
                   </div>
                       {messages?.length === 0 ? 'No messages' : messages?.map(message => {
                         return (
                             <div key={message.id} onClick={() => onInboxMessageClick(message)}
-                                className={`relative rounded-lg px-2 py-2 flex items-center space-x-3 hover:border-gray-400 hover:cursor-pointer focus-within:ring-2 mb-3 hover:bg-gray-200 ${isMessageSelected(message) ? 'bg-mainLightGray' : 'bg-white'}`}>
+                                className={`relative rounded-lg px-2 py-2 flex items-center space-x-3 hover:border-gray-400 hover:cursor-pointer focus-within:ring-2 mb-3 hover:bg-gray-200 dark:hover:bg-darkMainHover ${isMessageSelected(message) ? 'bg-mainLightGray dark:bg-darkMainSection' : 'bg-white dark:bg-darkMainBackground'}`}>
                               <div className="flex-shrink-0">
                                 <img className="h-10 w-10 rounded-full" src={determineSender(message)?.profile_picture || profilePlaceholder}/>
                               </div>
@@ -244,12 +244,12 @@ const Messages = () => {
                                     <p className="text-sm font-bold text-blue-400">
                                       {determineSenderName(message)}
                                     </p>
-                                    <div className="text-gray-400 text-xs">
+                                    <div className="text-gray-400 dark:text-darkWhiteText text-xs">
                                       {isToday(message?.date) ? message.date.toLocaleTimeString() : message.date.toLocaleDateString()}
                                     </div>
                                   </div>
                                   <div className="flex items-center justify-between">
-                                    <p className="text-sm text-gray-500 truncate">
+                                    <p className="text-sm text-gray-500 dark:text-darkWhiteText truncate">
                                       {message.message}
                                     </p>
                                     {!message.is_read ? <div className="text-xs bg-blue-400 rounded-full px-1 px-0 text-blue-400">
@@ -269,13 +269,13 @@ const Messages = () => {
           
 
           <div className="flex-1 p:2 sm:pb-4 justify-between flex flex-col xl:flex">
-            <div className="flex sm:items-center justify-between py-3 border-b border-gray-200 p-3">
+            <div className="flex sm:items-center justify-between py-3 border-b border-gray-200 dark:border-darkMainSection p-3">
               <div className="flex items-center space-x-4">
                 {!isNil(selectedConversation) ?
                     <img className="w-10 sm:w-12 h-10 sm:h-12 rounded-full cursor pointer" src={determineSender(selectedConversation)?.profile_picture || profilePlaceholder}/> : null}
                 <div className="flex flex-col leading-tight">
                   <div className="text-1xl mt-1 flex items-center">
-                    <span className="text-gray-700 mr-3">
+                    <span className="text-gray-700 dark:text-darkWhiteText mr-3">
                       {!isNil(selectedConversation) ? determineSenderName(selectedConversation) : 'Choose conversation'}
                     </span>
 
@@ -305,14 +305,14 @@ const Messages = () => {
               })}
             </div>
             {!isNil(selectedConversation) ? (
-              <div className="border-t-2 border-gray-200 px-2 pt-4">
+              <div className="border-t-2 border-gray-200 dark:border-darkMainSection px-2 pt-4">
                 <div className="relative flex">
                   <input
                       value={typedMessage}
                       onChange={(value) => setTypedMessage(value.target.value)}
                       onKeyDown={(event) => handleKeyDown(event)}
                       placeholder="Write something"
-                      className="focus:ring-blue-500 focus:border-blue-500 w-full focus:placeholder-gray-400 text-gray-600 placeholder-gray-300 pl-4 bg-gray-100 rounded-full py-2 border-gray-200"
+                      className="focus:ring-blue-500 focus:border-blue-500 w-full focus:placeholder-gray-400 text-gray-600 dark:text-darkWhiteText placeholder-gray-300 pl-4 bg-gray-100 dark:bg-darkMainSection rounded-full py-2 border-gray-200 dark:border-darkMainSection"
                   />
                 </div>
             </div>

@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./index.html", "./src/**/*.{js,jsx,ts,tsx}"],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
@@ -12,6 +13,11 @@ export default {
         "slate-100": "#F6F6F6",
         mainBlack: "#202020",
         mainDarkGray: "#6B7280",
+
+        darkMainBackground: "rgb(15 23 42)",
+        darkMainSection: "rgb(30 41 59)",
+        darkWhiteText: "rgb(255 255 255)",
+        darkMainHover: "rgb(51 65 85)",
       },
       boxShadow: {
         md: "0px 4px 10px -1px rgba(0, 0, 0, 0.05)",

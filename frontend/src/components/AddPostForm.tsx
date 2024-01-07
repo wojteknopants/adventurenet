@@ -112,7 +112,7 @@ const AddPostForm = () => {
             <Avatar size={""} user_pfp={picture} />
           </div>
           <input
-            className="grow m-auto min-w-[160px] h-14 ml-3 focus:outline-none"
+            className="grow m-auto min-w-[160px] h-14 ml-3 focus:outline-none dark:bg-darkMainBackground dark:text-darkWhiteText"
             placeholder={"Whats on your mind?"}
             onChange={onContentChanged}
           />
