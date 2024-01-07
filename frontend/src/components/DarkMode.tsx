@@ -34,7 +34,7 @@ const DarkMode = () => {
             onClick={handleThemeSwitch}
             className=" text-lg rounded-md mt-2 px-3.5 "
             >
-                {theme === 'dark' ? <img src={nav.icon}/> : <img src={iconLight}/>}
+                {theme === 'dark' ? <img src={iconDark}/> : <img src={iconLight}/>}
             </button>
         </div>
     );
