@@ -121,12 +121,8 @@ const Flights = () => {
   return (
     <>
       <PageTitle title="Flights" />
+      <h3 className="text-xl text-mainGray">Cheapest flights destination from your departure country/city.</h3>
       <div className="flex shadow-none gap-2">
-        <Search
-          placeholder={"Type from where you want to fly..."}
-          searched={searchedFlightsCities}
-          handleOnSearchChange={handleOnFlightsSearchChange}
-        />
         <DropdownMenu
           handleDropdown={() => setIsMonthDropDownOpen((prev) => !prev)}
           isOpen={isMonthDropDownOpen}
@@ -140,6 +136,11 @@ const Flights = () => {
           placeHolder={year || "YY"}
           setValue={setYear}
           dropDownContent={years}
+        />
+        <Search
+          placeholder={"Type from where you want to fly..."}
+          searched={searchedFlightsCities}
+          handleOnSearchChange={handleOnFlightsSearchChange}
         />
       </div>
       <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3 lg:gap-5">

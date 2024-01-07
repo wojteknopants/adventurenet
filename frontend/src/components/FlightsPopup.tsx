@@ -12,6 +12,7 @@ const AddPostPopup = ({
   currency,
 }: AddPostPopupProps) => {
   console.log(selectedFlightCountry);
+
   return (
     <>
       <Popup>
@@ -41,6 +42,12 @@ const AddPostPopup = ({
                 <div className="flex flex-col">
                   <div>Carrier name : {flight.carrier_name}</div>
                   <div>Direct : {flight.is_direct ? "YES" : "NO"}</div>
+                  <a 
+                    className="text-mainBlue underline"
+                    href={`https://www.skyscanner.com/transport/flights/${flight.origin_iata}/${flight.destination_iata}/${String(flight.date.year).slice(-2)}${(flight.date.month < 10 ? '0' : '')}${flight.date.month}${(flight.date.day < 10 ? '0' : '')}${flight.date.day}`}
+                    target="_blank" rel="noopener noreferrer">
+                    Go to Skyscanner
+                  </a>
                 </div>
                 <img className=" scale-50" src={flight.carrier_imageurl} />
               </div>
