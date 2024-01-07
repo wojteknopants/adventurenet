@@ -25,6 +25,8 @@ import Message from "./features/chat/Message";
 import MessageDetail from "./features/chat/MessageDetail";
 import SearchUsers from "./features/chat/SearchUsers";
 
+import SearchTab from "./pages/main/SearchTab";
+
 // store.dispatch(postsApiSlice.endpoints.getPosts.initiate(undefined));
 
 const App = () => {
@@ -42,6 +44,8 @@ const App = () => {
               <Route path="/inbox" element={<Message />} />
               <Route path="/inbox/:id" element={<MessageDetail />} />
               <Route path="/search" element={<SearchUsers />} />
+
+              {/* <Route path="/searchtab" element={<SearchTab />} /> */}
 
               <Route path="/settings" element={<Settings />} />
               <Route path="/profile/:uid" element={<Profile />} />

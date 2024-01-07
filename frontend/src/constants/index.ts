@@ -7,6 +7,7 @@ import {
   iconMessages,
   iconNotifications,
   iconProfile,
+  iconSearch,
   iconSettings,
 } from "../assets";
 
@@ -30,6 +31,11 @@ export const navLinks = [
   //   id: "notifications",
   //   title: "Notifications",
   //   icon: iconNotifications,
+  // },
+  // {
+  //   id: "searchtab",
+  //   title: "Search",
+  //   icon: iconSearch,
   // },
   {
     id: "messages",

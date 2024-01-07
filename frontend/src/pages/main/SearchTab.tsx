@@ -1,14 +1,14 @@
 import {useState, useEffect} from "react";
-import './style/Message.css'
 import { useParams, Link, useNavigate } from "react-router-dom/";
 import PageTitle from "../../components/PageTitle";
 import { FaSearch } from "react-icons/fa";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../store";
-import {searchUser} from "./chatSlice";
+import {searchUser} from "../../features/chat/chatSlice";
 import {isNil} from "../../pages/main/Messages";
 import {profilePlaceholder} from "../../assets";
 import Card from "../../components/Card";
+import { useGetProfileQuery } from "../../features/profile/profileSlice";
 
 const SearchUsers = () => {
 
@@ -41,6 +41,14 @@ const SearchUsers = () => {
         navigate('/messages', {state: {user: user}});
     }
 
+    // const navigateToNewMessage = (user: any) => {
+    //     <Link
+    //         to={`/profile/${user}`}>
+    //     </Link>
+    // }
+
+    // const { data: profile } = useGetProfileQuery("me");
+
 
     const getUserFullName = (userprofile: any): string | null => {
     if (isNil(userprofile)) {
@@ -54,7 +62,7 @@ const SearchUsers = () => {
 
     return (
         <>
-            <PageTitle title="Find user and write new message" />
+            <PageTitle title="Find user" />
             <main className="content">
                     <div className="container p-0">
                     <div className="card">

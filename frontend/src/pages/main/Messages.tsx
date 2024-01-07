@@ -203,7 +203,7 @@ const Messages = () => {
       <div className="flex-col w-full mx-auto lg:flex shadow-md rounded-xl overflow-hidden">
         <div className="flex-1 min-w-0 bg-white xl:flex">
           <div className="border-b border-gray-200 xl:border-b-0 xl:flex-shrink-0 xl:w-70 xl:border-r xl:border-gray-200 bg-white">
-            <div className="h-full pl-4 pr-2 py-2 sm:pl-4 lg:pl-4 xl:pl-0">
+            <div className="h-full pl-2 pr-2 py-2 sm:pl-2 sm:pr-2 lg:pl-2 lg:pr-2 xl:pl-0 xl:pr-0">
               <div className="px-2 h-full relative">
                 <div className="relative rounded-lg px-2 py-2 flex items-center space-x-3 hover:border-gray-400 focus-within:ring-2 mb-4">
                   <div className="flex-shrink-0">
