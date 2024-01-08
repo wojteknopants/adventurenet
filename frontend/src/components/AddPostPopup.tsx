@@ -55,7 +55,7 @@ const AddPostPopup = ({
   return (
     <>
       <Popup>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 ">
           <div className="flex flex-row justify-between">
             <div className="items-center flex gap-3">
               <div>
@@ -63,7 +63,7 @@ const AddPostPopup = ({
               </div>
               <div className="grow">
                 <p>
-                  <a className="font-semibold">You</a>
+                  <a className="font-semibold dark:text-darkWhiteText">You</a>
                 </p>
               </div>
             </div>
@@ -107,7 +107,7 @@ const AddPostPopup = ({
             ) : (
               <div
                 onClick={handleClick}
-                className="flex justify-center w-full h-[50vh] rounded-xl bg-mainLightGray cursor-pointer"
+                className="flex justify-center w-full h-[50vh] rounded-xl bg-mainLightGray cursor-pointer dark:bg-darkMainSection"
               >
                 <input
                   ref={hiddenFileInput}
@@ -117,7 +117,7 @@ const AddPostPopup = ({
                   style={{ display: "none" }}
                 />
 
-                <div className="m-auto">Add photo</div>
+                <div className="m-auto dark:text-darkWhiteText">Add photo</div>
               </div>
             )}
           </div>
@@ -131,11 +131,11 @@ const AddPostPopup = ({
           <input
             value={text}
             onChange={handleAddText}
-            className=" bg-white"
+            className=" bg-white dark:bg-darkMainBackground dark:text-darkWhiteText"
             placeholder="Type something..."
           />
           <button
-            className="bg-gray-100 hover:bg-gray-200 text-mainBlue font-bold my-4 py-2 px-4 rounded-md"
+            className="bg-gray-100 hover:bg-gray-200 text-mainBlue font-bold my-4 py-2 px-4 rounded-md dark:bg-darkMainSection dark:hover:bg-darkMainHover"
             onClick={handleOnSaveClick}
           >
             {typeof image === "string" ? "Update post" : "Add post"}

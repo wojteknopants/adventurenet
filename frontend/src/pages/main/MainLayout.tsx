@@ -25,19 +25,19 @@ const MainLayout = () => {
   }, []);
 
   return (
-    <div className="flex ">
-      <div className="xs:inline hidden lg:w-1/4 min-w-[78px]">
+    <div className="flex dark:bg-darkMainBackground">
+      <div className="xs:inline hidden lg:w-1/4 min-w-[78px] dark:bg-darkMainBackground">
         <Navbar currentPageId={"feed"} />
       </div>
-      <div className="z-10 xs:hidden absolute">
+      <div className="z-10 xs:hidden absolute dark:bg-darkMainBackground">
         <MobileNavbar currentPageId={"feed"} />
       </div>
-      <div className=" min-w-[320px] lg:w-1/2 w-full min-h-[200vh] h-full shadow-inner bg-mainLightGray">
+      <div className=" min-w-[320px] lg:w-1/2 w-full min-h-[200vh] h-full shadow-inner bg-mainLightGray dark:bg-darkMainSection">
         <div className="flex flex-col gap-5 lg:mx-5 mx-3">
           <Outlet />
         </div>
       </div>
-      <div className=" lg:block hidden">
+      <div className=" lg:block hidden dark:bg-darkMainBackground">
         <Contacts />
       </div>
     </div>

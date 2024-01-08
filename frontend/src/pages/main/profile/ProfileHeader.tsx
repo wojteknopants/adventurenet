@@ -29,7 +29,7 @@ const ProfileHeader = ({ ...props }: ProfileHeaderProps) => {
         </div>
         <div className="p-4 pb-0">
           <div className="ml-40">
-            <h1 className="text-3xl font-bold">{props.profile?.username ? props.profile?.username : props.profile?.user}</h1>
+            <h1 className="text-3xl font-bold dark:text-darkWhiteText">{props.profile?.username ? props.profile?.username : props.profile?.user}</h1>
             <div className="text=gray-500 leading-4">
               <Username
                   user={props.profile?.user}

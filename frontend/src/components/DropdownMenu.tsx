@@ -19,7 +19,7 @@ const DropdownMenu = ({
         <button
           onClick={handleDropdown}
           data-dropdown-toggle="dropdown"
-          className="flex flex-col justify-center items-center shadow-md px-4 grow text-mainGray bg-white  rounded-xl relative"
+          className="flex flex-col justify-center items-center shadow-md px-4 grow text-mainGray bg-white dark:bg-darkMainBackground rounded-xl relative"
           type="button"
         >
           {placeHolder}
@@ -40,7 +40,7 @@ const DropdownMenu = ({
           </svg>
         </button>
         {isOpen && (
-          <div className="z-10 absolute top-14 w-full bg-white divide-y divide-gray-100 rounded-lg shadow-md">
+          <div className="z-10 absolute top-14 w-full bg-white dark:bg-darkMainBackground divide-y divide-gray-100 rounded-lg shadow-md">
             <ul
               onClick={handleDropdown}
               className="p-2 text-sm text-mainGray flex flex-col justify-center items-center"
@@ -49,7 +49,7 @@ const DropdownMenu = ({
               {dropDownContent.map((item: any) => (
                 <li
                   onClick={() => setValue(item)}
-                  className="  hover:bg-mainGray/20 hover:text-mainBlue px-4 py-2 rounded-lg cursor-pointer"
+                  className="  hover:bg-mainGray/20 dark:hover:bg-darkMainHover/20 hover:text-mainBlue px-4 py-2 rounded-lg cursor-pointer"
                 >
                   {item}
                 </li>

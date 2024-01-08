@@ -21,9 +21,11 @@ class UserCreateSerializer(UserCreateSerializer):
 
 class UserProfileSerializer(serializers.ModelSerializer):
 
+    email = serializers.ReadOnlyField(source='user_email')
+
     class Meta:
         model = UserProfile
-        fields = ['user', 'name', 'surname', 'country', 'bio', 'username', 'profile_picture', 'background_image', 'created_at', 'updated_at']
+        fields = ['user', 'name', 'surname', 'country', 'bio', 'username', 'profile_picture', 'background_image', 'created_at', 'updated_at', 'email']
         read_only_fields = ('id', 'user', 'created_at', 'updated_at')
 
 class ImageSerializer(serializers.ModelSerializer):

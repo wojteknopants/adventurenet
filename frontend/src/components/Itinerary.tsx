@@ -10,6 +10,7 @@ import {
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store";
 import { getItineraries } from "../features/explore/exploreSlice";
+import DarkMode from "./DarkMode";
 
 interface ItineraryProps {
   itinerary: any;
@@ -51,6 +52,7 @@ const Itinerary = ({ itinerary }: ItineraryProps) => {
       <div className="flex flex-col gap-2">
         <PostHeader
           user={itinerary.user}
+          username={profile?.username ? profile?.username : profile?.user}
           user_pfp={profile?.profile_picture}
           created_at={itinerary.updated_at}
           onDeletePostClicked={() => {

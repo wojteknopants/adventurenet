@@ -68,7 +68,7 @@ const Flights = () => {
         <li key={index}>
           <button
             onClick={() => handleOnFlightCityClick(place)}
-            className="flex flex-col grow w-full text-mainGray hover:bg-mainLightGray hover:text-mainBlue transition-all rounded-lg px-2 py-1 text-lg"
+            className="flex flex-col grow w-full text-mainGray hover:bg-mainLightGray dark:hover:bg-darkMainHover hover:text-mainBlue transition-all rounded-lg px-2 py-1 text-lg"
           >
             <div>{place.name}</div>
             <div className="flex text-mainGray/50 text-sm">
@@ -86,7 +86,7 @@ const Flights = () => {
       Object.keys(countriesOffers).map((country) => (
         <div
           key={country}
-          className="p-4 flex flex-col text-lg bg-white text-mainGray transition-all hover:bg-mainLightGray hover:text-mainBlue rounded-lg shadow-md cursor-pointer gap-2 justify-between"
+          className="p-4 flex flex-col text-lg bg-white dark:bg-darkMainBackground text-mainGray transition-all hover:bg-mainLightGray dark:hover:bg-darkMainHover hover:text-mainBlue rounded-lg shadow-md cursor-pointer gap-2 justify-between"
           onClick={() => handleOnCardClick(countriesOffers[country], country)}
         >
           <div className="">{country}</div>
@@ -121,12 +121,8 @@ const Flights = () => {
   return (
     <>
       <PageTitle title="Flights" />
+      <h3 className="text-xl text-mainGray">Cheapest flights destination from your departure country/city.</h3>
       <div className="flex shadow-none gap-2">
-        <Search
-          placeholder={"Type from where you want to fly..."}
-          searched={searchedFlightsCities}
-          handleOnSearchChange={handleOnFlightsSearchChange}
-        />
         <DropdownMenu
           handleDropdown={() => setIsMonthDropDownOpen((prev) => !prev)}
           isOpen={isMonthDropDownOpen}
@@ -140,6 +136,11 @@ const Flights = () => {
           placeHolder={year || "YY"}
           setValue={setYear}
           dropDownContent={years}
+        />
+        <Search
+          placeholder={"Type from where you want to fly..."}
+          searched={searchedFlightsCities}
+          handleOnSearchChange={handleOnFlightsSearchChange}
         />
       </div>
       <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3 lg:gap-5">

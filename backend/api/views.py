@@ -486,15 +486,15 @@ class GenerateItineraryView(APIView):
 
             # Assuming you have defined these functions
             poi_data = get_points_of_interest(latitude, longitude)
-            tour_data = get_tours_and_activities(latitude, longitude)
+            tour_data = None #get_tours_and_activities(latitude, longitude) #AMADEUS TOURS NOT WORKING, ISSUE ON THEIR SIDE
             cleaned_tour_data = clean_tours_data(tour_data)
             itinerary_poi_dict = preprocess_poi_data(poi_data, cleaned_tour_data, number_of_days, intensiveness)
             end_time = time.perf_counter()
-            print(end_time-start_time)
+            print("Django time check: ", end_time-start_time)
             start_time = time.perf_counter()
             itinerary_narrated = generate_itinerary(itinerary_poi_dict)
             end_time = time.perf_counter()
-            print(end_time-start_time)
+            print("OpenAI time check: ", end_time-start_time)
 
             return Response(itinerary_narrated, status=status.HTTP_200_OK)
         else:

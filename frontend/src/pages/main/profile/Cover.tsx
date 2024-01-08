@@ -23,7 +23,7 @@ const Cover = ({ cover, user, handleChangeCover }: Props) => {
     <div>
       <div className="h-36 overflow-hidden flex justify-center items-center">
         <img src={cover} alt="Not found" />
-        <div className="absolute right-0 bottom-36 m-2">
+        <div className="absolute right-0 bottom-40 m-2">
           {profile?.user === user && (
             <button
               onClick={handleClick}

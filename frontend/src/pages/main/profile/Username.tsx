@@ -29,10 +29,11 @@ const Username = ({ username, user, handleChangeUsername }: Props) => {
 
   return (
     <div>
-      <div className="flex items-center">
-        <span className="mr-1">{editing ? "New Username:" : ""}</span>
+      <div className="flex flex-wrap items-center">
+        <span className="dark:text-darkWhiteText">{editing ? "Username: " : ""}</span>
         {editing ? (
           <input
+            className="dark:bg-darkMainBackground dark:text-darkWhiteText"
             type="text"
             value={newUsername}
             onChange={(e) => setNewUsername(e.target.value)}
@@ -52,7 +53,7 @@ const Username = ({ username, user, handleChangeUsername }: Props) => {
         {editing && (
           <button
             onClick={handleCancelClick}
-            className="ml-2 bg-mainLightGray py-1 px-2 rounded-md shadow-md shadow-gray-500"
+            className="flex ml-2 bg-mainLightGray py-1 px-2 rounded-md shadow-md shadow-gray-500"
           >
             Cancel
           </button>

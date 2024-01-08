@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-#3osmnzxe190c!c5b8)12&$3o2-ms28p*$p@4^yghnme864&+c
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['165.227.160.47', 'localhost', '127.0.0.1', '[::1]']
 
 
 # Application definition
@@ -159,7 +159,8 @@ REST_FRAMEWORK = {
 }
 
 #djoser library settings 
-DOMAIN = ('localhost:5173')
+#DOMAIN = ('localhost:5173')
+DOMAIN = '165.227.160.47:5173'
 DJOSER = {
     'LOGIN_FIELD': 'email',
     'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
