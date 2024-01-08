@@ -66,11 +66,15 @@ const Explore = () => {
     );
   };
 
+  // const [itinerarySearchValue, setItinerarySearchValue] = useState<any>(null);
+
   const handleOnItinerariesCityClick = (city: any) => {
     console.log(city);
 
     setSelectedCityForItinerary(city);
     dispatch(selectCityForItineraries(city));
+
+    // setItinerarySearchValue(city.name);
 
     setIsOpenPopup(true);
   };
@@ -116,7 +120,7 @@ const Explore = () => {
         <li key={index}>
           <button
             onClick={() => handleOnToursCityClick(city)}
-            className="flex grow w-full text-mainGray hover:bg-mainLightGray hover:text-mainBlue transition-all rounded-lg px-2 py-1 text-lg"
+            className="flex grow w-full text-mainGray hover:bg-mainLightGray dark:hover:bg-darkMainHover hover:text-mainBlue transition-all rounded-lg px-2 py-1 text-lg"
           >
             {city.name}
           </button>
@@ -131,7 +135,7 @@ const Explore = () => {
         <li key={index}>
           <button
             onClick={() => handleOnItinerariesCityClick(city)}
-            className="flex grow w-full text-mainGray hover:bg-mainLightGray hover:text-mainBlue transition-all rounded-lg px-2 py-1 text-lg"
+            className="flex grow w-full text-mainGray hover:bg-mainLightGray dark:hover:bg-darkMainHover hover:text-mainBlue transition-all rounded-lg px-2 py-1 text-lg"
           >
             {city.name}
           </button>
@@ -201,19 +205,14 @@ const Explore = () => {
   return (
     <>
       <PageTitle title="Explore" />
-      <Search
+      <h3 className="text-l text-mainGray">We can generate a trip plan for you! Pick a number of days, desired intensiveness (easy/hard) and type in the city you want to visit. Resulted itinerary you can edit to your liking before saving it to pool.</h3>
+      {/* <Search
         placeholder={"Type city you want to visit..."}
         searched={suggestionForTours}
         handleOnSearchChange={handleOnCityForTourSearchChange}
       />
-      <Slider content={activitiesForSlider} />
+      <Slider content={activitiesForSlider} /> */}
       <div className="flex gap-2">
-        <Search
-          // value={cityItinerary}
-          placeholder={"Type city you want to generate itineraries..."}
-          searched={suggestionForItineraries}
-          handleOnSearchChange={handleOnCityForItinerariesSearchChange}
-        />
         <DropdownMenu
           handleDropdown={() => setIsAmountOfDaysOpen((prev) => !prev)}
           isOpen={isAmountOfDaysOpen}
@@ -227,6 +226,13 @@ const Explore = () => {
           placeHolder={intensiveness || "Intens"}
           setValue={setIntensiveness}
           dropDownContent={["Easy", "Hard"]}
+        />
+        <Search
+          // value={cityItinerary}
+          placeholder={"Type city you want to generate itineraries..."}
+          searched={suggestionForItineraries}
+          handleOnSearchChange={handleOnCityForItinerariesSearchChange}
+          // value={itinerarySearchValue}
         />
       </div>
       <Button handleOnClick={handleItineraryGenerateClick}>

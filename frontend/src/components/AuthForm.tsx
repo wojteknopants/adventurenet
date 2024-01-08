@@ -19,7 +19,7 @@ const AuthForm = ({ children, handleSubmit }: AuthFormProps) => {
         style={{ boxShadow: "rgba(0, 0, 0, 0.16) 0px 24px 48px" }}
         className={`flex flex-col justify-center transition-all ease-in-out duration-500 ${
           isShowing ? "opacity-100" : "opacity-0"
-        } p-6 backdrop-blur-lg bg-white rounded-2xl`}
+        } p-6 backdrop-blur-lg bg-white dark:bg-darkMainSection rounded-2xl`}
       >
         {children}
       </form>
