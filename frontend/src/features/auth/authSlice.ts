@@ -183,7 +183,7 @@ export const deleteUser = createAsyncThunk(
 interface AuthParams {
   access: string | null;
   refresh: string | null;
-  isAuthenticated: boolean;
+  isAuthenticated: boolean | undefined;
   user: object;
   status: "idle" | "succeeded" | "failed";
   error: string | undefined;
@@ -194,7 +194,7 @@ const authSlice = createSlice({
   initialState: {
     access: localStorage.getItem("access"),
     refresh: localStorage.getItem("refresh"),
-    isAuthenticated: true,
+    isAuthenticated: undefined,
     user: {},
     status: "idle",
     error: "",

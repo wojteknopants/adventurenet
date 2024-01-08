@@ -21,10 +21,6 @@ import {
 } from "./features/auth/authSlice";
 import Flights from "./pages/main/Flights";
 
-import Message from "./features/chat/Message";
-import MessageDetail from "./features/chat/MessageDetail";
-import SearchUsers from "./features/chat/SearchUsers";
-
 // store.dispatch(postsApiSlice.endpoints.getPosts.initiate(undefined));
 
 const App = () => {

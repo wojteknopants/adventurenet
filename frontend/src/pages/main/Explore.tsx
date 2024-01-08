@@ -24,6 +24,7 @@ import { postsPlaceholder } from "../../assets";
 import Itineraries from "../../components/Itineraries";
 import EditItineraryPopup from "../../components/EditItineraryPopup";
 import DropdownMenu from "../../components/DropdownMenu";
+import Button from "../../components/Button";
 
 const activityPlaceHolder = [
   { name: "Nothing found" },
@@ -35,7 +36,8 @@ const Explore = () => {
   const cardRef = useRef(null);
 
   const dispatch = useDispatch<AppDispatch>();
-  const [selectedCity, setSelectedCity] = useState();
+  const [selectedCityForItinerary, setSelectedCityForItinerary] =
+    useState<any>();
   const [intensiveness, setIntensiveness] = useState();
   const [amountOfDays, setAmountOfDays] = useState();
   const [isOpenPopup, setIsOpenPopup] = useState(false);
@@ -55,9 +57,7 @@ const Explore = () => {
 
   const handleOnToursCityClick = (city: any) => {
     console.log(city);
-    setSelectedCity(city);
     dispatch(selectCityForTours(city));
-
     dispatch(
       getActivities({
         latitude: city.geoCode.latitude,
@@ -68,18 +68,22 @@ const Explore = () => {
 
   const handleOnItinerariesCityClick = (city: any) => {
     console.log(city);
-    setSelectedCity(city);
+
+    setSelectedCityForItinerary(city);
     dispatch(selectCityForItineraries(city));
 
+    setIsOpenPopup(true);
+  };
+
+  const handleItineraryGenerateClick = () => {
     dispatch(
       generateItineraries({
-        latitude: city.geoCode.latitude,
-        longitude: city.geoCode.longitude,
+        latitude: selectedCityForItinerary.geoCode.latitude,
+        longitude: selectedCityForItinerary.geoCode.longitude,
         amountOfDays: amountOfDays || null,
         intensiveness: intensiveness || null,
       })
     );
-    setIsOpenPopup(true);
   };
 
   const handleOnCityForTourSearchChange = (
@@ -205,6 +209,7 @@ const Explore = () => {
       <Slider content={activitiesForSlider} />
       <div className="flex gap-2">
         <Search
+          value={cityItinerary}
           placeholder={"Type city you want to generate itineraries..."}
           searched={suggestionForItineraries}
           handleOnSearchChange={handleOnCityForItinerariesSearchChange}
@@ -224,6 +229,9 @@ const Explore = () => {
           dropDownContent={["Easy", "Hard"]}
         />
       </div>
+      <Button handleOnClick={handleItineraryGenerateClick}>
+        Generate Itinerary
+      </Button>
       {generateStatus == "fulfilled" ? (
         generatedItinerary !== null &&
         isOpenPopup && (
