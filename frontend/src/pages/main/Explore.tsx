@@ -223,7 +223,7 @@ const Explore = () => {
         <DropdownMenu
           handleDropdown={() => setIsIntensivenessDropdownOpen((prev) => !prev)}
           isOpen={isIntensivenessDropdownOpen}
-          placeHolder={intensiveness || "Intens"}
+          placeHolder={intensiveness || "Intense"}
           setValue={setIntensiveness}
           dropDownContent={["Easy", "Hard"]}
         />
