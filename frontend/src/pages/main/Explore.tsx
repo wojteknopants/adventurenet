@@ -209,7 +209,7 @@ const Explore = () => {
       <Slider content={activitiesForSlider} />
       <div className="flex gap-2">
         <Search
-          value={cityItinerary}
+          // value={cityItinerary}
           placeholder={"Type city you want to generate itineraries..."}
           searched={suggestionForItineraries}
           handleOnSearchChange={handleOnCityForItinerariesSearchChange}

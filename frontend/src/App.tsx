@@ -21,16 +21,11 @@ import {
 } from "./features/auth/authSlice";
 import Flights from "./pages/main/Flights";
 
-<<<<<<< HEAD
-=======
 import Message from "./features/chat/Message";
 import MessageDetail from "./features/chat/MessageDetail";
 import SearchUsers from "./features/chat/SearchUsers";
 
 import SearchTab from "./pages/main/SearchTab";
-
->>>>>>> 8163f903daf6b7a362d2e1a792bfd187768c9eca
-// store.dispatch(postsApiSlice.endpoints.getPosts.initiate(undefined));
 
 const App = () => {
   const isAuthenticated = useSelector(getIsAuthenticated);
@@ -69,6 +64,7 @@ const App = () => {
             />
           </Route>
         )}
+        <Route path="/auth/activate/:uid/:token" element={<ActivateUser />} />
         <Route
           path="*"
           element={
