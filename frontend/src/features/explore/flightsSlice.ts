@@ -206,4 +206,11 @@ export const getCultureData = (state: RootState) => {
   return [];
 };
 
+export const selectSelectedCity = (state: RootState) => {
+  if (state.flights && state.flights.selectedCity) {
+    return state.flights.selectedCity;
+  }
+  return "";
+};
+
 export default flightsSlice.reducer;
