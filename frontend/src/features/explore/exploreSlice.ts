@@ -64,10 +64,10 @@ export const getSuggestionsForItineraries = createAsyncThunk(
 );
 
 export const getActivities = createAsyncThunk(
-  "explore/getActivities",
+  "explore/getPOI",
   async ({ latitude, longitude }: { latitude: string; longitude: string }) => {
     try {
-      const url = `/tours-activities-search/`;
+      const url = `/poi-search/`;
 
       const config = {
         headers: {

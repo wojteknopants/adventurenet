@@ -25,6 +25,7 @@ import Itineraries from "../../components/Itineraries";
 import EditItineraryPopup from "../../components/EditItineraryPopup";
 import DropdownMenu from "../../components/DropdownMenu";
 import Button from "../../components/Button";
+import Tags from "../../components/Tags";
 
 const activityPlaceHolder = [
   { name: "Nothing found" },
@@ -38,6 +39,8 @@ const Explore = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [selectedCityForItinerary, setSelectedCityForItinerary] =
     useState<any>();
+  const [selectedCityForTour, setSelectedCityForTour] = useState<any>();
+  const [tourValue, setTourValue] = useState<any>();
   const [itineraryValue, setItineraryValue] = useState("");
   const [flightValue, setFlightValue] = useState("");
   const [intensiveness, setIntensiveness] = useState();
@@ -60,10 +63,15 @@ const Explore = () => {
   const handleOnToursCityClick = (city: any) => {
     console.log(city);
     dispatch(selectCityForTours(city));
+    setSelectedCityForTour(city);
+    setTourValue(city.name);
+  };
+
+  const handleOnToursSearchClick = () => {
     dispatch(
       getActivities({
-        latitude: city.geoCode.latitude,
-        longitude: city.geoCode.longitude,
+        latitude: selectedCityForTour.geoCode.latitude,
+        longitude: selectedCityForTour.geoCode.longitude,
       })
     );
   };
@@ -147,7 +155,7 @@ const Explore = () => {
       );
     }
   );
-
+  console.log(activities);
   const activitiesForSlider =
     activities?.length !== 0
       ? activities.slice(0, 20).map((activity: any) => (
@@ -156,33 +164,44 @@ const Explore = () => {
             className="flex flex-col gap-2 snap-start mr-4 min-w-[300px] max-h-[350px] h-fit rounded-xl bg-white dark:bg-darkMainBackground overflow-hidden"
             ref={cardRef}
           >
-            <img
+            {/* <img
               className="h-1/3 aspect-video w-full"
               src={activity.pictures[0] || postsPlaceholder}
               alt={"Image activity"}
               loading="lazy"
-            />
-            <div className="p-4 flex flex-col gap-2 text-mainGray ">
-              <div className="truncate text-lg">{activity.name}</div>
-              <div className="truncate text-sm">
-                Minimum duration: {activity.minimumDuration}
+            /> */}
+            <div className="p-4 flex flex-col gap-2 text-mainGray items-center">
+              <div className="truncate text-lg py-3 font-bold">
+                {activity.name}
+              </div>
+              <div className="truncate text-sm pb-2">
+                Category: {activity.category}
               </div>
               <div className="truncate text-sm flex justify-between">
-                <div className="flex gap-1">
-                  <div className="">Price:</div>
-                  <div className="text-mainBlue">
+                <div className="flex gap-1 max-h-[120px] min-h-[120px]">
+                  <Tags hideDelete tags={activity.tags} />
+                  {/* <div className="text-mainBlue">
                     {activity.price.amount} {activity.price.currencyCode}
-                  </div>
+                  </div> */}
                 </div>
-                {activity.rating && (
+                {/* {activity.rating && (
                   <div className="truncate text-sm flex gap-1">
                     Rating:{" "}
                     <div className="text-mainBlue">{activity.rating}</div>
                   </div>
-                )}
+                )} */}
               </div>
-              <button className="shadow-md py-1 shadow-blue-400/50 text-white bg-blue-400 hover:bg-blue-400/90 rounded-md">
-                <a href={activity.bookingLink}>More details</a>
+              <button className="shadow-md py-0.5 px-5 shadow-blue-400/50 text-white bg-blue-400 hover:bg-blue-400/90 rounded-md">
+                <a
+                  href={
+                    "Https://maps.google.com/?q=" +
+                    activity.geoCode.latitude +
+                    "," +
+                    activity.geoCode.longitude
+                  }
+                >
+                  More details
+                </a>
               </button>
             </div>
           </div>
@@ -214,9 +233,13 @@ const Explore = () => {
         placeholder={"Type city you want to visit..."}
         searched={suggestionForTours}
         handleOnSearchChange={handleOnCityForTourSearchChange}
-        value={flightValue}
+        value={tourValue}
       />
+
       <Slider content={activitiesForSlider} />
+      <Button handleOnClick={handleOnToursSearchClick}>
+        Find points of interest
+      </Button>
       <h3 className="text-l text-mainGray">
         We can generate a trip plan for you! Pick a number of days, desired
         intensiveness (easy/hard) and type in the city you want to visit.
