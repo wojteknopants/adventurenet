@@ -79,10 +79,10 @@ const LoginForm = () => {
 
   return (
     <AuthForm handleSubmit={handleOnSubmit}>
-      <label className={`flex justify-center text-[32px] font-bold mt-2`}>
+      <label className={`flex justify-center text-[32px] font-bold mt-2 dark:text-darkWhiteText`}>
         Login
       </label>
-      <div className="mt-8">
+      <div className="mt-8 dark:text-darkWhiteText">
         {/* <label className="absolute font-semibold mt-[-8px]">Email</label> */}
         <img
           src={loginEmail}
@@ -94,12 +94,12 @@ const LoginForm = () => {
           onChange={handleEmailChange}
           placeholder="Email"
           type="email"
-          className="pb-1 border-b-[1px] border-black w-[350px] bg-transparent focus:outline-none"
+          className="pb-1 border-b-[1px] border-black dark:border-darkWhiteText w-[350px] bg-transparent focus:outline-none"
           required
         />
         {/* {renderErrorMessage("userEmail")} */}
       </div>
-      <div className="mt-8">
+      <div className="mt-8 dark:text-darkWhiteText">
         {/* <label className="absolute font-semibold">Password</label> */}
         <img
           src={loginLock}
@@ -111,7 +111,7 @@ const LoginForm = () => {
           onChange={handlePasswordChange}
           type="password"
           placeholder="Password"
-          className="pb-1 border-b-[1px] border-black w-[350px] bg-transparent focus:outline-none"
+          className="pb-1 border-b-[1px] border-black dark:border-darkWhiteText w-[350px] bg-transparent focus:outline-none"
           required
         />
         {/* {renderErrorMessage("userPassword")} */}
@@ -124,7 +124,7 @@ const LoginForm = () => {
           value=""
           className=" accent-blue-400"
         />
-        <span className="ml-1 mb-[1px] font-medium text-[12px]">
+        <span className="ml-1 mb-[1px] font-medium text-[12px] dark:text-darkWhiteText">
           Remember me
         </span>
       </div>
@@ -136,7 +136,7 @@ const LoginForm = () => {
           Login
         </button>
       </div>
-      <div className="font-[500] flex justify-center mt-4 text-[16px]">
+      <div className="font-[500] flex justify-center mt-4 text-[16px] dark:text-darkWhiteText">
         <span className="mr-1">Don't have an account? </span>
         <Link to="/auth/registration" className="font-[700] hover:underline">
           Register

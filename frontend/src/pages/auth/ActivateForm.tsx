@@ -38,7 +38,7 @@ const ActivateUser = () => {
 
   return (
     <AuthForm handleSubmit={handleOnSubmit}>
-      <label className="flex justify-center text-[32px] font-bold mt-2">
+      <label className="flex justify-center text-[32px] font-bold mt-2 dark:text-darkWhiteText">
         Activate account?
       </label>
 

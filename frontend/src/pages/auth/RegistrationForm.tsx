@@ -48,10 +48,10 @@ const RegistrationForm = () => {
 
   return (
     <AuthForm handleSubmit={handleOnSubmit}>
-      <label className="flex justify-center text-[32px] font-bold mt-2">
+      <label className="flex justify-center text-[32px] font-bold mt-2 dark:text-darkWhiteText">
         Registration
       </label>
-      <div className="mt-8">
+      <div className="mt-8 dark:text-darkWhiteText">
         {/* <label className="absolute font-semibold mt-[-8px]">Email</label> */}
         <img
           src={loginEmail}
@@ -63,11 +63,11 @@ const RegistrationForm = () => {
           onChange={handleEmailChange}
           placeholder="Email"
           type="email"
-          className="pb-1 border-b-[1px] border-black w-[350px] bg-transparent focus:outline-none"
+          className="pb-1 border-b-[1px] border-black dark:border-darkWhiteText w-[350px] bg-transparent focus:outline-none"
           required
         />
       </div>
-      <div className="mt-8">
+      <div className="mt-8 dark:text-darkWhiteText">
         {/* <label className="absolute font-semibold">Password</label> */}
         <img
           src={loginLock}
@@ -80,11 +80,11 @@ const RegistrationForm = () => {
           type="password"
           placeholder="Password"
           minLength={6}
-          className="pb-1 border-b-[1px] border-black w-[350px] bg-transparent focus:outline-none"
+          className="pb-1 border-b-[1px] border-black dark:border-darkWhiteText w-[350px] bg-transparent focus:outline-none"
           required
         />
       </div>
-      <div className="mt-8">
+      <div className="mt-8 dark:text-darkWhiteText">
         {/* <label className="absolute font-semibold">Password</label> */}
         <img
           src={loginLock}
@@ -96,7 +96,7 @@ const RegistrationForm = () => {
           onChange={handleConfirmPasswordChange}
           type="password"
           placeholder="Confirm password"
-          className="pb-1 border-b-[1px] border-black w-[350px] bg-transparent focus:outline-none"
+          className="pb-1 border-b-[1px] border-black dark:border-darkWhiteText w-[350px] bg-transparent focus:outline-none"
           required
         />
       </div>
@@ -108,7 +108,7 @@ const RegistrationForm = () => {
           Register
         </button>
       </div>
-      <div className="font-[500] flex justify-center mt-4 text-[16px]">
+      <div className="font-[500] flex justify-center mt-4 text-[16px] dark:text-darkWhiteText">
         <span className="mr-1">Already have an account? </span>
         <Link to="/auth/login" className="font-[700] hover:underline">
           Login

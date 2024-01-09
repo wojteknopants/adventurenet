@@ -42,12 +42,6 @@ const AddPostPopup = ({
                 <div className="flex flex-col">
                   <div>Carrier name : {flight.carrier_name}</div>
                   <div>Direct : {flight.is_direct ? "YES" : "NO"}</div>
-                  <a 
-                    className="text-mainBlue underline"
-                    href={`https://www.skyscanner.com/transport/flights/${flight.origin_iata}/${flight.destination_iata}/${String(flight.date.year).slice(-2)}${(flight.date.month < 10 ? '0' : '')}${flight.date.month}${(flight.date.day < 10 ? '0' : '')}${flight.date.day}`}
-                    target="_blank" rel="noopener noreferrer">
-                    Go to Skyscanner
-                  </a>
                 </div>
                 <img className=" scale-50" src={flight.carrier_imageurl} />
               </div>
@@ -63,6 +57,19 @@ const AddPostPopup = ({
                 <div className="text-mainBlue">
                   Price : {flight.price} {currency}
                 </div>
+              </div>
+              <div className="flex items-center justify-center mt-4">
+                <button
+                  type="submit"
+                  className="flex justify-center w-[243px] transition shadow-md shadow-blue-400/50 hover:shadow hover:shadow-blue-400/50 text-white bg-blue-400 hover:bg-blue-400/90 font-medium rounded-lg text-[16px] px-5 py-2.5"
+                  >
+                  <a 
+                    className=""
+                    href={`https://www.skyscanner.com/transport/flights/${flight.origin_iata}/${flight.destination_iata}/${String(flight.date.year).slice(-2)}${(flight.date.month < 10 ? '0' : '')}${flight.date.month}${(flight.date.day < 10 ? '0' : '')}${flight.date.day}`}
+                    target="_blank" rel="noopener noreferrer">
+                    Check on Skyscanner
+                  </a>
+                </button>
               </div>
             </div>
           ))}
