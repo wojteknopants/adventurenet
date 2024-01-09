@@ -194,7 +194,7 @@ const authSlice = createSlice({
   initialState: {
     access: localStorage.getItem("access"),
     refresh: localStorage.getItem("refresh"),
-    isAuthenticated: undefined,
+    isAuthenticated: true,
     user: {},
     status: "idle",
     error: "",

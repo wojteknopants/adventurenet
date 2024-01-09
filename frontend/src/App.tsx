@@ -53,6 +53,12 @@ const App = () => {
               <Route path="/bookmarks" element={<Bookmarks />} />
               <Route path="/logout" element={<Logout />} />
             </Route>
+            <Route path="/auth" element={<AuthLayout />}>
+              <Route
+                path="/auth/activate/:uid/:token"
+                element={<ActivateUser />}
+              />
+            </Route>
           </Route>
         ) : (
           <Route path="/auth" element={<AuthLayout />}>
@@ -64,7 +70,7 @@ const App = () => {
             />
           </Route>
         )}
-        <Route path="/auth/activate/:uid/:token" element={<ActivateUser />} />
+
         <Route
           path="*"
           element={
