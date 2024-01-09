@@ -11,7 +11,7 @@ import { useState } from "react";
 import { AppDispatch } from "../store";
 
 interface EditPostFormProps {
-  editData: { postId: any; image: any; content: any; tags: any };
+  editData: { postId: any; image: any; content: any; tags: any } | undefined;
   handleOnClick: () => any;
 }
 
@@ -21,10 +21,10 @@ const EditPostForm = ({ editData, handleOnClick }: EditPostFormProps) => {
 
   const [updatePost, { isLoading }] = useUpdatePostMutation();
   const { data, isSuccess, isError } = useGetProfileQuery("me");
-  const [content, setContent] = useState(editData.content);
-  const [image, setImage] = useState(editData.image);
+  const [content, setContent] = useState(editData?.content);
+  const [image, setImage] = useState(editData?.image);
   const [selectedTags, setSelectedTags] = useState<any[]>(
-    editData.tags.map((tag: any) => ({ name: tag }))
+    editData?.tags.map((tag: any) => ({ name: tag }))
   );
   console.log(selectedTags);
   const tagsSuggestions = useSelector(selectTagSuggestions);
@@ -74,7 +74,7 @@ const EditPostForm = ({ editData, handleOnClick }: EditPostFormProps) => {
           );
         }
 
-        const updatedPost = { id: editData.postId, formData: formData };
+        const updatedPost = { id: editData?.postId, formData: formData };
 
         console.log(updatedPost);
 
