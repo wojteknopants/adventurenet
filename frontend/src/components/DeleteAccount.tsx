@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { deleteUser } from "../features/auth/authSlice";
+import { checkIsAuthenticated, deleteUser } from "../features/auth/authSlice";
 import Popup from "./Popup";
 import { useState } from "react";
 import Delete from "./Delete";
@@ -43,7 +43,9 @@ const DeleteAccount = () => {
             />
             <button
               onClick={() =>
-                dispatch(deleteUser({ current_password: currentPassword }))
+                dispatch(
+                  deleteUser({ current_password: currentPassword })
+                ).then(() => dispatch(checkIsAuthenticated))
               }
               className="text-red-400 border border-red-400 rounded-lg p-1"
             >
