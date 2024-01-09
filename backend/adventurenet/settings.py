@@ -163,6 +163,7 @@ REST_FRAMEWORK = {
 #DOMAIN = ('localhost:5173')
 DOMAIN = 'adventurenet.fun'
 DJOSER = {
+    'TOKEN_MODEL': None,
     'LOGIN_FIELD': 'email',
     'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
     'USERNAME_RESET_CONFIRM_URL': 'email/reset/confirm/{uid}/{token}', #username = email so url is with "email"
