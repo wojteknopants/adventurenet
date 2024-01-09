@@ -43,8 +43,7 @@ const PostHeader = ({
           {formatRelativeTime(created_at)}
         </p>
       </div>
-      {editData &&
-        profile?.user === user &&
+      {((editData && profile?.user === user) || profile?.user === 1) &&
         (isOpen ? (
           <div className="flex gap-4 text-sm">
             <button
@@ -55,7 +54,7 @@ const PostHeader = ({
             </button>
             {isEdited && (
               <EditPostForm
-                editData={editData}
+                editData={editData || undefined}
                 handleOnClick={handleOnEditClick}
               />
             )}

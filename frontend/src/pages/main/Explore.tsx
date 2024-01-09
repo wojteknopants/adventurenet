@@ -38,6 +38,8 @@ const Explore = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [selectedCityForItinerary, setSelectedCityForItinerary] =
     useState<any>();
+  const [itineraryValue, setItineraryValue] = useState("");
+  const [flightValue, setFlightValue] = useState("");
   const [intensiveness, setIntensiveness] = useState();
   const [amountOfDays, setAmountOfDays] = useState();
   const [isOpenPopup, setIsOpenPopup] = useState(false);
@@ -70,6 +72,8 @@ const Explore = () => {
 
   const handleOnItinerariesCityClick = (city: any) => {
     console.log(city);
+
+    setItineraryValue(city.name);
 
     setSelectedCityForItinerary(city);
     dispatch(selectCityForItineraries(city));
@@ -106,7 +110,7 @@ const Explore = () => {
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const inputValue = e.target.value;
-
+    setItineraryValue(inputValue);
     clearTimeout(timeout);
 
     timeout = setTimeout(() => {
@@ -205,14 +209,33 @@ const Explore = () => {
   return (
     <>
       <PageTitle title="Explore" />
-      <h3 className="text-l text-mainGray">We can generate a trip plan for you! Pick a number of days, desired intensiveness (easy/hard) and type in the city you want to visit. Resulted itinerary you can edit to your liking before saving it to pool.</h3>
-      {/* <Search
+
+      <Search
         placeholder={"Type city you want to visit..."}
         searched={suggestionForTours}
         handleOnSearchChange={handleOnCityForTourSearchChange}
+        value={flightValue}
       />
-      <Slider content={activitiesForSlider} /> */}
+      <Slider content={activitiesForSlider} />
+      <h3 className="text-l text-mainGray">
+        We can generate a trip plan for you! Pick a number of days, desired
+        intensiveness (easy/hard) and type in the city you want to visit.
+        Resulted itinerary you can edit to your liking before saving it to pool.
+      </h3>
+      {/* <button
+        onFocusCapture={() => console.log("We can generate a trip")}
+        className="text-white bg-mainBlue h-10 w-10 rounded-full"
+      >
+        ?
+      </button> */}
       <div className="flex gap-2">
+        <Search
+          value={itineraryValue}
+          placeholder={"Type city you want to generate itineraries..."}
+          searched={suggestionForItineraries}
+          handleOnSearchChange={handleOnCityForItinerariesSearchChange}
+          // value={itinerarySearchValue}
+        />
         <DropdownMenu
           handleDropdown={() => setIsAmountOfDaysOpen((prev) => !prev)}
           isOpen={isAmountOfDaysOpen}
@@ -226,13 +249,6 @@ const Explore = () => {
           placeHolder={intensiveness || "Intense"}
           setValue={setIntensiveness}
           dropDownContent={["Easy", "Hard"]}
-        />
-        <Search
-          // value={cityItinerary}
-          placeholder={"Type city you want to generate itineraries..."}
-          searched={suggestionForItineraries}
-          handleOnSearchChange={handleOnCityForItinerariesSearchChange}
-          // value={itinerarySearchValue}
         />
       </div>
       <Button handleOnClick={handleItineraryGenerateClick}>

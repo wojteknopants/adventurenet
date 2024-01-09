@@ -34,7 +34,7 @@ const AddPostForm = () => {
     setImage(event.target.files[0]);
   };
 
-  const canSave = [content, image].every(Boolean) && !isLoading;
+  const canSave = [content].every(Boolean) && !isLoading;
 
   const handleDeleteTag = (tagToDelete: any) => {
     const updatedSelectedTags = selectedTags.filter(
@@ -68,7 +68,7 @@ const AddPostForm = () => {
 
         formData.append("title", "TITLE_IS_NOT_EXIST");
         formData.append("content", content);
-        if (image !== null) formData.append("new_images", image);
+        if (image) formData.append("new_images", image);
         if (selectedTags !== null) {
           selectedTags.forEach((tag) => formData.append("new_tags", tag.name));
         }
@@ -95,6 +95,12 @@ const AddPostForm = () => {
     }, 300);
   };
 
+  const handleEnterPress = (event: any) => {
+    if (event.key === "Enter") {
+      onSavePostClicked();
+    }
+  };
+
   useEffect(() => {
     if (isSuccess) {
       setPicture(data.profile_picture);
@@ -115,6 +121,7 @@ const AddPostForm = () => {
             className="grow m-auto min-w-[160px] h-14 ml-3 focus:outline-none dark:bg-darkMainBackground dark:text-darkWhiteText"
             placeholder={"Whats on your mind?"}
             onChange={onContentChanged}
+            onKeyDown={handleEnterPress}
           />
           <div className=" my-auto mr-0">
             <img

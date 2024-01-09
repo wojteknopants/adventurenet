@@ -52,11 +52,11 @@ export const navLinks = [
     title: "Profile",
     icon: iconProfile,
   },
-  // {
-  //   id: "settings",
-  //   title: "Settings",
-  //   icon: iconSettings,
-  // },
+  {
+    id: "settings",
+    title: "Settings",
+    icon: iconSettings,
+  },
   {
     id: "logout",
     title: "Logout",

@@ -11,9 +11,11 @@ import {
   getFlightsSearchSuggestions,
   searchedCitiesForFlights,
   selectCity,
+  selectSelectedCity,
 } from "../../features/explore/flightsSlice";
 import FlightsPopup from "../../components/FlightsPopup";
 import DropdownMenu from "../../components/DropdownMenu";
+import Button from "../../components/Button";
 
 interface FlightCountry {
   country: any;
@@ -23,6 +25,7 @@ interface FlightCountry {
 const Flights = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [selectedCity, setSelectedCity] = useState();
+  const [flightValue, setFlightValue] = useState("");
   const [selectedFlightCountry, setSelectedFlightCountry] =
     useState<FlightCountry>();
   const [showFlights, setShowFlights] = useState(false);
@@ -35,13 +38,23 @@ const Flights = () => {
   const citiesForFlights = useSelector(searchedCitiesForFlights);
   const countriesOffers = useSelector(countriesToFlight);
   const cultureData = useSelector(getCultureData);
+  const selectedFlightCity = useSelector(selectSelectedCity);
 
   const handleOnFlightCityClick = (city: any) => {
     console.log(city);
+    setFlightValue(city.name);
     setSelectedCity(city);
     dispatch(selectCity(city));
+  };
 
-    dispatch(getFlights({ entityId: city.entityId, month: month, year: year }));
+  const handleOnFlightsSearchClick = () => {
+    dispatch(
+      getFlights({
+        entityId: selectedFlightCity.entityId,
+        month: month,
+        year: year,
+      })
+    );
   };
 
   const handleOnCardClick = (offers: any, country: any) => {
@@ -53,7 +66,7 @@ const Flights = () => {
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const inputValue = e.target.value;
-
+    setFlightValue(inputValue);
     clearTimeout(timeout);
 
     timeout = setTimeout(() => {
@@ -121,8 +134,16 @@ const Flights = () => {
   return (
     <>
       <PageTitle title="Flights" />
-      <h3 className="text-xl text-mainGray">Cheapest flights destination from your departure country/city.</h3>
+      <h3 className="text-xl text-mainGray">
+        Cheapest flights destination from your departure country/city.
+      </h3>
       <div className="flex shadow-none gap-2">
+        <Search
+          placeholder={"Type from where you want to fly..."}
+          searched={searchedFlightsCities}
+          handleOnSearchChange={handleOnFlightsSearchChange}
+          value={flightValue}
+        />
         <DropdownMenu
           handleDropdown={() => setIsMonthDropDownOpen((prev) => !prev)}
           isOpen={isMonthDropDownOpen}
@@ -137,12 +158,10 @@ const Flights = () => {
           setValue={setYear}
           dropDownContent={years}
         />
-        <Search
-          placeholder={"Type from where you want to fly..."}
-          searched={searchedFlightsCities}
-          handleOnSearchChange={handleOnFlightsSearchChange}
-        />
       </div>
+      <Button handleOnClick={handleOnFlightsSearchClick}>
+        Generate Itinerary
+      </Button>
       <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3 lg:gap-5">
         {flightOffers || (
           <div className="flex absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-mainGray/50 text-xl font-bold m-auto">

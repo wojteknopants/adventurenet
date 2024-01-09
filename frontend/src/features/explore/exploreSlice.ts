@@ -249,6 +249,9 @@ const exploreSlice = createSlice({
       state.selectedCity = action.payload;
       state.suggestionsForItineraries = null;
     },
+    deleteGeneratedItinerary(state, action) {
+      state.generatedItinerary = null;
+    },
   },
   extraReducers(builder) {
     builder.addCase(getSuggestionsForTours.fulfilled, (state, action) => {
@@ -304,6 +307,7 @@ const exploreSlice = createSlice({
 
 export const { selectCityForTours } = exploreSlice.actions;
 export const { selectCityForItineraries } = exploreSlice.actions;
+export const { deleteGeneratedItinerary } = exploreSlice.actions;
 
 export const selectSuggestionsForTours = (state: RootState) => {
   if (state.explore && state.explore.suggestionsForTours) {

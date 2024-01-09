@@ -15,8 +15,6 @@ export default function Search({
   offShadows = false,
   value,
 }: searchProps) {
-  const [val, setVal] = useState<any>("");
-  console.log(val);
   return (
     <div className="flex flex-col grow gap-3">
       <div
@@ -26,9 +24,9 @@ export default function Search({
         <input
           onChange={(e) => {
             // setVal(e.target.value);
-            handleOnSearchChange(e, setVal);
+            handleOnSearchChange(e);
           }}
-          className="block w-full p-3 px-4 overflow-hidden h-12 rounded-xl dark:bg-darkMainBackground dark:text-darkWhiteText"
+          className="block w-full text-mainGray p-3 px-4 overflow-hidden h-12 rounded-xl dark:bg-darkMainBackground dark:text-darkWhiteText"
           placeholder={placeholder}
           value={value}
         />

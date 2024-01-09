@@ -11,7 +11,6 @@ import { useGetProfileQuery } from "../features/profile/profileSlice";
 
 interface CommentProps {
   comment: any;
-  // formatRelativeTime: (arg: any) => any;
 }
 
 const Comment = ({ comment }: CommentProps) => {
@@ -31,11 +30,11 @@ const Comment = ({ comment }: CommentProps) => {
   return (
     <div className="flex gap-3 py-4">
       <div>
-        <Avatar size={""} user_pfp={profile.profile_picture} />
+        <Avatar size={""} user_pfp={profile?.profile_picture} />
       </div>
       <div className="flex flex-1 flex-col">
         <div className="flex gap-3 dark:text-darkWhiteText">
-          {/* {comment.user} */}
+          {/* {comment.user} */}@
           {profile?.username ? profile?.username : profile?.user}
           <p className=" text-mainDarkGray text-sm">
             {formatRelativeTime(comment.created_at)}

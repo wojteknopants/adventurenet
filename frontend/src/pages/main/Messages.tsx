@@ -241,7 +241,7 @@ const Messages = () => {
                               <div className="flex-1 min-w-0 w-32">
                                 <div className={"w-full"}>
                                   <div className="flex items-center justify-between">
-                                    <p className="text-sm font-bold text-blue-400">
+                                    <p className="text-sm font-bold text-blue-400 truncate">
                                       {determineSenderName(message)}
                                     </p>
                                     <div className="text-gray-400 dark:text-darkWhiteText text-xs">
@@ -252,9 +252,9 @@ const Messages = () => {
                                     <p className="text-sm text-gray-500 dark:text-darkWhiteText truncate">
                                       {message.message}
                                     </p>
-                                    {!message.is_read ? <div className="text-xs bg-blue-400 rounded-full px-1 px-0 text-blue-400">
+                                    {/* {!message.is_read ? <div className="text-xs bg-blue-400 rounded-full px-1 px-0 text-blue-400">
                                       1
-                                    </div> : null}
+                                    </div> : null} */}
 
                                   </div>
                                 </div>
@@ -298,7 +298,7 @@ const Messages = () => {
                         </div>
                         <img
                         className={`w-8 h-8 rounded-full ${!isMessageReceived(message) ? "order-2" : "order-1"}`}
-                        src={isMessageReceived(message) ? (message.sender_profile.background_image || profilePlaceholder) : (loggedUserDetails?.profile_picture || profilePlaceholder)}
+                        src={isMessageReceived(message) ? (message.sender_profile.profile_picture || profilePlaceholder) : (loggedUserDetails?.profile_picture || profilePlaceholder)}
                         />
                       </div>
                 </div>)

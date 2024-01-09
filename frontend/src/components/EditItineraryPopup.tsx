@@ -8,6 +8,7 @@ import { AppDispatch } from "../store";
 import {
   getItineraries,
   saveItinerary,
+  deleteGeneratedItinerary,
 } from "../features/explore/exploreSlice";
 
 interface EditItineraryPopupProps {
@@ -30,7 +31,7 @@ const EditItineraryPopup = ({
   const handleOnSaveClick = async () => {
     handlePopup();
     await dispatch(saveItinerary({ itinerary: content })).then(() =>
-      dispatch(getItineraries())
+      dispatch(getItineraries()).then(() => dispatch(deleteGeneratedItinerary))
     );
   };
   return (
