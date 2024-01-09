@@ -5,7 +5,7 @@ const DarkMode = () => {
   const [theme, setTheme] = useState<null | "dark" | "light">(null);
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-color-scheme: light)").matches) {
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
       setTheme("dark");
     } else {
       setTheme("light");
