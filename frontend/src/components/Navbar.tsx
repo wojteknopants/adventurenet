@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { navLinks } from "../constants";
 import { logo, smallLogo } from "../assets";
-import DarkMode from "./DarkMode";
 
 interface NavbarProps {
   currentPageId: string;
@@ -55,7 +54,6 @@ const Navbar = ({ currentPageId }: NavbarProps) => {
       <ul className="flex flex-col justify-center min-w-[64px]">
         {printNavBar}
       </ul>
-      <DarkMode/>
     </nav>
   );
 };
