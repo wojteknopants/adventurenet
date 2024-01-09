@@ -8,6 +8,7 @@ const Settings = () => {
       <PageTitle title="Settings" />
       {/* <ResetEmail />
       <ResetPassword /> */}
+
       <DeleteAccount />
 
       <DarkMode />

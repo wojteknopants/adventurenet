@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { iconLight, iconDark } from "../assets";
+import Card from "./Card";
 
 const DarkMode = () => {
   const [theme, setTheme] = useState<null | "dark" | "light">("light");
@@ -17,18 +18,18 @@ const DarkMode = () => {
   };
 
   return (
-    <div>
+    <Card>
       <div className="flex justify-between border-b p-2 items-center text-mainGray">
         <p>Change theme</p>
         <button
           type="button"
           onClick={handleThemeSwitch}
-          className="text-mainBlue border border-mainBlue rounded-lg p-1"
+          className="text-mainBlue border border-mainBlue hover:text-mainBlue/80 hover:border-mainBlue/80 rounded-lg p-1"
         >
           {theme === "dark" ? "dark" : "light"}
         </button>
       </div>
-    </div>
+    </Card>
   );
 };
 

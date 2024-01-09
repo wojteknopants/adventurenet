@@ -4,6 +4,7 @@ import Popup from "./Popup";
 import { useState } from "react";
 import Delete from "./Delete";
 import { AppDispatch } from "../store";
+import Card from "./Card";
 
 const DeleteAccount = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -16,11 +17,11 @@ const DeleteAccount = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <>
+    <Card>
       <div className="flex justify-between border-b p-2 items-center text-mainGray">
         <p>Delete account</p>
         <button
-          className="text-red-400 border border-red-400 rounded-lg p-1"
+          className="text-red-400 hover:text-red-400/80 border border-red-400 hover:border-red-400/80 rounded-lg p-1"
           onClick={() => setIsOpen((prev) => !prev)}
         >
           Delete
@@ -51,7 +52,7 @@ const DeleteAccount = () => {
           </div>
         </Popup>
       )}
-    </>
+    </Card>
   );
 };
 
