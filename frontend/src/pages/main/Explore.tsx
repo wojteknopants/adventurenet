@@ -205,13 +205,24 @@ const Explore = () => {
   return (
     <>
       <PageTitle title="Explore" />
-      <h3 className="text-l text-mainGray">We can generate a trip plan for you! Pick a number of days, desired intensiveness (easy/hard) and type in the city you want to visit. Resulted itinerary you can edit to your liking before saving it to pool.</h3>
-      {/* <Search
+
+      <Search
         placeholder={"Type city you want to visit..."}
         searched={suggestionForTours}
         handleOnSearchChange={handleOnCityForTourSearchChange}
       />
-      <Slider content={activitiesForSlider} /> */}
+      <Slider content={activitiesForSlider} />
+      <h3 className="text-l text-mainGray">
+        We can generate a trip plan for you! Pick a number of days, desired
+        intensiveness (easy/hard) and type in the city you want to visit.
+        Resulted itinerary you can edit to your liking before saving it to pool.
+      </h3>
+      {/* <button
+        onFocusCapture={() => console.log("We can generate a trip")}
+        className="text-white bg-mainBlue h-10 w-10 rounded-full"
+      >
+        ?
+      </button> */}
       <div className="flex gap-2">
         <DropdownMenu
           handleDropdown={() => setIsAmountOfDaysOpen((prev) => !prev)}
