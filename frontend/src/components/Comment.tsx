@@ -8,6 +8,7 @@ import {
 import { AppDispatch } from "../store";
 import { formatRelativeTime } from "../lib/formatRelativeTime";
 import { useGetProfileQuery } from "../features/profile/profileSlice";
+import { Link } from "react-router-dom";
 
 interface CommentProps {
   comment: any;
@@ -34,8 +35,9 @@ const Comment = ({ comment }: CommentProps) => {
       </div>
       <div className="flex flex-1 flex-col">
         <div className="flex gap-3 dark:text-darkWhiteText">
-          {/* {comment.user} */}@
-          {profile?.username ? profile?.username : profile?.user}
+          <Link to={`/profile/${profile?.user}`}>
+            @{profile?.username ? profile?.username : profile?.user}
+          </Link>
           <p className=" text-mainDarkGray text-sm">
             {formatRelativeTime(comment.created_at)}
           </p>

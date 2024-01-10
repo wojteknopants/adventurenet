@@ -106,7 +106,7 @@ const Explore = () => {
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const inputValue = e.target.value;
-
+    setTourValue(inputValue);
     clearTimeout(timeout);
 
     timeout = setTimeout(() => {
