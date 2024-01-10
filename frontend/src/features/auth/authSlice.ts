@@ -259,6 +259,9 @@ const authSlice = createSlice({
       })
       .addCase(loadUser.rejected, (state, action) => {
         state.status = "failed";
+      })
+      .addCase(deleteUser.fulfilled, (state, action) => {
+        state.isAuthenticated = false;
       });
   },
 });

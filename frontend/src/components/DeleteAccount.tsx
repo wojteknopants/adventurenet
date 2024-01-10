@@ -5,9 +5,12 @@ import { useState } from "react";
 import Delete from "./Delete";
 import { AppDispatch } from "../store";
 import Card from "./Card";
+import { useNavigate } from "react-router-dom";
 
 const DeleteAccount = () => {
   const dispatch = useDispatch<AppDispatch>();
+
+  const navigate = useNavigate();
 
   const [currentPassword, setCurrentPassword] = useState("");
 
@@ -41,11 +44,12 @@ const DeleteAccount = () => {
               placeholder="Type your password..."
               onChange={handleOnChange}
             />
+
             <button
               onClick={() =>
-                dispatch(
-                  deleteUser({ current_password: currentPassword })
-                ).then(() => dispatch(checkIsAuthenticated))
+                dispatch(deleteUser({ current_password: currentPassword }))
+                  .then(() => dispatch(checkIsAuthenticated))
+                  .then(() => navigate("/auth/login"))
               }
               className="text-red-400 border border-red-400 rounded-lg p-1"
             >
