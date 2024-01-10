@@ -47,9 +47,9 @@ const DeleteAccount = () => {
 
             <button
               onClick={() =>
-                dispatch(deleteUser({ current_password: currentPassword }))
-                  .then(() => dispatch(checkIsAuthenticated))
-                  .then(() => navigate("/auth/login"))
+                dispatch(
+                  deleteUser({ current_password: currentPassword })
+                ).then(() => dispatch(checkIsAuthenticated))
               }
               className="text-red-400 border border-red-400 rounded-lg p-1"
             >
